@@ -1,0 +1,87 @@
+JFDML JFormDesigner: "8.1.1.0.298" Java: "17.0.3" encoding: "UTF-8"
+
+new FormModel {
+	contentType: "form/swing"
+	root: new FormRoot {
+		add( new FormWindow( "javax.swing.JFrame", new FormLayoutManager( class org.jdesktop.layout.GroupLayout ) {
+			"$horizontalGroup": "par l {seq t {space :::p, par t {seq {par l:::p {comp button1::l::122:x, comp button2::l::122:x, comp button3::l::122:x, comp button4::l::122:x}, space s:::p, comp layeredPane1::::993:x}, seq {space :0:670:x, comp button5:::p:83:p, space u:::p, comp button6:::p:83:p, space u:::p, comp button7:::p:83:p, space u:::p, comp button8:::p:83:p, space u:::p, comp button9:::p:83:p}}, space :p:39:p}}"
+			"$verticalGroup": "par l {seq l {space :::p, par l {seq {comp button1:::p:90:p, space u:::p, comp button2:::p:90:p, space :p:28:p, comp button3:::p:90:p, space s:::p, comp button4:::p:90:p}, comp layeredPane1:::p:725:p}, space u:::p, par b {comp button6::b:p:45:p, comp button7::b:p:45:p, comp button8::b:p:45:p, comp button5::b:p:45:p, comp button9::b:p:45:p}, space :::p}}"
+		} ) {
+			name: "this"
+			add( new FormComponent( "javax.swing.JButton" ) {
+				name: "button1"
+				"text": "INVENTORY"
+			} )
+			add( new FormComponent( "javax.swing.JButton" ) {
+				name: "button2"
+				"text": "TRAVEL"
+			} )
+			add( new FormComponent( "javax.swing.JButton" ) {
+				name: "button3"
+				"text": "text"
+			} )
+			add( new FormComponent( "javax.swing.JButton" ) {
+				name: "button4"
+				"text": "text"
+			} )
+			add( new FormComponent( "javax.swing.JButton" ) {
+				name: "button6"
+				"text": "text"
+			} )
+			add( new FormComponent( "javax.swing.JButton" ) {
+				name: "button7"
+				"text": "text"
+			} )
+			add( new FormComponent( "javax.swing.JButton" ) {
+				name: "button8"
+				"text": "text"
+			} )
+			add( new FormComponent( "javax.swing.JButton" ) {
+				name: "button5"
+				"text": "text"
+			} )
+			add( new FormComponent( "javax.swing.JButton" ) {
+				name: "button9"
+				"text": "text"
+			} )
+			add( new FormContainer( "javax.swing.JLayeredPane", new FormLayoutManager( class javax.swing.JLayeredPane ) ) {
+				name: "layeredPane1"
+				add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class java.awt.GridLayout ) {
+					"columns": 16
+					"rows": 12
+				} ) {
+					name: "panel1"
+					"background": new java.awt.Color( 60, 63, 65, 0 )
+					add( new FormComponent( "javax.swing.JButton" ) {
+						name: "button10"
+						"text": "text"
+						"background": new java.awt.Color( 255, 255, 255, 255 )
+					} )
+					add( new FormComponent( "javax.swing.JButton" ) {
+						name: "button11"
+						"text": "text"
+						"background": new java.awt.Color( 255, 255, 255, 255 )
+					} )
+				}, new FormLayoutConstraints( null ) {
+					"x": 0
+					"y": 0
+					"width": 990
+					"height": 725
+				} )
+				add( new FormComponent( "javax.swing.JLabel" ) {
+					name: "label2"
+					"text": "text"
+					"icon": new com.jformdesigner.model.SwingIcon( 0, "/src/resources/img/maps/1.png" )
+				}, new FormLayoutConstraints( null ) {
+					"x": 0
+					"y": 0
+					"width": 990
+					"height": 725
+				} )
+			} )
+		}, new FormLayoutConstraints( null ) {
+			"location": new java.awt.Point( 0, 0 )
+			"size": new java.awt.Dimension( 1180, 835 )
+		} )
+	}
+}
