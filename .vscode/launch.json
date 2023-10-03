@@ -12,9 +12,9 @@
         },
         {
             "type": "java",
-            "name": "App",
+            "name": "Main",
             "request": "launch",
-            "mainClass": "main.java.Main",
+            "mainClass": "Main",
             "projectName": "adventure-game-java_dc76935e"
         }
     ]
