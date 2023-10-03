@@ -25,9 +25,13 @@ public class Main {
                 var button = new MapGridButton("ASD", i, j);
                 gbc.gridx = i;
                 gbc.gridy = j;
-                panel.add(button, gbc);
+                //panel.add(button, gbc);
             }
         }
+
+        var img = new ImageIcon("project/resources/img/1.png");
+        var label = new JLabel(img);
+        panel.add(label);
 
         frame.add(panel);
 
