@@ -1,9 +1,8 @@
-package main;
+package main.java.home;
 
 import javax.swing.*;
 
 import java.awt.BorderLayout;
-import java.awt.FlowLayout;
 import java.awt.GridLayout;
 
 public class Main {
@@ -35,7 +34,7 @@ public class Main {
         //frame.add(panel, BorderLayout.SOUTH);
         //frame.add(panel2, BorderLayout.NORTH);
 
-        var image = new ImageIcon("1.png");
+        var image = new ImageIcon("./img/maps/1.png");
         var label = new JLabel(image);
         var panel3 = new JPanel(new GridLayout(1, 1, 0, 0));
         panel3.add(label);

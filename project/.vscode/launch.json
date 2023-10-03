@@ -14,7 +14,7 @@
             "type": "java",
             "name": "App",
             "request": "launch",
-            "mainClass": "main.App",
+            "mainClass": "main.java.Main",
             "projectName": "adventure-game-java_dc76935e"
         }
     ]
