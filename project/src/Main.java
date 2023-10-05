@@ -2,9 +2,10 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 
 import javax.swing.*;
-import java.awt.GridBagLayout;
 
-import gui.*;
+import ui.*;
+
+import java.awt.GridBagLayout;
 
 public class Main {
     public static void main(String[] args){

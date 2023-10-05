@@ -1,7 +1,9 @@
-package gui;
+package ui;
 
-import gui.tools.GridPosition;
 import javax.swing.JButton;
+
+import uilogic.GridPosition;
+
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 

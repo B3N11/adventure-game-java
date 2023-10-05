@@ -1,4 +1,4 @@
-package gui.tools;
+package uilogic;
 
 public class GridPosition {
     private int x;
