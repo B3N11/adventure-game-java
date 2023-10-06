@@ -12,8 +12,9 @@ public class Shotgun extends Weapon{
     
     public Shotgun(String id, String weaponName, int attackModifier, int dice, int diceCount, int dmgModifier, int range, double hitRange) throws ArgumentNullException, InvalidArgumentException, InvalidDiceSideCountException{
         super(id, weaponName, attackModifier, dice, diceCount, dmgModifier, range);
-
         weaponType = WeaponType.SHOTGUN;
+
+        setHitRange(hitRange);
     }
     
     public double getHitRange(){ return hitRange; }
