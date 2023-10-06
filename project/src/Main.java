@@ -1,15 +1,12 @@
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
-
 import javax.swing.*;
-
 import ui.*;
-
 import java.awt.GridBagLayout;
 
 public class Main {
-    public static void main(String[] args){
-        
+
+    static void test(){
         var frame = new JFrame();
         frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         frame.setSize(1000, 1000);

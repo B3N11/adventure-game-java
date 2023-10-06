@@ -1,5 +1,7 @@
 package game.behaviour.abstracts;
 
-public abstract class Equipment {
-    
+import game.utility.general.Identifiable;
+
+public abstract class Equipment extends Identifiable{
+
 }
