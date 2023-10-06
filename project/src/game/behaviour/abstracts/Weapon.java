@@ -20,15 +20,9 @@ public abstract class Weapon extends Equipment{
     protected String description;                  //A brief introduction of the weapon
     protected WeaponType weaponType;               //The type of the weapon
 
-    protected Weapon(String id, String weaponName, int attackModifier, int dice, int diceCount, int dmgModifier, int range) throws ArgumentNullException, InvalidArgumentException, InvalidDiceSideCountException{
+    protected Weapon(String id, String weaponName) throws ArgumentNullException{
         setID(id);
         setName(weaponName);
-        setAttackModifier(attackModifier);
-        setDamageDice(dice);
-        setDiceCount(diceCount);
-        setDamageModifier(dmgModifier);
-        setRange(range);
-
         setDescription("");
     }
 
