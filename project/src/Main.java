@@ -2,11 +2,13 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import javax.swing.*;
 import ui.*;
+import uilogic.GridButtonHandler;
+
 import java.awt.GridBagLayout;
 
 public class Main {
 
-    static void test(){
+    public static void main(String[] args){
         var frame = new JFrame();
         frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         frame.setSize(1000, 1000);
@@ -14,16 +16,14 @@ public class Main {
 
         var panel = new JPanel(new GridBagLayout());
         var gbc = new GridBagConstraints();
+        var handler = new GridButtonHandler();
 
         for(int i = 0; i < 5; i++){
             for(int j = 0; j < 6; j++){
-                if(i % 2 == 0 || j % 3 == 0)
-                    continue;
-
-                var button = new MapGridButton("ASD", i, j);
+                var button = new MapGridButton("ASD", i, j, handler);
                 gbc.gridx = i;
                 gbc.gridy = j;
-                //panel.add(button, gbc);
+                panel.add(button, gbc);
             }
         }
 

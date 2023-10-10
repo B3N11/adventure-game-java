@@ -3,6 +3,7 @@ package ui;
 import javax.swing.JButton;
 
 import uilogic.GridPosition;
+import uilogic.GridButtonHandler;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -10,9 +11,11 @@ import java.awt.event.ActionListener;
 public class MapGridButton extends JButton implements ActionListener{
     
     private GridPosition gridPosition;
+    private GridButtonHandler handler;
 
-    public MapGridButton(String text, int gridPositionX, int gridPositionY){
+    public MapGridButton(String text, int gridPositionX, int gridPositionY, GridButtonHandler handler){
         super(text);
+        this.handler = handler;
         initButton(gridPositionX, gridPositionY);
     }
     
@@ -43,6 +46,7 @@ public class MapGridButton extends JButton implements ActionListener{
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        System.out.println("ASD");
+        //System.out.println("ASD");
+        handler.showButtonPosition(gridPosition);
     }
 }
