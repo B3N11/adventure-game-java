@@ -1,28 +1,25 @@
 package ui;
 
+import java.awt.event.ActionListener;
+
 import javax.swing.JButton;
 
 import uilogic.GridPosition;
 import uilogic.GridButtonHandler;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-
-public class MapGridButton extends JButton implements ActionListener{
+public class MapGridButton extends JButton{
     
     private GridPosition gridPosition;
-    private GridButtonHandler handler;
 
     public MapGridButton(String text, int gridPositionX, int gridPositionY, GridButtonHandler handler){
         super(text);
-        this.handler = handler;
-        initButton(gridPositionX, gridPositionY);
+        initButton(gridPositionX, gridPositionY, handler);
     }
     
     //#region INITIALIZE
-    private void initButton(int x, int y){
+    private void initButton(int x, int y, ActionListener listener){
         initVisuals();
-        initData(x, y);
+        initData(x, y, listener);
     }
 
     private void initVisuals(){
@@ -30,23 +27,15 @@ public class MapGridButton extends JButton implements ActionListener{
         setOpaque(false);
         setContentAreaFilled(false);
         setBorderPainted(false);
-        addActionListener(this);
     }
 
-    private void initData(int x, int y){
+    private void initData(int x, int y, ActionListener listener){
         gridPosition = new GridPosition(x, y);
+        addActionListener(listener);
     }
     //#endregion
 
-    //#region GETTERS
-    public GridPosition geGridPosition(){
+    public GridPosition getGridPosition(){
         return gridPosition;
-    }
-    //#endregion
-
-    @Override
-    public void actionPerformed(ActionEvent e) {
-        //System.out.println("ASD");
-        handler.showButtonPosition(gridPosition);
     }
 }

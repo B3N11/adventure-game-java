@@ -1,6 +1,9 @@
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import javax.swing.*;
+
+import game.utility.dice.Dice;
+import game.utility.dice.DiceRoller;
 import ui.*;
 import uilogic.GridButtonHandler;
 
@@ -9,6 +12,12 @@ import java.awt.GridBagLayout;
 public class Main {
 
     public static void main(String[] args){
+        var dice = new Dice(20);
+        var result = dice.roll();
+        System.out.println(result);
+    }
+
+    public static void test(String[] args){
         var frame = new JFrame();
         frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         frame.setSize(1000, 1000);
