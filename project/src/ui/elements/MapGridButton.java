@@ -1,13 +1,14 @@
-package ui;
+package ui.elements;
 
 import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
 
+import ui.interfaces.IGridPositionable;
 import uilogic.GridPosition;
 import uilogic.GridButtonHandler;
 
-public class MapGridButton extends JButton{
+public class MapGridButton extends JButton implements IGridPositionable{
     
     private GridPosition gridPosition;
 

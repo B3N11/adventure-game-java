@@ -5,6 +5,8 @@ import javax.swing.*;
 import game.utility.dice.Dice;
 import game.utility.dice.DiceRoller;
 import ui.*;
+import ui.elements.GridPanel;
+import ui.elements.MapGridButton;
 import uilogic.GridButtonHandler;
 import uilogic.GridPosition;
 
@@ -31,22 +33,21 @@ public class Main {
                 var button = new MapGridButton("ASD", i, j, handler);
                 gbc.gridx = i;
                 gbc.gridy = j;
-                panel.add(button, gbc);
+                panel.add(button, gbc, false);
             }
         }
 
-        panel.removeAt(new GridPosition(3, 3));
         gbc.gridx = 3;
         gbc.gridy = 3;
-        panel.add(new MapGridButton("HELLO", 3, 3, handler), gbc);
-        panel.revalidate();
-        panel.repaint();
+        panel.add(new MapGridButton("HELLO", 3, 3, handler), gbc, true);
+        panel.getJPanel().revalidate();
+        panel.getJPanel().repaint();
 
         var img = new ImageIcon("project/resources/img/1.png");
         var label = new JLabel(img);
         //panel.add(label);
 
-        frame.add(panel);
+        frame.add(panel.getJPanel());
 
         frame.pack();
         frame.setVisible(true);

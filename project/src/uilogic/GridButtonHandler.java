@@ -3,7 +3,7 @@ package uilogic;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import ui.MapGridButton;
+import ui.elements.MapGridButton;
 
 public class GridButtonHandler implements ActionListener {
 
