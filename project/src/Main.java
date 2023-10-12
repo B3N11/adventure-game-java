@@ -6,24 +6,23 @@ import game.utility.dice.Dice;
 import game.utility.dice.DiceRoller;
 import ui.*;
 import uilogic.GridButtonHandler;
+import uilogic.GridPosition;
 
 import java.awt.GridBagLayout;
 
 public class Main {
 
-    public static void main(String[] args){
-        var dice = new Dice(20);
-        var result = dice.roll();
-        System.out.println(result);
+    public static void main(String[] args) throws Exception{
+        test(args);
     }
 
-    public static void test(String[] args){
+    public static void test(String[] args) throws Exception{
         var frame = new JFrame();
         frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         frame.setSize(1000, 1000);
         frame.setLocationRelativeTo(null);
 
-        var panel = new JPanel(new GridBagLayout());
+        var panel = new GridPanel();
         var gbc = new GridBagConstraints();
         var handler = new GridButtonHandler();
 
@@ -36,9 +35,16 @@ public class Main {
             }
         }
 
+        panel.removeAt(new GridPosition(3, 3));
+        gbc.gridx = 3;
+        gbc.gridy = 3;
+        panel.add(new MapGridButton("HELLO", 3, 3, handler), gbc);
+        panel.revalidate();
+        panel.repaint();
+
         var img = new ImageIcon("project/resources/img/1.png");
         var label = new JLabel(img);
-        panel.add(label);
+        //panel.add(label);
 
         frame.add(panel);
 

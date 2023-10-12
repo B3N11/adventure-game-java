@@ -1,6 +1,7 @@
 package uilogic;
 
 public class GridPosition {
+    
     private int x;
     private int y;
 
@@ -19,5 +20,9 @@ public class GridPosition {
 
     public int getY(){
         return y;
+    }
+
+    public boolean equals(GridPosition cmp){
+        return (x == cmp.x) && (y == cmp.y);
     }
 }
