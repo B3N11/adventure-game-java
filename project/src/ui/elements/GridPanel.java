@@ -25,6 +25,11 @@ public class GridPanel{
 
     public JPanel getJPanel(){ return panel; }
 
+    public void refresh(){
+        panel.revalidate();
+        panel.repaint();
+    }
+
     public void add(IGridPositionable component, GridBagConstraints gbc, boolean force) throws InvalidArgumentException, ComponentAlreadyAtPositionException, ArgumentNullException{
         //Check if argument is NULL
         if(component == null || gbc == null)
