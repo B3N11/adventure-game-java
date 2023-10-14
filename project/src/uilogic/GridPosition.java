@@ -1,5 +1,9 @@
 package uilogic;
 
+import java.awt.GridBagConstraints;
+
+import exception.general.ArgumentNullException;
+
 public class GridPosition {
     
     private int x;
@@ -12,6 +16,10 @@ public class GridPosition {
     public GridPosition(int horizontal, int vertical){
         x = horizontal;
         y = vertical;
+    }
+
+    public GridPosition(GridBagConstraints gbc){
+        this(gbc.gridx, gbc.gridy);
     }
 
     public int getX(){

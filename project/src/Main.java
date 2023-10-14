@@ -16,6 +16,7 @@ import java.awt.GridBagLayout;
 public class Main {
 
     public static void main(String[] args) throws Exception{
+        //test(args);
         test2();
     }
 
@@ -28,7 +29,7 @@ public class Main {
         var panel1 = new JPanel();
         var img = new ImageIcon("project/resources/img/1.png");
         var label = new JLabel(img);
-        panel1.add(label);
+        //panel1.add(label);
 
         var panel = new GridPanel();
         var gbc = new GridBagConstraints();
@@ -39,21 +40,21 @@ public class Main {
                 gbc.gridx = i;
                 gbc.gridy = j;
                 //var button = new DummyComponent(1000, 1000, gbc);
-                var button = new MapGridButton("HELLO", i, j, handler);
+                var button = new MapGridButton(50, 50, gbc, handler);
                 panel.add(button, gbc, false);
             }
         }
 
-        frame.add(panel1);
+        frame.add(panel.getJPanel());
 
 
         frame.pack();
         frame.setVisible(true);
 
-        Thread.sleep(5000);
+        //Thread.sleep(5000);
+        //frame.remove(panel1);
+        //frame.add(panel.getJPanel());
 
-        frame.remove(panel1);
-        frame.add(panel.getJPanel());
         frame.repaint();
         frame.pack();
     }
@@ -72,7 +73,7 @@ public class Main {
             for(int j = 0; j < 6; j++){
                 gbc.gridx = i;
                 gbc.gridy = j;
-                var button = new DummyComponent(1000, 1000, gbc);
+                var button = new DummyComponent(50, 50, gbc);
                 //var button = new MapGridButton("HELLO", i, j, handler);
                 panel.add(button, gbc, false);
             }
@@ -80,7 +81,7 @@ public class Main {
 
         gbc.gridx = 3;
         gbc.gridy = 3;
-        panel.add(new MapGridButton("ASD", 3, 3, handler), gbc, true);
+        //panel.add(new MapGridButton("ASD", 3, 3, handler), gbc, true);
         panel.refresh();
 
         var img = new ImageIcon("project/resources/img/1.png");

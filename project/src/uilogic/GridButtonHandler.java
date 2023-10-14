@@ -7,10 +7,6 @@ import ui.elements.MapGridButton;
 
 public class GridButtonHandler implements ActionListener {
 
-    public void showButtonPosition(GridPosition position){
-        System.out.println(position.getX() + ";" + position.getY());
-    }
-
     @Override
     public void actionPerformed(ActionEvent e) {
 
