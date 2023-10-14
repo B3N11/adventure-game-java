@@ -16,23 +16,23 @@ public class MapGridButton extends JButton implements IGridPositionable{
     
     private GridPosition gridPosition;
 
-    public MapGridButton(int width, int height, GridBagConstraints gbc, GridButtonHandler handler){
-        initVisuals(width, height);
+    public MapGridButton(int width, int height, Color borderColor, GridBagConstraints gbc, GridButtonHandler handler){
+        initVisuals(width, height, borderColor);
         initData(gbc.gridx, gbc.gridy, handler);
     }
 
-    public MapGridButton(int width, int height, int x, int y, GridButtonHandler handler){
-        initVisuals(width, height);
+    public MapGridButton(int width, int height, int x, int y, Color borderColor, GridButtonHandler handler){
+        initVisuals(width, height, borderColor);
         initData(x, y, handler);
     }
 
-    private void initVisuals(int width, int height){
+    private void initVisuals(int width, int height, Color borderColor){
         setPreferredSize(new Dimension(width, height));
-        setBounds(0, 0, width, height);
+        //setBounds(0, 0, width, height);
         setOpaque(false);
         setContentAreaFilled(false);
         //setBorderPainted(false);
-        setBorder(BorderFactory.createLineBorder(Color.red));
+        setBorder(BorderFactory.createLineBorder(borderColor));
     }
 
     private void initData(int x, int y, ActionListener listener){

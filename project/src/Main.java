@@ -1,3 +1,5 @@
+import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import javax.swing.*;
@@ -23,8 +25,7 @@ public class Main {
     static void test2() throws Exception{
          var frame = new JFrame();
         frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        frame.setSize(1000, 1000);
-        frame.setLocationRelativeTo(null);
+        frame.setPreferredSize(new Dimension(1500, 1000));
 
         var panel1 = new JPanel();
         var img = new ImageIcon("project/resources/img/1.png");
@@ -34,13 +35,14 @@ public class Main {
         var panel = new GridPanel();
         var gbc = new GridBagConstraints();
         var handler = new GridButtonHandler();
+        var color = new Color(255, 0, 0, 100);
 
-        for(int i = 0; i < 5; i++){
-            for(int j = 0; j < 6; j++){
+        for(int i = 0; i < 20; i++){
+            for(int j = 0; j < 10; j++){
                 gbc.gridx = i;
                 gbc.gridy = j;
                 //var button = new DummyComponent(1000, 1000, gbc);
-                var button = new MapGridButton(50, 50, gbc, handler);
+                var button = new MapGridButton(50, 50, color, gbc, handler);
                 panel.add(button, gbc, false);
             }
         }
