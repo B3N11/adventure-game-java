@@ -1,11 +1,6 @@
 package ui.elements;
 
-import javax.imageio.ImageIO;
-import javax.swing.ImageIcon;
-import javax.swing.JLabel;
 import java.awt.GridBagConstraints;
-import java.awt.Image;
-import java.io.File;
 import java.io.IOException;
 
 import exception.general.ArgumentNullException;
