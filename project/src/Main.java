@@ -21,7 +21,7 @@ public class Main {
         frame.setPreferredSize(new Dimension(1500, 1000));
 
         var handler = new GridButtonHandler();
-        var layout = new MapLayoutData(6, 4, "project/resources/img/maps/2.jpg");
+        var layout = new MapLayoutData(20, 11, "project/resources/img/maps/2.jpg");
         var field = new PlayfieldPanel(layout, handler);
         frame.add(field);
 

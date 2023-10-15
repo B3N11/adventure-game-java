@@ -38,7 +38,7 @@ public class GridPanel{
         //Check if argument is NULL
         if(component == null || gbc == null)
             throw new ArgumentNullException();
-        
+
         //Check if the component parameter is Component child
         if(!(component instanceof Component))
             throw new InvalidArgumentException();
