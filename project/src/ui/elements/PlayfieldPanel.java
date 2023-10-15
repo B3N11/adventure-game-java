@@ -6,9 +6,11 @@ import javax.swing.JLabel;
 import javax.swing.JLayeredPane;
 
 import exception.general.ArgumentNullException;
+import exception.general.ElementNotFoundException;
 import exception.general.InvalidArgumentException;
 import exception.ui.ComponentAlreadyAtPositionException;
 import uilogic.GridButtonHandler;
+import uilogic.GridPosition;
 import uilogic.MapLayoutData;
 import ui.data.GridDimension;
 import ui.handlers.GridEntityComponentHandler;
@@ -39,7 +41,7 @@ public class PlayfieldPanel extends JLayeredPane{
     private void initPlayfield(MapLayoutData layoutData, GridButtonHandler handler) throws Exception{
         //Set size
         setPreferredSize(preferredSize);
-        setBounds(0, 0, (int)preferredSize.getWidth(), (int)preferredSize.getHeight());
+        setBounds(0, 0, preferredSize.getHorizontal(), preferredSize.getVertical());
 
         //Set componet size
         setComponentSize(layoutData.getHorizontal(), layoutData.getVertical());
@@ -58,7 +60,7 @@ public class PlayfieldPanel extends JLayeredPane{
     }
 
     private void initBackground(int x, int y, String file) throws Exception{
-        background = new GridImageComponent(x, y, file);
+        background = new ImageComponent(x, y, file);
     }
 
     private void initEntityPanel(int x, int y) throws Exception{
@@ -107,5 +109,47 @@ public class PlayfieldPanel extends JLayeredPane{
         entityPanel.refresh();
 
         return entityHandler.add(entity);
+    }
+
+    public GridEntityComponent removeEntity(String id, boolean removeFromList) throws ArgumentNullException, ElementNotFoundException, InvalidArgumentException, ComponentAlreadyAtPositionException{
+        if(id == null)
+            throw new ArgumentNullException();
+
+        var entity = entityHandler.getByID(id);
+
+        return removeEntity(entity, removeFromList);
+    }
+
+    public GridEntityComponent removeEntity(GridEntityComponent entity, boolean removeFromList) throws ArgumentNullException, ElementNotFoundException, InvalidArgumentException, ComponentAlreadyAtPositionException{
+        if(entity == null)
+            throw new ArgumentNullException();
+
+        //Remove if requested
+        if(removeFromList)
+            entityHandler.remove(entity);
+
+        var newComponent = new DummyComponent(componentSize.getHorizontal(), componentSize.getVertical(), entity.getGridPositionAsGBC());
+        entityPanel.add(newComponent, entity.getGridPositionAsGBC(), true);
+
+        return entity;
+    }
+
+    public GridEntityComponent replaceEntity(String id, GridPosition newPosition) throws ArgumentNullException, ElementNotFoundException, InvalidArgumentException, ComponentAlreadyAtPositionException{
+        if(id == null || newPosition == null)
+            throw new ArgumentNullException();
+
+        var entity = entityHandler.getByID(id);
+        return replaceEntity(entity, newPosition);
+    }
+
+    public GridEntityComponent replaceEntity(GridEntityComponent entity, GridPosition newPosition) throws ArgumentNullException, ElementNotFoundException, InvalidArgumentException, ComponentAlreadyAtPositionException{
+        if(entity == null || newPosition == null)
+            throw new ArgumentNullException();
+
+        removeEntity(entity, false);
+        entity.setGridPosition(newPosition);
+        entityPanel.add(entity, entity.getGridPositionAsGBC(), true);
+
+        return entity;
     }
 }

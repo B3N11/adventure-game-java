@@ -4,11 +4,10 @@ import java.awt.GridBagConstraints;
 import java.io.IOException;
 
 import exception.general.ArgumentNullException;
-import ui.data.GridDimension;
 import ui.interfaces.IGridPositionable;
 import uilogic.GridPosition;
 
-public class GridEntityComponent extends GridImageComponent implements IGridPositionable{
+public class GridEntityComponent extends ImageComponent implements IGridPositionable{
 
     private String id;
     private GridPosition gridPosition;
@@ -19,18 +18,11 @@ public class GridEntityComponent extends GridImageComponent implements IGridPosi
         if(id == null || gbc == null)
             throw new ArgumentNullException();
             
-        preferredSize = new GridDimension(width, height);
         gridPosition = new GridPosition(gbc);
-
-        setPreferredSize(preferredSize);
-        setBounds(0, 0, width, height);
+        this.id = id;
     }
 
-    public String getID(){ return id; }
-
-    public GridPosition getGridPosition() {
-        return gridPosition;
-    }   
+    public String getID(){ return id; }  
 
     @Override
     public GridEntityComponent setImage(String filePath) throws ArgumentNullException, IOException{
@@ -44,5 +36,19 @@ public class GridEntityComponent extends GridImageComponent implements IGridPosi
         result.gridy = gridPosition.getY();
 
         return result;
+    }
+
+    @Override
+    public GridPosition getGridPosition() {
+        return gridPosition;
+    } 
+
+    @Override
+    public GridPosition setGridPosition(GridPosition newPosition) throws ArgumentNullException {
+        if(newPosition == null)
+            throw new ArgumentNullException();
+        
+        gridPosition = newPosition;
+        return gridPosition;
     }
 }

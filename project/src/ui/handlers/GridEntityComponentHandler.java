@@ -32,4 +32,20 @@ public class GridEntityComponentHandler {
                 return entity;
         throw new ElementNotFoundException();
     }
+
+    public GridEntityComponent remove(String id) throws ArgumentNullException, ElementNotFoundException{
+        if(id == null)
+            throw new ArgumentNullException();
+
+        var entity = getByID(id);
+        return remove(entity);
+    }
+
+    public GridEntityComponent remove(GridEntityComponent entity) throws ArgumentNullException{
+        if(entity == null)
+            throw new ArgumentNullException();
+        
+        entities.remove(entity);        
+        return entity;
+    }
 }

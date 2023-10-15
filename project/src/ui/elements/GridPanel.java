@@ -1,6 +1,7 @@
 package ui.elements;
 
 import java.awt.Component;
+import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.util.ArrayList;
@@ -20,6 +21,7 @@ public class GridPanel{
 
     public GridPanel(int x, int y){
         panel = new JPanel(new GridBagLayout());
+        panel.setPreferredSize(new Dimension(x, y));
         panel.setBounds(0, 0, x, y);
         panel.setOpaque(false);
         components = new ArrayList<IGridPositionable>();

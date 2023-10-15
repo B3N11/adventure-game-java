@@ -8,6 +8,7 @@ import java.awt.event.ActionListener;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 
+import exception.general.ArgumentNullException;
 import ui.interfaces.IGridPositionable;
 import uilogic.GridPosition;
 import uilogic.GridButtonHandler;
@@ -41,7 +42,17 @@ public class GridButton extends JButton implements IGridPositionable{
     }
     //#endregion
 
+    @Override
     public GridPosition getGridPosition(){
+        return gridPosition;
+    }
+
+    @Override
+    public GridPosition setGridPosition(GridPosition newPosition) throws ArgumentNullException{
+        if(newPosition == null)
+            throw new ArgumentNullException();
+            
+        gridPosition = newPosition;
         return gridPosition;
     }
 }

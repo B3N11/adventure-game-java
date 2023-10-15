@@ -2,9 +2,9 @@ package ui.elements;
 
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
-
 import javax.swing.JPanel;
 
+import exception.general.ArgumentNullException;
 import ui.interfaces.IGridPositionable;
 import uilogic.GridPosition;
 
@@ -25,6 +25,15 @@ public class DummyComponent extends JPanel implements IGridPositionable{
 
     @Override
     public GridPosition getGridPosition() {
+        return gridPosition;
+    }
+
+    @Override
+    public GridPosition setGridPosition(GridPosition newPosition) throws ArgumentNullException {
+        if(newPosition == null)
+            throw new ArgumentNullException();
+        
+        gridPosition = newPosition;
         return gridPosition;
     }
 }
