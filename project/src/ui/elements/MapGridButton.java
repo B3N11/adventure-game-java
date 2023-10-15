@@ -28,10 +28,10 @@ public class MapGridButton extends JButton implements IGridPositionable{
 
     private void initVisuals(int width, int height, Color borderColor){
         setPreferredSize(new Dimension(width, height));
-        //setBounds(0, 0, width, height);
+        setBounds(0, 0, width, height);
         setOpaque(false);
         setContentAreaFilled(false);
-        //setBorderPainted(false);
+        setBorderPainted(true);
         setBorder(BorderFactory.createLineBorder(borderColor));
     }
 

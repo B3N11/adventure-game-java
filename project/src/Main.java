@@ -10,8 +10,10 @@ import ui.*;
 import ui.elements.DummyComponent;
 import ui.elements.GridPanel;
 import ui.elements.MapGridButton;
+import ui.elements.PlayfieldPanel;
 import uilogic.GridButtonHandler;
 import uilogic.GridPosition;
+import uilogic.MapLayoutData;
 
 import java.awt.GridBagLayout;
 
@@ -23,42 +25,18 @@ public class Main {
     }
 
     static void test2() throws Exception{
-         var frame = new JFrame();
+        var frame = new JFrame();
         frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         frame.setPreferredSize(new Dimension(1500, 1000));
 
-        var panel1 = new JPanel();
-        var img = new ImageIcon("project/resources/img/1.png");
-        var label = new JLabel(img);
-        //panel1.add(label);
-
-        var panel = new GridPanel();
-        var gbc = new GridBagConstraints();
         var handler = new GridButtonHandler();
-        var color = new Color(255, 0, 0, 100);
+        var layout = new MapLayoutData(20, 5, "project/resources/img/2.jpg");
+        var field = new PlayfieldPanel(layout, handler);
 
-        for(int i = 0; i < 20; i++){
-            for(int j = 0; j < 10; j++){
-                gbc.gridx = i;
-                gbc.gridy = j;
-                //var button = new DummyComponent(1000, 1000, gbc);
-                var button = new MapGridButton(50, 50, color, gbc, handler);
-                panel.add(button, gbc, false);
-            }
-        }
-
-        frame.add(panel.getJPanel());
-
-
+        frame.add(field);
+        frame.revalidate();
         frame.pack();
         frame.setVisible(true);
-
-        //Thread.sleep(5000);
-        //frame.remove(panel1);
-        //frame.add(panel.getJPanel());
-
-        frame.repaint();
-        frame.pack();
     }
 
     public static void test(String[] args) throws Exception{
