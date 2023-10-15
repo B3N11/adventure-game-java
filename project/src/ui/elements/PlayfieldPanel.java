@@ -14,7 +14,7 @@ import javax.swing.JLayeredPane;
 import exception.general.ArgumentNullException;
 import uilogic.GridButtonHandler;
 import uilogic.MapLayoutData;
-import ui.data.UIDataConfig;
+import ui.data.GridDimension;
 
 //Manages UI related to the area where the game is displayed
 public class PlayfieldPanel extends JLayeredPane{
@@ -22,6 +22,8 @@ public class PlayfieldPanel extends JLayeredPane{
     private JLabel background;
     private GridPanel entityPanel;
     private GridPanel buttonPanel;
+
+    private static GridDimension preferedSize = new GridDimension(1000, 563);
 
     public PlayfieldPanel(MapLayoutData layoutData, GridButtonHandler handler) throws Exception {
         if(layoutData == null || handler == null)
@@ -31,10 +33,10 @@ public class PlayfieldPanel extends JLayeredPane{
     }
 
     private void initPlayfield(MapLayoutData layoutData, GridButtonHandler handler) throws Exception{
-        setPreferredSize(new Dimension(UIDataConfig.MAPGRID_X, UIDataConfig.MAPGRID_Y));
-        setBounds(0, 0, UIDataConfig.MAPGRID_X, UIDataConfig.MAPGRID_Y);
+        setPreferredSize(preferedSize);
+        setBounds(0, 0, (int)preferedSize.getWidth(), (int)preferedSize.getHeight());
 
-        initBackground(UIDataConfig.MAPGRID_X, UIDataConfig.MAPGRID_Y, layoutData.getFilePath());
+        initBackground(preferedSize.getHorizontal(), preferedSize.getVertical(), layoutData.getFilePath());
         initEntityPanel(layoutData.getHorizontal(), layoutData.getVertical());
         initButtonPanel(layoutData.getHorizontal(), layoutData.getVertical(), handler);
 
@@ -56,33 +58,37 @@ public class PlayfieldPanel extends JLayeredPane{
     }
 
     private void initEntityPanel(int x, int y) throws Exception{
-        entityPanel = new GridPanel();
+        entityPanel = new GridPanel(preferedSize.getHorizontal(), preferedSize.getVertical());
         var gbc = new GridBagConstraints();
+
+        //Dinamically set the size of components based on the resolution of GridPanel and the number of components
+        int xComponentSize = preferedSize.getHorizontal() / x;
+        int yComponentSize = preferedSize.getVertical() / y;
 
         for(int i = 0; i < y; i++){
             for(int j = 0; j < x; j++){
                 gbc.gridx = j;
                 gbc.gridy = i;
-                entityPanel.add(new DummyComponent(50, 50, gbc), gbc, false);
+                entityPanel.add(new DummyComponent(xComponentSize, yComponentSize, gbc), gbc, false);
             }
         }
-
-        entityPanel.refresh();
     }
 
     private void initButtonPanel(int x, int y, GridButtonHandler handler) throws Exception{
-        buttonPanel = new GridPanel();
+        buttonPanel = new GridPanel(preferedSize.getHorizontal(), preferedSize.getVertical());
         var gbc = new GridBagConstraints();
-        var color = new Color(255, 0, 0, 100);
+        var color = new Color(255, 0, 0, 50);
+
+        //Dinamically set the size of buttons based on the resolution of GridPanel and the number of buttons
+        int xButtonSize = preferedSize.getHorizontal() / x;
+        int yButtonSize = preferedSize.getVertical() / y;
 
         for(int i = 0; i < y; i++){
             for(int j = 0; j < x; j++){
                 gbc.gridx = j;
                 gbc.gridy = i;
-                buttonPanel.add(new MapGridButton(50, 50, color, gbc, handler), gbc, false);
+                buttonPanel.add(new MapGridButton(xButtonSize, yButtonSize, color, gbc, handler), gbc, false);
             }
         }
-
-        buttonPanel.refresh();
     }
 }

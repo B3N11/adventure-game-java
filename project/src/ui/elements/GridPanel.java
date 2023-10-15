@@ -1,6 +1,5 @@
 package ui.elements;
 
-import java.awt.Color;
 import java.awt.Component;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -11,7 +10,6 @@ import exception.general.ArgumentNullException;
 import exception.general.ElementNotFoundException;
 import exception.general.InvalidArgumentException;
 import exception.ui.ComponentAlreadyAtPositionException;
-import ui.data.UIDataConfig;
 import ui.interfaces.IGridPositionable;
 import uilogic.GridPosition;
 
@@ -20,9 +18,9 @@ public class GridPanel{
     private ArrayList<IGridPositionable> components;
     private JPanel panel;
 
-    public GridPanel(){
+    public GridPanel(int x, int y){
         panel = new JPanel(new GridBagLayout());
-        panel.setBounds(0, 0, UIDataConfig.MAPGRID_X, UIDataConfig.MAPGRID_Y);
+        panel.setBounds(0, 0, x, y);
         panel.setOpaque(false);
         components = new ArrayList<IGridPositionable>();
     }
