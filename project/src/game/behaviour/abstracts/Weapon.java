@@ -28,51 +28,65 @@ public abstract class Weapon extends Equipment{
 
     //#region GET/SET methods
 
-    public void setAttackModifier(int modifier){
+    public Weapon setAttackModifier(int modifier){
         attackModifier = modifier;
+
+        return this;
     }
 
-    public void setDamageDice(int sides) throws InvalidDiceSideCountException{
+    public Weapon setDamageDice(int sides) throws InvalidDiceSideCountException{
         //Check for invalid side
         if(sides < 1)
             throw new InvalidDiceSideCountException();
         
         damageDice = sides;
+
+        return this;
     }
 
-    public void setDiceCount(int count) throws InvalidDiceSideCountException{
+    public Weapon setDiceCount(int count) throws InvalidDiceSideCountException{
         //Check for invalid side
         if(count < 0)
             throw new InvalidDiceSideCountException();
         
         diceCount = count;
+
+        return this;
     }
 
-    public void setDamageModifier(int modifier){
+    public Weapon setDamageModifier(int modifier){
         damageModifier = modifier;
+
+        return this;
     }
 
-    public void setRange(int newRange) throws InvalidArgumentException{
+    public Weapon setRange(int newRange) throws InvalidArgumentException{
         //Check for invalid range
         if(newRange < 0)
             throw new  InvalidArgumentException();
 
         this.range = newRange;
+
+        return this;
     }
 
-    public void setName(String newName) throws ArgumentNullException{
+    public Weapon setName(String newName) throws ArgumentNullException{
         if(newName == null)
             throw new ArgumentNullException();
 
         name = newName;
+
+        return this;
     }
 
-    public void setDescription(String newDescription) throws ArgumentNullException{
+    public Weapon setDescription(String newDescription) throws ArgumentNullException{
         //Description cannot be null
         if(newDescription == null)
             throw new ArgumentNullException();
         
         description = newDescription;
+
+        return this;
     }
 
     public int getDamageDice() { return damageDice; }
