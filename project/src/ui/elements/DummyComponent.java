@@ -1,7 +1,6 @@
 package ui.elements;
 
 import java.awt.Dimension;
-import java.awt.GridBagConstraints;
 import javax.swing.JPanel;
 
 import exception.general.ArgumentNullException;
@@ -12,8 +11,8 @@ public class DummyComponent extends JPanel implements IGridPositionable{
 
     private GridPosition gridPosition;
 
-    public DummyComponent(int x, int y, GridBagConstraints gbc){
-        gridPosition = new GridPosition(gbc.gridx, gbc.gridy);
+    public DummyComponent(int x, int y, GridPosition position) throws ArgumentNullException{
+        setGridPosition(position);
         initComponent(x, y);      
     }
 

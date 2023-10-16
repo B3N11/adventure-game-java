@@ -1,5 +1,4 @@
 import java.awt.Dimension;
-import java.awt.GridBagConstraints;
 
 import javax.swing.*;
 
@@ -26,13 +25,10 @@ public class Main {
         frame.add(field);
 
         var size = field.getComponentSize();
-        var gbc = new GridBagConstraints();
-        gbc.gridx = 2;
-        gbc.gridy = 1;
-        var entity = new GridEntityComponent("punk-01", size.getHorizontal(), size.getVertical(), gbc).setImage("project/resources/img/characters/7.png");
-        gbc.gridx = 3;
-        gbc.gridy = 3;
-        var entity2 = new GridEntityComponent("punk-02", size.getHorizontal(), size.getVertical(), gbc).setImage("project/resources/img/characters/6.png");
+        var gridPos = new GridPosition(2, 1);
+        var entity = new GridEntityComponent("punk-01", size.getHorizontal(), size.getVertical(), gridPos).setImage("project/resources/img/characters/7.png");
+        var gridPos2 = new GridPosition(3, 4);
+        var entity2 = new GridEntityComponent("punk-02", size.getHorizontal(), size.getVertical(), gridPos2).setImage("project/resources/img/characters/6.png");
         field.addEntity(entity);
         field.addEntity(entity2);
 

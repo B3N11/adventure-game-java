@@ -1,7 +1,6 @@
 package ui.elements;
 
 import java.awt.Color;
-import java.awt.GridBagConstraints;
 import javax.swing.JLabel;
 import javax.swing.JLayeredPane;
 
@@ -59,33 +58,29 @@ public class PlayfieldPanel extends JLayeredPane{
         entityHandler = new GridEntityComponentHandler();
     }
 
-    private void initBackground(int x, int y, String file) throws Exception{
-        background = new ImageComponent(x, y, file);
+    private void initBackground(int width, int height, String file) throws Exception{
+        background = new ImageComponent(width, height, file);
     }
 
-    private void initEntityPanel(int x, int y) throws Exception{
-        entityPanel = new GridPanel(preferredSize.getHorizontal(), preferredSize.getVertical());
-        var gbc = new GridBagConstraints();
+    private void initEntityPanel(int width, int height) throws Exception{
+        entityPanel = new GridPanel(preferredSize.getHorizontal(), preferredSize.getVertical(), width, height);
 
-        for(int i = 0; i < y; i++){
-            for(int j = 0; j < x; j++){
-                gbc.gridx = j;
-                gbc.gridy = i;
-                entityPanel.add(new DummyComponent(componentSize.getHorizontal(), componentSize.getVertical(), gbc), gbc, false);
+        for(int i = 0; i < height; i++){
+            for(int j = 0; j < width; j++){
+                var position = new GridPosition(j, i);
+                entityPanel.add(new DummyComponent(componentSize.getHorizontal(), componentSize.getVertical(), position), position, false, false);
             }
         }
     }
 
-    private void initButtonPanel(int x, int y, GridButtonHandler handler) throws Exception{
-        buttonPanel = new GridPanel(preferredSize.getHorizontal(), preferredSize.getVertical());
-        var gbc = new GridBagConstraints();
+    private void initButtonPanel(int width, int height, GridButtonHandler handler) throws Exception{
+        buttonPanel = new GridPanel(preferredSize.getHorizontal(), preferredSize.getVertical(), width, height);
         var color = new Color(255, 0, 0, 50);
 
-        for(int i = 0; i < y; i++){
-            for(int j = 0; j < x; j++){
-                gbc.gridx = j;
-                gbc.gridy = i;
-                buttonPanel.add(new GridButton(componentSize.getHorizontal(), componentSize.getVertical(), color, gbc, handler), gbc, false);
+        for(int i = 0; i < height; i++){
+            for(int j = 0; j < width; j++){
+                var position = new GridPosition(j, i);
+                buttonPanel.add(new GridButton(componentSize.getHorizontal(), componentSize.getVertical(), color, position, handler), position, false, false);
             }
         }
     }
@@ -105,7 +100,7 @@ public class PlayfieldPanel extends JLayeredPane{
         if(entity == null)
             throw new ArgumentNullException();
 
-        entityPanel.add(entity, entity.getGridPositionAsGBC(), true);
+        entityPanel.add(entity, entity.getGridPosition(), true, false);
         entityPanel.refresh();
 
         return entityHandler.add(entity);
@@ -128,8 +123,8 @@ public class PlayfieldPanel extends JLayeredPane{
         if(removeFromList)
             entityHandler.remove(entity);
 
-        var newComponent = new DummyComponent(componentSize.getHorizontal(), componentSize.getVertical(), entity.getGridPositionAsGBC());
-        entityPanel.add(newComponent, entity.getGridPositionAsGBC(), true);
+        var newComponent = new DummyComponent(componentSize.getHorizontal(), componentSize.getVertical(), entity.getGridPosition());
+        entityPanel.add(newComponent, entity.getGridPosition(), true, false);
 
         return entity;
     }
@@ -148,7 +143,7 @@ public class PlayfieldPanel extends JLayeredPane{
 
         removeEntity(entity, false);
         entity.setGridPosition(newPosition);
-        entityPanel.add(entity, entity.getGridPositionAsGBC(), true);
+        entityPanel.add(entity, entity.getGridPosition(), true, false);
 
         return entity;
     }

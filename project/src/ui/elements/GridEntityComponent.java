@@ -1,6 +1,5 @@
 package ui.elements;
 
-import java.awt.GridBagConstraints;
 import java.io.IOException;
 
 import exception.general.ArgumentNullException;
@@ -12,13 +11,13 @@ public class GridEntityComponent extends ImageComponent implements IGridPosition
     private String id;
     private GridPosition gridPosition;
 
-    public GridEntityComponent(String id, int width, int height, GridBagConstraints gbc) throws ArgumentNullException{
+    public GridEntityComponent(String id, int width, int height, GridPosition position) throws ArgumentNullException{
         super(width, height);
 
-        if(id == null || gbc == null)
+        if(id == null || position == null)
             throw new ArgumentNullException();
             
-        gridPosition = new GridPosition(gbc);
+        gridPosition = position;
         this.id = id;
     }
 
@@ -28,14 +27,6 @@ public class GridEntityComponent extends ImageComponent implements IGridPosition
     public GridEntityComponent setImage(String filePath) throws ArgumentNullException, IOException{
         super.setImage(filePath);
         return this;
-    }
-
-    public GridBagConstraints getGridPositionAsGBC(){
-        var result = new GridBagConstraints();
-        result.gridx = gridPosition.getX();
-        result.gridy = gridPosition.getY();
-
-        return result;
     }
 
     @Override

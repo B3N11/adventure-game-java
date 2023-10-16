@@ -11,19 +11,23 @@ import exception.general.ArgumentNullException;
 import exception.general.ElementNotFoundException;
 import exception.general.InvalidArgumentException;
 import exception.ui.ComponentAlreadyAtPositionException;
+import ui.data.GridDimension;
 import ui.interfaces.IGridPositionable;
 import uilogic.GridPosition;
 
+//GridPanel stores IGridPositionable objects in a GridBagLayout. Its purpose is to handle the UI components in the layout and manage them by position
 public class GridPanel{
     
     private ArrayList<IGridPositionable> components;
+    private GridDimension preferredComponentDimension;
     private JPanel panel;
 
-    public GridPanel(int x, int y){
+    public GridPanel(int width, int height, int preferredHorizontalComponentCount, int preferredVerticalComponentCount){
         panel = new JPanel(new GridBagLayout());
-        panel.setPreferredSize(new Dimension(x, y));
-        panel.setBounds(0, 0, x, y);
+        panel.setPreferredSize(new Dimension(width, height));
+        panel.setBounds(0, 0, width, height);
         panel.setOpaque(false);
+        preferredComponentDimension = new GridDimension(preferredHorizontalComponentCount, preferredVerticalComponentCount);
         components = new ArrayList<IGridPositionable>();
     }
 
@@ -34,18 +38,21 @@ public class GridPanel{
         panel.repaint();
     }
 
-    public void add(IGridPositionable component, GridBagConstraints gbc, boolean force) throws InvalidArgumentException, ComponentAlreadyAtPositionException, ArgumentNullException{
+    public void add(IGridPositionable component, GridPosition position, boolean force, boolean allowOutOfBounds) throws InvalidArgumentException, ComponentAlreadyAtPositionException, ArgumentNullException{
         //Check if argument is NULL
-        if(component == null || gbc == null)
+        if(component == null || position == null)
             throw new ArgumentNullException();
 
         //Check if the component parameter is Component child
         if(!(component instanceof Component))
             throw new InvalidArgumentException();
 
+        //If we don't allow placement of new component outside of preferred dimension, we throw error if that is violated
+        if(!allowOutOfBounds && (position.getX() >= preferredComponentDimension.getHorizontal() || position.getY() >= preferredComponentDimension.getVertical()))
+            throw new IndexOutOfBoundsException();
+
         try{
-            var check = new GridPosition(gbc.gridx, gbc.gridy);
-            var current = getComponentAt(check);
+            var current = getComponentAt(position);
 
             if(!force)
                 throw new ComponentAlreadyAtPositionException();
@@ -53,6 +60,12 @@ public class GridPanel{
             remove(current);            
         }catch(ElementNotFoundException e){}   
         
+        //Create new GBC based on received position data
+        var gbc = new GridBagConstraints();
+        gbc.gridx = position.getX();
+        gbc.gridy = position.getY();
+
+        //Add to list and panel
         components.add(component);
         panel.add((Component)component, gbc);
     }
