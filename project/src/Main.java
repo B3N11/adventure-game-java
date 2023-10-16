@@ -25,7 +25,7 @@ public class Main {
         frame.add(field);
 
         var size = field.getComponentSize();
-        var gridPos = new GridPosition(2, 1);
+        var gridPos = new GridPosition(6, 1);
         var entity = new GridEntityComponent("punk-01", size.getHorizontal(), size.getVertical(), gridPos).setImage("project/resources/img/characters/7.png");
         var gridPos2 = new GridPosition(3, 4);
         var entity2 = new GridEntityComponent("punk-02", size.getHorizontal(), size.getVertical(), gridPos2).setImage("project/resources/img/characters/6.png");
