@@ -4,10 +4,10 @@ import javax.swing.*;
 import ui.elements.GridEntityComponent;
 import ui.elements.PlayFrame;
 import ui.elements.PlayfieldPanel;
-import ui.handlers.UIHandler;
 import uilogic.GridButtonHandler;
 import uilogic.GridPosition;
 import uilogic.MapLayoutData;
+import uilogic.UIHandler;
 
 public class Main {
 

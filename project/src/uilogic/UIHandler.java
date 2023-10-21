@@ -1,8 +1,7 @@
-package ui.handlers;
+package uilogic;
 
+import exception.ui.UIHandlerAlreadyStartedException;
 import ui.elements.PlayFrame;
-import uilogic.GridButtonHandler;
-import uilogic.PlayFrameMenuBarHandler;
 
 public class UIHandler {
 
@@ -12,8 +11,20 @@ public class UIHandler {
 
     private PlayFrame playFrame;
 
+    //Logic
+    private boolean started = false;
+
     public UIHandler(){
         initUIHandlers();
+    }
+
+    public void start() throws Exception{
+        if(started)
+            throw new UIHandlerAlreadyStartedException();
+
+        createPlayFrame();
+        playFrame.displayFrame();
+        started = true;
     }
 
     private void initUIHandlers(){
@@ -23,10 +34,5 @@ public class UIHandler {
 
     private void createPlayFrame() throws Exception{
         playFrame = new PlayFrame(playFrameMenuBarHandler);
-    }
-
-    public void start() throws Exception{
-        createPlayFrame();
-        playFrame.displayFrame();
     }
 }

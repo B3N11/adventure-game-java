@@ -1,4 +1,4 @@
-package ui.handlers;
+package uilogic;
 
 import java.util.ArrayList;
 

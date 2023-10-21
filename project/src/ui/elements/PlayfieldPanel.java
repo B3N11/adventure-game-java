@@ -9,10 +9,10 @@ import exception.general.ElementNotFoundException;
 import exception.general.InvalidArgumentException;
 import exception.ui.ComponentAlreadyAtPositionException;
 import uilogic.GridButtonHandler;
+import uilogic.GridEntityComponentHandler;
 import uilogic.GridPosition;
 import uilogic.MapLayoutData;
 import ui.data.GridDimension;
-import ui.handlers.GridEntityComponentHandler;
 
 //Manages UI related to the area where the game is displayed
 public class PlayfieldPanel extends JLayeredPane{
