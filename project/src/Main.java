@@ -1,9 +1,10 @@
 import java.awt.Dimension;
-
 import javax.swing.*;
 
 import ui.elements.GridEntityComponent;
+import ui.elements.PlayFrame;
 import ui.elements.PlayfieldPanel;
+import ui.handlers.UIHandler;
 import uilogic.GridButtonHandler;
 import uilogic.GridPosition;
 import uilogic.MapLayoutData;
@@ -11,7 +12,9 @@ import uilogic.MapLayoutData;
 public class Main {
 
     public static void main(String[] args) throws Exception{
-        test();
+        //test();
+        var uiHandler = new UIHandler();
+        uiHandler.start();
     }
 
     static void test() throws Exception{

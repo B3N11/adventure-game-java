@@ -1,24 +1,32 @@
 package ui.handlers;
 
+import ui.elements.PlayFrame;
 import uilogic.GridButtonHandler;
+import uilogic.PlayFrameMenuBarHandler;
 
 public class UIHandler {
 
+    //Button Handlers
     private GridButtonHandler gridButtonHandler;
+    private PlayFrameMenuBarHandler playFrameMenuBarHandler;
+
+    private PlayFrame playFrame;
 
     public UIHandler(){
-        initUIHandler();
+        initUIHandlers();
     }
 
-    private void initUIHandler(){
+    private void initUIHandlers(){
         gridButtonHandler = new GridButtonHandler();
-    }
-    
-    public void start(){
-        
+        playFrameMenuBarHandler = new PlayFrameMenuBarHandler();
     }
 
-    private void createPlayFrame(){
+    private void createPlayFrame() throws Exception{
+        playFrame = new PlayFrame(playFrameMenuBarHandler);
+    }
 
+    public void start() throws Exception{
+        createPlayFrame();
+        playFrame.displayFrame();
     }
 }
