@@ -1,12 +1,15 @@
 package ui.elements;
 
+import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.event.ActionListener;
 
+import javax.swing.BorderFactory;
 import javax.swing.JFrame;
+import javax.swing.JLayeredPane;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
@@ -77,21 +80,36 @@ public class PlayFrame extends JFrame{
 
         gbc.gridx = 0;
         gbc.gridy = 0;
-        //gbc.gridwidth = 1;
-        //gbc.gridheight = 2;
-        gbc.fill = GridBagConstraints.BOTH;
-        //gbc.weightx = 0.2;
-        //gbc.weighty = 1;
-        addToPanel(new WorldActionPanel(), gbc);
-
+        gbc.gridheight = 2;
+        var panel1 = new JPanel();
+        var layer = new JLayeredPane();
+        layer.setPreferredSize(new Dimension(200,500));
+        panel1.add(layer);
+        panel1.setPreferredSize(new Dimension(200, 500));
+        panel1.setBorder(BorderFactory.createLineBorder(Color.red));
+        addToPanel(panel1, gbc);
+        
         gbc.gridx = 1;
         gbc.gridy = 0;
-        //gbc.gridwidth = 1;
-        //gbc.gridheight = 1;
-        gbc.fill = GridBagConstraints.BOTH;
-        //gbc.weightx = 1;
-        //gbc.weighty = 1;
-        addToPanel(new PlayfieldPanel(new MapLayoutData(20, 11, "project/resources/img/maps/2.jpg"), new GridButtonHandler()), gbc);
+        gbc.gridheight = 1;
+        var panel2 = new JPanel();
+        var layer2 = new JLayeredPane();
+        layer2.setPreferredSize(new Dimension(200,500));
+        panel2.add(layer2);
+        panel2.setPreferredSize(new Dimension(400, 300));
+        panel2.setBorder(BorderFactory.createLineBorder(Color.red));
+        addToPanel(panel2, gbc);
+        
+        gbc.gridx = 1;
+        gbc.gridy = 1;
+        gbc.gridheight = 1;
+        var panel3 = new JPanel();
+        var layer3 = new JLayeredPane();
+        layer3.setPreferredSize(new Dimension(200,500));
+        panel3.add(layer3);
+        panel3.setPreferredSize(new Dimension(400, 200));
+        panel3.setBorder(BorderFactory.createLineBorder(Color.red));
+        addToPanel(panel3, gbc);
 
         //addToPanel(gbcComponent(0, 0, 1, 3, gbc), gbc);
         //addToPanel(gbcComponent(1, 0, 5, 1, gbc), gbc);
