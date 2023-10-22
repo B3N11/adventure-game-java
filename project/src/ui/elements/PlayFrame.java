@@ -5,6 +5,7 @@ import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.Insets;
 import java.awt.event.ActionListener;
 
 import javax.swing.BorderFactory;
@@ -22,8 +23,8 @@ import uilogic.MapLayoutData;
 
 public class PlayFrame extends JFrame{
 
-    public static int WIDTH = 1920;
-    public static int HEIGHT = 1080;
+    public static int WIDTH = 1700;
+    public static int HEIGHT = 1000;
 
     private JPanel panel;
 
@@ -81,10 +82,8 @@ public class PlayFrame extends JFrame{
         gbc.gridx = 0;
         gbc.gridy = 0;
         gbc.gridheight = 2;
+        //var panel1 = new WorldActionPanel();
         var panel1 = new JPanel();
-        var layer = new JLayeredPane();
-        layer.setPreferredSize(new Dimension(300,844));
-        panel1.add(layer);
         panel1.setPreferredSize(new Dimension(300, 844));
         panel1.setBorder(BorderFactory.createLineBorder(Color.red));
         addToPanel(panel1, gbc);
@@ -92,10 +91,8 @@ public class PlayFrame extends JFrame{
         gbc.gridx = 1;
         gbc.gridy = 0;
         gbc.gridheight = 1;
+        //var panel2 = new PlayfieldPanel(new MapLayoutData(20, 11, "project/resources/img/maps/2.jpg"), new GridButtonHandler());
         var panel2 = new JPanel();
-        var layer2 = new JLayeredPane();
-        layer2.setPreferredSize(new Dimension(1200,675));
-        panel2.add(layer2);
         panel2.setPreferredSize(new Dimension(1200, 675));
         panel2.setBorder(BorderFactory.createLineBorder(Color.red));
         addToPanel(panel2, gbc);

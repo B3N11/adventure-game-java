@@ -11,7 +11,7 @@ import javax.swing.JPanel;
 public class WorldActionPanel extends JPanel{
     
     public static int WIDTH = 300;
-    public static int HEIGHT = PlayFrame.HEIGHT;
+    public static int HEIGHT = 843;
     public static int BUTTONCOUNT = 4;
 
     public WorldActionPanel(){
@@ -28,7 +28,7 @@ public class WorldActionPanel extends JPanel{
     }
 
     private void setupButtons(){
-        //for(int i = 0; i < BUTTONCOUNT; i++)
-            //add(new Button("asd"));
+        for(int i = 0; i < BUTTONCOUNT; i++)
+            add(new Button("asd"));
     }
 }
