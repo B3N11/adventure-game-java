@@ -22,8 +22,8 @@ import uilogic.MapLayoutData;
 
 public class PlayFrame extends JFrame{
 
-    public static int WIDTH = 1500;
-    public static int HEIGHT = 844;
+    public static int WIDTH = 1920;
+    public static int HEIGHT = 1080;
 
     private JPanel panel;
 
@@ -42,7 +42,7 @@ public class PlayFrame extends JFrame{
     private void initFrame(){
         setPreferredSize(new Dimension(WIDTH, HEIGHT));
         setBounds(0, 0, WIDTH, HEIGHT);
-        setResizable(false);
+        //setResizable(false);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
         panel = new JPanel(new GridBagLayout());
@@ -83,9 +83,9 @@ public class PlayFrame extends JFrame{
         gbc.gridheight = 2;
         var panel1 = new JPanel();
         var layer = new JLayeredPane();
-        layer.setPreferredSize(new Dimension(200,500));
+        layer.setPreferredSize(new Dimension(300,844));
         panel1.add(layer);
-        panel1.setPreferredSize(new Dimension(200, 500));
+        panel1.setPreferredSize(new Dimension(300, 844));
         panel1.setBorder(BorderFactory.createLineBorder(Color.red));
         addToPanel(panel1, gbc);
         
@@ -94,9 +94,9 @@ public class PlayFrame extends JFrame{
         gbc.gridheight = 1;
         var panel2 = new JPanel();
         var layer2 = new JLayeredPane();
-        layer2.setPreferredSize(new Dimension(200,500));
+        layer2.setPreferredSize(new Dimension(1200,675));
         panel2.add(layer2);
-        panel2.setPreferredSize(new Dimension(400, 300));
+        panel2.setPreferredSize(new Dimension(1200, 675));
         panel2.setBorder(BorderFactory.createLineBorder(Color.red));
         addToPanel(panel2, gbc);
         
@@ -104,10 +104,7 @@ public class PlayFrame extends JFrame{
         gbc.gridy = 1;
         gbc.gridheight = 1;
         var panel3 = new JPanel();
-        var layer3 = new JLayeredPane();
-        layer3.setPreferredSize(new Dimension(200,500));
-        panel3.add(layer3);
-        panel3.setPreferredSize(new Dimension(400, 200));
+        panel3.setPreferredSize(new Dimension(1200, 169));
         panel3.setBorder(BorderFactory.createLineBorder(Color.red));
         addToPanel(panel3, gbc);
 

@@ -2,7 +2,9 @@ package ui.elements;
 
 import java.awt.Color;
 import javax.swing.JLabel;
+import javax.swing.JLayer;
 import javax.swing.JLayeredPane;
+import javax.swing.JPanel;
 
 import exception.general.ArgumentNullException;
 import exception.general.ElementNotFoundException;
@@ -15,11 +17,13 @@ import uilogic.MapLayoutData;
 import ui.data.GridDimension;
 
 //Manages UI related to the area where the game is displayed
-public class PlayfieldPanel extends JLayeredPane{
+public class PlayfieldPanel extends JPanel{
     
     private JLabel background;
     private GridPanel entityPanel;
     private GridPanel buttonPanel;
+
+    private JLayeredPane layeredPane;
 
     private GridEntityComponentHandler entityHandler;
 
@@ -38,9 +42,8 @@ public class PlayfieldPanel extends JLayeredPane{
 
     //#region INITIALIZE
     private void initPlayfield(MapLayoutData layoutData, GridButtonHandler handler) throws Exception{
-        //Set size
-        setPreferredSize(preferredSize);
-        setBounds(0, 0, preferredSize.getHorizontal(), preferredSize.getVertical());
+        //Set panel
+        initPanel();
 
         //Set componet size
         setComponentSize(layoutData.getHorizontal(), layoutData.getVertical());
@@ -51,11 +54,21 @@ public class PlayfieldPanel extends JLayeredPane{
         initButtonPanel(layoutData.getHorizontal(), layoutData.getVertical(), handler);
 
         //Add layers
-        add(background, Integer.valueOf(0));
-        add(entityPanel.getJPanel(), Integer.valueOf(1));
-        add(buttonPanel.getJPanel(), Integer.valueOf(2));
+        layeredPane.add(background, Integer.valueOf(0));
+        layeredPane.add(entityPanel.getJPanel(), Integer.valueOf(1));
+        layeredPane.add(buttonPanel.getJPanel(), Integer.valueOf(2));
 
         entityHandler = new GridEntityComponentHandler();
+    }
+
+    private void initPanel(){
+        layeredPane = new JLayeredPane();
+        layeredPane.setPreferredSize(preferredSize);
+        
+        setPreferredSize(preferredSize);
+        setBounds(0, 0, preferredSize.getHorizontal(), preferredSize.getVertical());
+        
+        add(layeredPane);
     }
 
     private void initBackground(int width, int height, String file) throws Exception{

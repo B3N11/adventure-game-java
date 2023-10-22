@@ -21,14 +21,14 @@ public class WorldActionPanel extends JPanel{
 
     private void initPanel(){
         setPreferredSize(new Dimension(WIDTH, HEIGHT));
-        //setBounds(0, 0, WIDTH, HEIGHT);
+        setBounds(0, 0, WIDTH, HEIGHT);
         setLayout(new GridLayout(BUTTONCOUNT, 1));
 
         setBorder(BorderFactory.createLineBorder(Color.red));
     }
 
     private void setupButtons(){
-        for(int i = 0; i < BUTTONCOUNT; i++)
-            add(new Button("asd"));
+        //for(int i = 0; i < BUTTONCOUNT; i++)
+            //add(new Button("asd"));
     }
 }
