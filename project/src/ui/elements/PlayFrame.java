@@ -23,9 +23,6 @@ import uilogic.MapLayoutData;
 
 public class PlayFrame extends JFrame{
 
-    public static int WIDTH = 1700;
-    public static int HEIGHT = 1000;
-
     private JPanel panel;
 
     public PlayFrame(ActionListener menuBarListener) throws Exception{
@@ -41,9 +38,7 @@ public class PlayFrame extends JFrame{
     }
 
     private void initFrame(){
-        setPreferredSize(new Dimension(WIDTH, HEIGHT));
-        setBounds(0, 0, WIDTH, HEIGHT);
-        //setResizable(false);
+        setResizable(false);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
         panel = new JPanel(new GridBagLayout());
@@ -82,19 +77,19 @@ public class PlayFrame extends JFrame{
         gbc.gridx = 0;
         gbc.gridy = 0;
         gbc.gridheight = 2;
-        //var panel1 = new WorldActionPanel();
-        var panel1 = new JPanel();
+        var panel1 = new WorldActionPanel();
+        /* var panel1 = new JPanel();
         panel1.setPreferredSize(new Dimension(300, 844));
-        panel1.setBorder(BorderFactory.createLineBorder(Color.red));
+        panel1.setBorder(BorderFactory.createLineBorder(Color.red)); */
         addToPanel(panel1, gbc);
         
         gbc.gridx = 1;
         gbc.gridy = 0;
         gbc.gridheight = 1;
-        //var panel2 = new PlayfieldPanel(new MapLayoutData(20, 11, "project/resources/img/maps/2.jpg"), new GridButtonHandler());
-        var panel2 = new JPanel();
+        var panel2 = new PlayfieldPanel(new MapLayoutData(20, 11, "project/resources/img/maps/2.jpg"), new GridButtonHandler());
+        /* var panel2 = new JPanel();
         panel2.setPreferredSize(new Dimension(1200, 675));
-        panel2.setBorder(BorderFactory.createLineBorder(Color.red));
+        panel2.setBorder(BorderFactory.createLineBorder(Color.red)); */
         addToPanel(panel2, gbc);
         
         gbc.gridx = 1;
