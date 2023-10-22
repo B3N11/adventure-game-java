@@ -23,8 +23,8 @@ public class PlayfieldPanel extends JLayeredPane{
 
     private GridEntityComponentHandler entityHandler;
 
-    private static GridDimension preferredSize = new GridDimension(1000, 563);
-    private static GridDimension componentSize;
+    private static GridDimension preferredSize = new GridDimension(1200, 675);
+    private GridDimension componentSize;
 
     public PlayfieldPanel(MapLayoutData layoutData, GridButtonHandler handler) throws Exception {
         if(layoutData == null || handler == null)
