@@ -1,36 +1,27 @@
 package ui.elements;
 
-import java.awt.GridBagConstraints;
 import java.io.IOException;
 
 import exception.general.ArgumentNullException;
-import ui.data.GridDimension;
 import ui.interfaces.IGridPositionable;
 import uilogic.GridPosition;
 
-public class GridEntityComponent extends GridImageComponent implements IGridPositionable{
+public class GridEntityComponent extends ImageComponent implements IGridPositionable{
 
     private String id;
     private GridPosition gridPosition;
 
-    public GridEntityComponent(String id, int width, int height, GridBagConstraints gbc) throws ArgumentNullException{
+    public GridEntityComponent(String id, int width, int height, GridPosition position) throws ArgumentNullException{
         super(width, height);
 
-        if(id == null || gbc == null)
+        if(id == null || position == null)
             throw new ArgumentNullException();
             
-        preferredSize = new GridDimension(width, height);
-        gridPosition = new GridPosition(gbc);
-
-        setPreferredSize(preferredSize);
-        setBounds(0, 0, width, height);
+        gridPosition = position;
+        this.id = id;
     }
 
-    public String getID(){ return id; }
-
-    public GridPosition getGridPosition() {
-        return gridPosition;
-    }   
+    public String getID(){ return id; }  
 
     @Override
     public GridEntityComponent setImage(String filePath) throws ArgumentNullException, IOException{
@@ -38,11 +29,17 @@ public class GridEntityComponent extends GridImageComponent implements IGridPosi
         return this;
     }
 
-    public GridBagConstraints getGridPositionAsGBC(){
-        var result = new GridBagConstraints();
-        result.gridx = gridPosition.getX();
-        result.gridy = gridPosition.getY();
+    @Override
+    public GridPosition getGridPosition() {
+        return gridPosition;
+    } 
 
-        return result;
+    @Override
+    public GridPosition setGridPosition(GridPosition newPosition) throws ArgumentNullException {
+        if(newPosition == null)
+            throw new ArgumentNullException();
+        
+        gridPosition = newPosition;
+        return gridPosition;
     }
 }

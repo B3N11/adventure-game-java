@@ -1,4 +1,4 @@
-package ui.handlers;
+package uilogic;
 
 import java.util.ArrayList;
 
@@ -13,6 +13,8 @@ public class GridEntityComponentHandler {
     public GridEntityComponentHandler(){
         entities = new ArrayList<GridEntityComponent>();
     }
+
+    public boolean isEmpty(){ return entities.isEmpty(); }
 
     public GridEntityComponent add(GridEntityComponent entity) throws ArgumentNullException{
         if(entity == null)
@@ -31,5 +33,21 @@ public class GridEntityComponentHandler {
             if(entity.getID().equals(id))
                 return entity;
         throw new ElementNotFoundException();
+    }
+
+    public GridEntityComponent remove(String id) throws ArgumentNullException, ElementNotFoundException{
+        if(id == null)
+            throw new ArgumentNullException();
+
+        var entity = getByID(id);
+        return remove(entity);
+    }
+
+    public GridEntityComponent remove(GridEntityComponent entity) throws ArgumentNullException{
+        if(entity == null)
+            throw new ArgumentNullException();
+        
+        entities.remove(entity);        
+        return entity;
     }
 }

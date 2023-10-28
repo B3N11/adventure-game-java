@@ -11,22 +11,22 @@ import javax.swing.JLabel;
 import exception.general.ArgumentNullException;
 import ui.data.GridDimension;
 
-public class GridImageComponent extends JLabel{
+public class ImageComponent extends JLabel{
     
     protected GridDimension preferredSize;
 
-    public GridImageComponent(int width, int height){
+    public ImageComponent(int width, int height){
         preferredSize = new GridDimension(width, height);
         setPreferredSize(preferredSize);
         setBounds(0, 0, width, height);
     }
 
-    public GridImageComponent(int width, int height, String filePath) throws ArgumentNullException, IOException{
+    public ImageComponent(int width, int height, String filePath) throws ArgumentNullException, IOException{
         this(width, height);
         setImage(filePath);
     }
 
-    public GridImageComponent setImage(String filePath) throws ArgumentNullException, IOException{
+    public ImageComponent setImage(String filePath) throws ArgumentNullException, IOException{
         if(filePath == null)
             throw new ArgumentNullException();
 
@@ -36,7 +36,16 @@ public class GridImageComponent extends JLabel{
 
         Image image = ImageIO.read(file).getScaledInstance(preferredSize.getHorizontal(), preferredSize.getVertical(), Image.SCALE_DEFAULT);
         setIcon(new ImageIcon(image));
-
+        
+        setPreferredSize(preferredSize);
+        setBounds(0, 0, preferredSize.getHorizontal(), preferredSize.getVertical());
+        refresh();
+        
         return this;
+    }
+
+    public void refresh(){
+        revalidate();
+        repaint();
     }
 }
