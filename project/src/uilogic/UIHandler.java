@@ -37,7 +37,5 @@ public class UIHandler {
 
     private void createPlayFrame() throws Exception{
         playFrame = new PlayFrame(playFrameMenuBarHandler, utilityButtonHandler, interactButtonHandler);
-        playFrame.modifyMapLayout(new MapLayoutData(20, 11, "resources/img/maps/2.jpg"), new GridButtonHandler(), false);
-        playFrame.addToCombatLog("Welcome to the game!");
     }
 }
