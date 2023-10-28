@@ -1,11 +1,13 @@
 package game.behaviour.weapons;
 
+import java.io.Serializable;
+
 import exception.general.ArgumentNullException;
 import exception.general.InvalidArgumentException;
 import exception.dice.DefaultDiceNotSetException;
 import game.behaviour.abstracts.Weapon;
 
-public class Shotgun extends Weapon{
+public class Shotgun extends Weapon implements Serializable{
 
     private double hitRange;
     
@@ -26,12 +28,12 @@ public class Shotgun extends Weapon{
     }
 
     @Override
-    public boolean attack(int armorClass, int distance) throws DefaultDiceNotSetException{
+    public boolean attack(int targetAC, int distance) throws DefaultDiceNotSetException{
 
         //Shotgun customisation: Garanteed Hit
         if(distance < (range * hitRange))
             return true;
 
-        return super.attack(armorClass, distance);
+        return super.attack(targetAC, distance);
     }
 }

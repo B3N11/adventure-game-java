@@ -1,19 +1,28 @@
 package game.logic;
 
+import exception.dice.DefaultDiceNotSetException;
+import exception.dice.InvalidDiceSideCountException;
+import exception.entity.AlreadyAttackedThisTurnException;
+import exception.entity.NoWeaponEquippedException;
 import game.behaviour.abstracts.Entity;
 
 public class EnitityManager {
     
     private Entity entity;
 
-    private double currentMovement;
     private boolean attackedThisTurn;
 
-    public boolean move(double distance){
-        if(distance > currentMovement)
-            return false;
+    public Entity getEntity(){ return entity; }
 
-        currentMovement -= distance;
-        return true;
+    public boolean attack(int targetAC, int distance) throws DefaultDiceNotSetException, AlreadyAttackedThisTurnException, NoWeaponEquippedException{
+        if(attackedThisTurn)
+            throw new AlreadyAttackedThisTurnException();
+        
+        attackedThisTurn = true;
+        return entity.attack(targetAC, distance);
+    }
+
+    public int damage(int distance) throws InvalidDiceSideCountException, NoWeaponEquippedException{
+        return entity.damage(distance);
     }
 }

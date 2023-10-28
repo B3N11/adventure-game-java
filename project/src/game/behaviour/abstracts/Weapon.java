@@ -3,7 +3,6 @@ package game.behaviour.abstracts;
 import exception.dice.DefaultDiceNotSetException;
 import exception.dice.InvalidDiceSideCountException;
 import exception.general.ArgumentNullException;
-import exception.general.ElementNotFoundException;
 import exception.general.InvalidArgumentException;
 import game.behaviour.weapons.WeaponType;
 import game.utility.dice.DiceRoller;
@@ -99,17 +98,19 @@ public abstract class Weapon extends Equipment{
     }
 
     //Does an attack roll with default dice and returns its value with attackModifier added to it
-    public boolean attack(int armorClass, int distance) throws DefaultDiceNotSetException{
+    public boolean attack(int targetAC, int distance) throws DefaultDiceNotSetException{
         var roller = DiceRoller.getInstance();
 
         //Check if the rolled value succeeds armorClass
-        boolean result = (roller.rollDefault() + attackModifier) >= armorClass;
-        return result;
+        boolean hit = (roller.rollDefault() + attackModifier) >= targetAC;
+        boolean inRange = checkRange(distance);
+        return inRange && hit;
     }
 
-    public int damage(int distance) throws ElementNotFoundException{
+    public int damage(int distance) throws InvalidDiceSideCountException{
         var roller = DiceRoller.getInstance();
-
+        
+        //Only throws exception if damageDice is not set
         return roller.rollDice(damageDice, diceCount, 0) + damageModifier;
     }
 }
