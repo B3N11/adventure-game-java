@@ -40,7 +40,6 @@ public abstract class Weapon extends Equipment{
             throw new InvalidDiceSideCountException();
         
         damageDice = sides;
-
         return this;
     }
 
@@ -50,13 +49,11 @@ public abstract class Weapon extends Equipment{
             throw new InvalidDiceSideCountException();
         
         diceCount = count;
-
         return this;
     }
 
     public Weapon setDamageModifier(int modifier){
         damageModifier = modifier;
-
         return this;
     }
 
@@ -66,7 +63,6 @@ public abstract class Weapon extends Equipment{
             throw new  InvalidArgumentException();
 
         this.range = newRange;
-
         return this;
     }
 
@@ -75,7 +71,6 @@ public abstract class Weapon extends Equipment{
             throw new ArgumentNullException();
 
         name = newName;
-
         return this;
     }
 
@@ -85,7 +80,6 @@ public abstract class Weapon extends Equipment{
             throw new ArgumentNullException();
         
         description = newDescription;
-
         return this;
     }
 

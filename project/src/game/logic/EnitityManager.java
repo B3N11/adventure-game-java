@@ -6,6 +6,14 @@ public class EnitityManager {
     
     private Entity entity;
 
-    private double currentSpeed;
+    private double currentMovement;
     private boolean attackedThisTurn;
+
+    public boolean move(double distance){
+        if(distance > currentMovement)
+            return false;
+
+        currentMovement -= distance;
+        return true;
+    }
 }

@@ -3,21 +3,21 @@ package game.behaviour.abstracts;
 public class Armor extends Equipment{
  
     protected int armorClass;
-    protected int speedBonus;
+    protected int movementBonus;
 
-    public Armor(int armorClass, int speedBonus){
+    public Armor(int armorClass, int movementBonus){
         setArmorClass(armorClass);
-        setSpeedBonus(speedBonus);
+        setMovementBonus(movementBonus);
     }
 
     public int getArmorClass(){ return armorClass; }
-    public int getSpeedBonus(){ return speedBonus; }
+    public int getMovementBonus(){ return movementBonus; }
 
     public void setArmorClass(int armorClass){
         this.armorClass = armorClass;
     }
 
-    public void setSpeedBonus(int speedBonus){
-        this.speedBonus = speedBonus;
+    public void setMovementBonus(int movementBonus){
+        this.movementBonus = movementBonus;
     }
 }
