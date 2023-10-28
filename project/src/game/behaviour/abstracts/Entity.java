@@ -77,6 +77,7 @@ public abstract class Entity extends Identifiable implements Serializable{
 
     public int getArmorClass(){
         int result = armor == null ? (level + 5) : armor.getArmorClass() + level;
+        result += (int)inventory.calculateModifiers(ModifierType.ARMOR_CLASS);
         return result;
     }
 
@@ -137,7 +138,7 @@ public abstract class Entity extends Identifiable implements Serializable{
         if(weapon == null)
             throw new NoWeaponEquippedException();
 
-        return weapon.damage(distance) + level;
+        return weapon.damage(distance) + level + (int)inventory.calculateModifiers(ModifierType.DAMAGE);
     }
 
     public boolean move(double distance){
@@ -146,6 +147,10 @@ public abstract class Entity extends Identifiable implements Serializable{
 
         currentMovement -= distance;
         return true;
+    }
+
+    public void resetMovement(){
+        currentMovement = movement + inventory.calculateModifiers(ModifierType.MOVEMENT);
     }
 
     public boolean takeDamage(int damage) throws InvalidArgumentException{
@@ -186,6 +191,5 @@ public abstract class Entity extends Identifiable implements Serializable{
 
     public void resurrect(){
         condition = EntityCondition.NORMAL;
-
     }
 }

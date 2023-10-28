@@ -1,6 +1,5 @@
 package game.behaviour;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 
 import exception.general.ArgumentNullException;
