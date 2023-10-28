@@ -1,17 +1,12 @@
 package uilogic;
 
-import exception.general.ArgumentNullException;
-
 public class MapLayoutData {
     
     private int horizontal;
     private int vertical;
     private String filePath;
 
-    public MapLayoutData(int x, int y, String file) throws ArgumentNullException{
-        if(file == null)
-            throw new ArgumentNullException();
-        
+    public MapLayoutData(int x, int y, String file){        
         horizontal = x;
         vertical = y;
         filePath = file;

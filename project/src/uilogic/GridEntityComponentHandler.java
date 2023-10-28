@@ -14,6 +14,8 @@ public class GridEntityComponentHandler {
         entities = new ArrayList<GridEntityComponent>();
     }
 
+    public boolean isEmpty(){ return entities.isEmpty(); }
+
     public GridEntityComponent add(GridEntityComponent entity) throws ArgumentNullException{
         if(entity == null)
             throw new ArgumentNullException();

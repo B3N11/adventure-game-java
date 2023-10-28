@@ -1,38 +1,43 @@
 package ui.elements;
 
-import java.awt.Color;
 import java.awt.Component;
-import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
-import java.awt.Insets;
 import java.awt.event.ActionListener;
-
-import javax.swing.BorderFactory;
 import javax.swing.JFrame;
-import javax.swing.JLayeredPane;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
-import javax.swing.JTextField;
-import javax.swing.border.TitledBorder;
 
+import exception.general.ArgumentNullException;
 import uilogic.GridButtonHandler;
 import uilogic.MapLayoutData;
 
 public class PlayFrame extends JFrame{
 
     private JPanel panel;
+    private PlayfieldPanel playfieldPanel;
+    private CombatLogPanel combatLogPanel;
 
-    public PlayFrame(ActionListener menuBarListener) throws Exception{
-        initPlayFrame(menuBarListener);
+    //Sizes
+    public static int PLAYFIELD_WIDTH = 1200;
+    public static int PLAYFIELD_HEIGHT = 675;
+    public static int UTILITYPANEL_WIDTH = 300;
+    public static int UTILITYPANEL_HEIGHT = 844;
+    public static int INTERACTPANEL_WIDTH = 1200;
+    public static int INTERACTPANEL_HEIGHT = 169;
+    public static int COMBATLOGPANEL_WIDTH = 300;
+    public static int COMBATLOGPANEL_HEIGHT = 844;
+
+    public PlayFrame(ActionListener menuBarListener, ActionListener utilityButtonListener, ActionListener interactButtonListener) throws Exception{
+        initPlayFrame(menuBarListener, utilityButtonListener, interactButtonListener);
     }
 
-    private void initPlayFrame(ActionListener menuBarListener) throws Exception{
+    private void initPlayFrame(ActionListener menuBarListener, ActionListener utilityButtonListener, ActionListener interactButtonListener) throws Exception{
         initFrame();
         setupMenuBar(menuBarListener);
-        setupGridBagLayout();
+        setupGridBagLayout(utilityButtonListener, interactButtonListener);
         displayFrame();
         pack();
     }
@@ -45,7 +50,10 @@ public class PlayFrame extends JFrame{
         setContentPane(panel);
     }
 
-    private void setupMenuBar(ActionListener menuBarListener){
+    private void setupMenuBar(ActionListener menuBarListener) throws ArgumentNullException{
+        if(menuBarListener == null)
+            throw new ArgumentNullException();
+
         var menuBar = new JMenuBar();
         setJMenuBar(menuBar);
 
@@ -71,60 +79,47 @@ public class PlayFrame extends JFrame{
         saveSubMenu.add(saveNewMenuItem);
     }   
     
-    private void setupGridBagLayout() throws Exception{
+    private void setupGridBagLayout(ActionListener utilityButtonListener, ActionListener interactButtonListener) throws Exception{
         var gbc = new GridBagConstraints();
 
         gbc.gridx = 0;
         gbc.gridy = 0;
         gbc.gridheight = 2;
-        var panel1 = new WorldActionPanel();
-        /* var panel1 = new JPanel();
-        panel1.setPreferredSize(new Dimension(300, 844));
-        panel1.setBorder(BorderFactory.createLineBorder(Color.red)); */
-        addToPanel(panel1, gbc);
+        var utilityButtonPanel = new UtilityButtonPanel(UTILITYPANEL_WIDTH, UTILITYPANEL_HEIGHT, utilityButtonListener);
+        addToPanel(utilityButtonPanel, gbc);
         
         gbc.gridx = 1;
         gbc.gridy = 0;
         gbc.gridheight = 1;
-        var panel2 = new PlayfieldPanel(new MapLayoutData(20, 11, "project/resources/img/maps/2.jpg"), new GridButtonHandler());
-        /* var panel2 = new JPanel();
-        panel2.setPreferredSize(new Dimension(1200, 675));
-        panel2.setBorder(BorderFactory.createLineBorder(Color.red)); */
-        addToPanel(panel2, gbc);
+        playfieldPanel = new PlayfieldPanel(PLAYFIELD_WIDTH, PLAYFIELD_HEIGHT);
+        addToPanel(playfieldPanel, gbc);
         
         gbc.gridx = 1;
         gbc.gridy = 1;
         gbc.gridheight = 1;
-        var panel3 = new JPanel();
-        panel3.setPreferredSize(new Dimension(1200, 169));
-        panel3.setBorder(BorderFactory.createLineBorder(Color.red));
+        var panel3 = new InteractButtonPanel(INTERACTPANEL_WIDTH, INTERACTPANEL_HEIGHT, interactButtonListener);
         addToPanel(panel3, gbc);
 
-        //addToPanel(gbcComponent(0, 0, 1, 3, gbc), gbc);
-        //addToPanel(gbcComponent(1, 0, 5, 1, gbc), gbc);
-        //addToPanel(gbcComponent(1, 1, 1, 1, gbc), gbc);
-        //addToPanel(gbcComponent(2, 1, 1, 1, gbc), gbc);
+        gbc.gridx = 2;
+        gbc.gridy = 0;
+        gbc.gridheight = 2;
+        combatLogPanel = new CombatLogPanel(COMBATLOGPANEL_WIDTH, COMBATLOGPANEL_HEIGHT);
+        addToPanel(combatLogPanel, gbc);
     }
 
     private void addToPanel(Component comp, GridBagConstraints gbc){
         panel.add(comp, gbc);
     }
 
-    private JPanel gbcComponent(int x, int y, int w, int h, GridBagConstraints gbc){
+    public void modifyMapLayout(MapLayoutData data, GridButtonHandler buttonHandler, boolean force) throws Exception{
+        if(data == null || buttonHandler == null)
+            throw new ArgumentNullException();
 
-        gbc.gridx = x; 
-        gbc.gridy = y;
-        gbc.gridwidth = w;
-        gbc.gridheight = h;
-        gbc.fill = GridBagConstraints.BOTH;
-        JPanel panel1 = new JPanel();
-        JTextField text = new JTextField("(" + w + ", " + h + ")");
-        panel1.setBorder(new TitledBorder("(" + x + ", " + y + ")"));       
-        panel1.setPreferredSize(new Dimension(w*100, h*100)); 
-        panel1.setBounds(0, 0, w*100, h*100);
-        panel1.add(text);
+        playfieldPanel.setMapLayout(data, buttonHandler, force);
+    }
 
-        return panel1;
+    public void addToCombatLog(String text){
+        combatLogPanel.addToCombatLog(text);
     }
 
     public void refresh(){

@@ -1,8 +1,9 @@
 package ui.elements;
 
 import java.awt.Color;
+
+import javax.swing.BorderFactory;
 import javax.swing.JLabel;
-import javax.swing.JLayer;
 import javax.swing.JLayeredPane;
 import javax.swing.JPanel;
 
@@ -10,6 +11,7 @@ import exception.general.ArgumentNullException;
 import exception.general.ElementNotFoundException;
 import exception.general.InvalidArgumentException;
 import exception.ui.ComponentAlreadyAtPositionException;
+import exception.ui.PlayfieldNotEmptyException;
 import uilogic.GridButtonHandler;
 import uilogic.GridEntityComponentHandler;
 import uilogic.GridPosition;
@@ -19,49 +21,50 @@ import ui.data.GridDimension;
 //Manages UI related to the area where the game is displayed
 public class PlayfieldPanel extends JPanel{
     
+    //Inner layout
+    private JLayeredPane layeredPane;
+
+    //Layers
     private JLabel background;
     private GridPanel entityPanel;
     private GridPanel buttonPanel;
 
-    private JLayeredPane layeredPane;
-
+    //Entity Handler
     private GridEntityComponentHandler entityHandler;
 
-    private static GridDimension preferredSize = new GridDimension(1200, 675);
+    private static GridDimension preferredSize;
     private GridDimension componentSize;
 
-    public PlayfieldPanel(MapLayoutData layoutData, GridButtonHandler handler) throws Exception {
-        if(layoutData == null || handler == null)
-            throw new ArgumentNullException();
-
-        initPlayfield(layoutData, handler);
+    public PlayfieldPanel(int width, int height) throws Exception {
+        initPlayfield(width, height);
     }
 
     public GridDimension getPreferredSize(){ return preferredSize; }
     public GridDimension getComponentSize(){ return componentSize; }
 
     //#region INITIALIZE
-    private void initPlayfield(MapLayoutData layoutData, GridButtonHandler handler) throws Exception{
+    private void initPlayfield(int width, int height) throws Exception{
         //Set panel
-        initPanel();
+        initPanel(width, height);
+
+        var defaultMapLayout = new MapLayoutData(20, 11, null);
 
         //Set componet size
-        setComponentSize(layoutData.getHorizontal(), layoutData.getVertical());
+        setComponentSize(defaultMapLayout.getHorizontal(), defaultMapLayout.getVertical());
 
         //Create the 3 layers
-        initBackground(preferredSize.getHorizontal(), preferredSize.getVertical(), layoutData.getFilePath());
-        initEntityPanel(layoutData.getHorizontal(), layoutData.getVertical());
-        initButtonPanel(layoutData.getHorizontal(), layoutData.getVertical(), handler);
+        initBackground(preferredSize.getHorizontal(), preferredSize.getVertical(), defaultMapLayout.getFilePath());
+        initEntityPanel(defaultMapLayout.getHorizontal(), defaultMapLayout.getVertical());
+        initButtonPanel(defaultMapLayout.getHorizontal(), defaultMapLayout.getVertical(), null);
 
         //Add layers
-        layeredPane.add(background, Integer.valueOf(0));
-        layeredPane.add(entityPanel.getJPanel(), Integer.valueOf(1));
-        layeredPane.add(buttonPanel.getJPanel(), Integer.valueOf(2));
-
+        setLayers();
         entityHandler = new GridEntityComponentHandler();
     }
 
-    private void initPanel(){
+    private void initPanel(int width, int height){
+        preferredSize = new GridDimension(width, height);
+
         layeredPane = new JLayeredPane();
         layeredPane.setPreferredSize(preferredSize);
         
@@ -72,7 +75,12 @@ public class PlayfieldPanel extends JPanel{
     }
 
     private void initBackground(int width, int height, String file) throws Exception{
-        background = new ImageComponent(width, height, file);
+
+        //If file is not defined, we create an empty background
+        if(file == null)
+            background = new ImageComponent(width, height);
+        else
+            background = new ImageComponent(width, height, file);
     }
 
     private void initEntityPanel(int width, int height) throws Exception{
@@ -98,6 +106,14 @@ public class PlayfieldPanel extends JPanel{
         }
     }
 
+    private void setLayers(){
+        layeredPane.removeAll();
+
+        layeredPane.add(background, Integer.valueOf(0));
+        layeredPane.add(entityPanel.getJPanel(), Integer.valueOf(1));
+        layeredPane.add(buttonPanel.getJPanel(), Integer.valueOf(2));
+    }
+
     private void setComponentSize(int x, int y){
         if(componentSize != null)
             return;
@@ -108,6 +124,23 @@ public class PlayfieldPanel extends JPanel{
         componentSize = new GridDimension(xComponentSize, yComponentSize);
     }
     //#endregion
+
+    public PlayfieldPanel setMapLayout(MapLayoutData data, GridButtonHandler buttonHandler, boolean force) throws Exception{
+        if(data == null || buttonHandler == null)
+            throw new ArgumentNullException();
+
+        if(!entityHandler.isEmpty() && !force)
+            throw new PlayfieldNotEmptyException();
+
+        setComponentSize(data.getHorizontal(), data.getVertical());
+        
+        initEntityPanel(data.getHorizontal(), data.getVertical());
+        initButtonPanel(data.getHorizontal(), data.getVertical(), buttonHandler);
+        initBackground(preferredSize.getHorizontal(), preferredSize.getVertical(), data.getFilePath());
+        
+        setLayers();
+        return this;
+    }
 
     public GridEntityComponent addEntity(GridEntityComponent entity) throws ArgumentNullException, InvalidArgumentException, ComponentAlreadyAtPositionException{
         if(entity == null)
