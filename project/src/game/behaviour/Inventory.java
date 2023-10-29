@@ -3,11 +3,14 @@ package game.behaviour;
 import java.util.HashMap;
 
 import exception.general.ArgumentNullException;
+import exception.general.InvalidArgumentException;
 import game.behaviour.abstracts.Consumable;
 import game.behaviour.abstracts.Equipment;
+import game.behaviour.abstracts.Event;
+import game.behaviour.interfaces.IEventListener;
 import game.enums.ModifierType;
 
-public class Inventory {
+public class Inventory implements IEventListener{
     
     private HashMap<String, Equipment> equipments;
     private HashMap<String, Consumable> consumables;
@@ -42,8 +45,17 @@ public class Inventory {
         double result = 0;
 
         for(var consumable : consumables.entrySet())
-            result += consumable.getValue().use();
+            if(consumable.getValue().getType() == type)
+                result += consumable.getValue().use();
 
         return result;
+    }
+
+    @Override
+    public void run(Event event) throws InvalidArgumentException{
+        if(!(event instanceof Consumable))
+            throw new InvalidArgumentException();
+        
+        var consumable = (Consumable)event;
     }
 }

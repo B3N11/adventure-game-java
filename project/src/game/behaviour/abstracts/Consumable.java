@@ -1,13 +1,19 @@
 package game.behaviour.abstracts;
 
+import exception.general.InvalidArgumentException;
 import game.enums.ModifierType;
-import game.utility.general.Identifiable;
 
-public abstract class Consumable extends Identifiable{
+public abstract class Consumable extends Event{
     
     private double modifier;
     private ModifierType type;
+    private int charges;
 
-    public double use() { return modifier;}
+    public int getCharges() { return charges; }
     public ModifierType getType() { return type; }
+
+    public double use() throws InvalidArgumentException{
+        triggerEvent();
+        return modifier;
+    }
 }
