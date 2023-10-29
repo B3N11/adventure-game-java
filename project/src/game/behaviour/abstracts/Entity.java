@@ -37,7 +37,7 @@ public abstract class Entity extends Identifiable implements Serializable{
         setLevel(level);
 
         condition = EntityCondition.NORMAL;
-        inventory = new Inventory();
+        inventory = new Inventory(false);
     }
 
     public Entity setHealth(int health) throws InvalidArgumentException{
@@ -75,7 +75,7 @@ public abstract class Entity extends Identifiable implements Serializable{
         return result;
     }
 
-    public int getArmorClass(){
+    public int getArmorClass() throws Exception{
         int result = armor == null ? (level + 5) : armor.getArmorClass() + level;
         result += (int)inventory.calculateModifiers(ModifierType.ARMOR_CLASS);
         return result;
@@ -126,7 +126,7 @@ public abstract class Entity extends Identifiable implements Serializable{
         this.armor = armor;
     }
 
-    public boolean attack(int targetAC, int distance) throws NoWeaponEquippedException, DefaultDiceNotSetException{
+    public boolean attack(int targetAC, int distance) throws Exception{
         if(weapon == null)
             throw new NoWeaponEquippedException();
 
@@ -134,7 +134,7 @@ public abstract class Entity extends Identifiable implements Serializable{
         return weapon.attack(finalTargetAC, distance);
     }
 
-    public int damage(int distance) throws NoWeaponEquippedException, InvalidDiceSideCountException{
+    public int damage(int distance) throws Exception{
         if(weapon == null)
             throw new NoWeaponEquippedException();
 
@@ -149,7 +149,7 @@ public abstract class Entity extends Identifiable implements Serializable{
         return true;
     }
 
-    public void resetMovement(){
+    public void resetMovement() throws Exception{
         currentMovement = movement + inventory.calculateModifiers(ModifierType.MOVEMENT);
     }
 

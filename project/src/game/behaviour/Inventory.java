@@ -12,12 +12,19 @@ import game.enums.ModifierType;
 
 public class Inventory implements IEventListener{
     
+    private boolean removeOnRanOut;
+
     private HashMap<String, Equipment> equipments;
     private HashMap<String, Consumable> consumables;
 
-    public Inventory(){
+    public Inventory(boolean removeWhenRanOut){
+        this.removeOnRanOut = removeWhenRanOut;
         equipments = new HashMap<String, Equipment>();
         consumables = new HashMap<String, Consumable>();
+    }
+
+    public void setRemoveOnRanOut(boolean remove){
+        removeOnRanOut = remove;
     }
 
     public void add(Equipment equipment) throws ArgumentNullException{
@@ -41,7 +48,7 @@ public class Inventory implements IEventListener{
         return equipments.containsKey(id) || consumables.containsKey(id);
     }
 
-    public double calculateModifiers(ModifierType type){
+    public double calculateModifiers(ModifierType type) throws Exception{
         double result = 0;
 
         for(var consumable : consumables.entrySet())
@@ -52,10 +59,20 @@ public class Inventory implements IEventListener{
     }
 
     @Override
-    public void run(Event event) throws InvalidArgumentException{
+    public void run(Event event) throws Exception{
         if(!(event instanceof Consumable))
             throw new InvalidArgumentException();
         
         var consumable = (Consumable)event;
+        
+        if(!removeOnRanOut){
+            if(event.isRemovingOnRun())
+                event.addEventListener(this);
+            return;
+        }
+
+        if(!event.isRemovingOnRun())
+            event.removeEventListener(this);
+        consumables.remove(consumable.getID()); //REMOVING WHILE ITERATING IN CALCULATEMODIFIERS
     }
 }

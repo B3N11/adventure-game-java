@@ -3,7 +3,6 @@ package game.behaviour.abstracts;
 import java.util.ArrayList;
 
 import exception.general.ArgumentNullException;
-import exception.general.InvalidArgumentException;
 import game.behaviour.interfaces.IEventListener;
 import game.utility.general.Identifiable;
 
@@ -14,10 +13,12 @@ public abstract class Event extends Identifiable{
 
     public Event(){
         eventListeners = new ArrayList<IEventListener>();
-        removeOnRun = true;
+        removeOnRun = false;
     }
 
-    public void setRemoveOnRun(boolean removeOnRun){
+    public final boolean isRemovingOnRun(){ return removeOnRun; }
+
+    public final void setRemoveOnRun(boolean removeOnRun){
         this.removeOnRun = removeOnRun;
     }
 
@@ -25,9 +26,14 @@ public abstract class Event extends Identifiable{
         if(listener == null)
             throw new ArgumentNullException();
         
+        eventListeners.add(listener);
     }
 
-    protected final void triggerEvent() throws InvalidArgumentException{
+    public final void removeEventListener(IEventListener listener){
+        eventListeners.remove(listener);
+    }
+
+    protected final void triggerEvent() throws Exception{
         var iterator = eventListeners.iterator();
         while (iterator.hasNext()) {
             iterator.next().run(this);
