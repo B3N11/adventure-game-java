@@ -2,6 +2,7 @@ package game.behaviour.abstracts;
 
 import java.io.Serializable;
 
+import exception.dice.DefaultDiceNotSetException;
 import exception.entity.ItemNotInInventoryException;
 import exception.entity.NoWeaponEquippedException;
 import exception.general.ArgumentNullException;
@@ -9,6 +10,7 @@ import exception.general.InvalidArgumentException;
 import game.behaviour.Inventory;
 import game.enums.EntityCondition;
 import game.enums.ModifierType;
+import game.utility.dice.DiceRoller;
 import game.utility.general.Identifiable;
 
 public abstract class Entity extends Identifiable implements Serializable{
@@ -23,6 +25,9 @@ public abstract class Entity extends Identifiable implements Serializable{
     protected int level;
     protected int xp;
     protected int requiredXP;
+
+    protected int initiativeBonus;
+    protected int rolledInitiative;
 
     protected Armor armor;
     protected Weapon weapon;
@@ -62,11 +67,25 @@ public abstract class Entity extends Identifiable implements Serializable{
         return this;
     }
 
+    public Entity setInitiativeBonus(int bonus){
+        initiativeBonus = bonus;
+        return this;
+    }
+
     public int getHealth(){ return health; }
     public int getLevel(){ return level; }
     public int getXP(){ return xp; }
     public int getRequiredXP(){ return requiredXP; }
+    public int getRolledInitiative() { return rolledInitiative; }
     public String setID(){ return id; }
+
+    public int rollInitiative() throws DefaultDiceNotSetException{
+        var roller = DiceRoller.getInstance();
+        int baseRoll = roller.rollDefault();
+        rolledInitiative = baseRoll + initiativeBonus;
+
+        return rolledInitiative;
+    }
     
     public double getMovement() {
         double result = armor == null ? movement : movement + armor.getMovementBonus();
@@ -90,7 +109,7 @@ public abstract class Entity extends Identifiable implements Serializable{
         return level;
     }
 
-    private void levelUp(int leftoverXP){
+    protected void levelUp(int leftoverXP){
         levelUp();
         xp = leftoverXP;
     }

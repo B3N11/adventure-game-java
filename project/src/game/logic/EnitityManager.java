@@ -8,6 +8,7 @@ public class EnitityManager {
     
     private Entity entity;
     private boolean attackedThisTurn;
+    private int rolledInitiative;
 
     public EnitityManager(Entity entity) throws ArgumentNullException{
         if(entity == null)
@@ -15,6 +16,7 @@ public class EnitityManager {
 
         attackedThisTurn = false;
         this.entity = entity;
+        rolledInitiative = 0;
     }
 
     public Entity getEntity(){ return entity; }
@@ -35,4 +37,6 @@ public class EnitityManager {
         attackedThisTurn = false;
         entity.resetMovement();
     }
+
+    public int getRolledInitiative(){ return rolledInitiative; }
 }
