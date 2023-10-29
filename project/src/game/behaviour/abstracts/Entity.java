@@ -2,8 +2,6 @@ package game.behaviour.abstracts;
 
 import java.io.Serializable;
 
-import exception.dice.DefaultDiceNotSetException;
-import exception.dice.InvalidDiceSideCountException;
 import exception.entity.ItemNotInInventoryException;
 import exception.entity.NoWeaponEquippedException;
 import exception.general.ArgumentNullException;

@@ -9,18 +9,19 @@ import game.behaviour.abstracts.Equipment;
 import game.behaviour.abstracts.Event;
 import game.behaviour.interfaces.IEventListener;
 import game.enums.ModifierType;
+import game.logic.InventoryMarker;
 
 public class Inventory implements IEventListener{
     
     private boolean removeOnRanOut;
 
     private HashMap<String, Equipment> equipments;
-    private HashMap<String, Consumable> consumables;
+    private HashMap<String, InventoryMarker<Consumable>> consumables;
 
     public Inventory(boolean removeWhenRanOut){
         this.removeOnRanOut = removeWhenRanOut;
         equipments = new HashMap<String, Equipment>();
-        consumables = new HashMap<String, Consumable>();
+        consumables = new HashMap<String, InventoryMarker<Consumable>>();
     }
 
     public void setRemoveOnRanOut(boolean remove){
@@ -38,7 +39,10 @@ public class Inventory implements IEventListener{
         if(consumable == null)
             throw new ArgumentNullException();
         
-        consumables.put(consumable.getID(), consumable);
+        try{
+            //Won't happen, as consumable is always an accepted type
+            consumables.put(consumable.getID(), new InventoryMarker<Consumable>(consumable));
+        }catch(InvalidArgumentException e){}
     }
 
     public boolean contains(String id) throws ArgumentNullException{
@@ -51,9 +55,19 @@ public class Inventory implements IEventListener{
     public double calculateModifiers(ModifierType type) throws Exception{
         double result = 0;
 
-        for(var consumable : consumables.entrySet())
-            if(consumable.getValue().getType() == type)
-                result += consumable.getValue().use();
+        var iterator = consumables.entrySet().iterator();
+        while (iterator.hasNext()) {
+            var consumable = iterator.next().getValue();
+
+            if(consumable.getItem().getType() != type)
+                continue;
+
+            result += consumable.getItem().use();
+
+            //If consumable event callback (run()) marked it as removable, remove it
+            if(consumable.isMarked())
+                iterator.remove();
+        }
 
         return result;
     }
@@ -73,6 +87,8 @@ public class Inventory implements IEventListener{
 
         if(!event.isRemovingOnRun())
             event.removeEventListener(this);
-        consumables.remove(consumable.getID()); //REMOVING WHILE ITERATING IN CALCULATEMODIFIERS
+        
+        //Mark it for removal, so iterator can remove it in calculateModifiers
+        consumables.get(consumable.getID()).mark(true);
     }
 }
