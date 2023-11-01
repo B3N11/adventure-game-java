@@ -73,20 +73,20 @@ public class Inventory implements IEventListener{
     }
 
     @Override
-    public void run(Event event) throws Exception{
-        if(!(event instanceof Consumable))
+    public void run(Object object, Event triggeredEvent) throws Exception{
+        if(!(object instanceof Consumable))
             throw new InvalidArgumentException();
         
-        var consumable = (Consumable)event;
+        var consumable = (Consumable)object;
         
         if(!removeOnRanOut){
-            if(event.isRemovingOnRun())
-                event.addEventListener(this);
+            if(triggeredEvent.isRemovingOnRun())
+                triggeredEvent.addEventListener(this);
             return;
         }
 
-        if(!event.isRemovingOnRun())
-            event.removeEventListener(this);
+        if(!triggeredEvent.isRemovingOnRun())
+            triggeredEvent.removeEventListener(this);
         
         //Mark it for removal, so iterator can remove it in calculateModifiers
         consumables.get(consumable.getID()).mark(true);

@@ -1,37 +1,30 @@
 package game.behaviour.abstracts;
 
-import java.io.Serializable;
-
 import exception.dice.DefaultDiceNotSetException;
 import exception.entity.ItemNotInInventoryException;
 import exception.entity.NoWeaponEquippedException;
 import exception.general.ArgumentNullException;
 import exception.general.InvalidArgumentException;
-import game.behaviour.Inventory;
 import game.enums.EntityCondition;
-import game.enums.ModifierType;
 import game.utility.dice.DiceRoller;
 import game.utility.general.Identifiable;
 
-public abstract class Entity extends Identifiable implements Serializable{
+public abstract class Entity extends Identifiable{
         
     protected int health;
-    protected int currentHealth;
-    protected EntityCondition condition;
+    protected int currentHealth;            //REMOVE!!!
+    protected EntityCondition condition;    //REMOVE!!!
 
     protected double movement;
-    protected double currentMovement;
+    protected double currentMovement;       ///REMOVE!!!
     
     protected int level;
-    protected int xp;
-    protected int requiredXP;
 
     protected int initiativeBonus;
-    protected int rolledInitiative;
+    protected int rolledInitiative;         //REMOVE!!!
 
     protected Armor armor;
     protected Weapon weapon;
-    protected Inventory inventory;
 
     public Entity(String id, int health, int movement, int level) throws InvalidArgumentException, ArgumentNullException{
         setID(id);
@@ -40,7 +33,6 @@ public abstract class Entity extends Identifiable implements Serializable{
         setLevel(level);
 
         condition = EntityCondition.NORMAL;
-        inventory = new Inventory(false);
     }
 
     public Entity setHealth(int health) throws InvalidArgumentException{
@@ -74,8 +66,6 @@ public abstract class Entity extends Identifiable implements Serializable{
 
     public int getHealth(){ return health; }
     public int getLevel(){ return level; }
-    public int getXP(){ return xp; }
-    public int getRequiredXP(){ return requiredXP; }
     public int getRolledInitiative() { return rolledInitiative; }
     public String setID(){ return id; }
 
@@ -94,51 +84,21 @@ public abstract class Entity extends Identifiable implements Serializable{
 
     public int getArmorClass() throws Exception{
         int result = armor == null ? (level + 5) : armor.getArmorClass() + level;
-        result += (int)inventory.calculateModifiers(ModifierType.ARMOR_CLASS);
         return result;
-    }
-
-    public int addXP(int newXP){
-        int leftoverXP = newXP - (requiredXP - xp);
-
-        if(leftoverXP >= 0)
-            levelUp(leftoverXP);
-        else
-            xp += newXP;
-
-        return level;
-    }
-
-    protected void levelUp(int leftoverXP){
-        levelUp();
-        xp = leftoverXP;
-    }
-
-    public void levelUp(){
-        level++;
-        requiredXP = level * 150;
     }
 
     public Weapon getWeapon(){ return weapon; }
 
-    public void addToInventory(Equipment equipment) throws ArgumentNullException{
-        inventory.add(equipment);
-    }
-
-    public void addToInventory(Consumable consumable) throws ArgumentNullException{
-        inventory.add(consumable);
-    }
-
     public void equip(Weapon weapon) throws ItemNotInInventoryException, ArgumentNullException{
-        if(!inventory.contains(weapon.getID()))
-            throw new ItemNotInInventoryException();
+        if(weapon == null)
+            throw new ArgumentNullException();
         
         this.weapon = weapon;
     }
 
     public void equip(Armor armor) throws ItemNotInInventoryException, ArgumentNullException{
-        if(!inventory.contains(armor.getID()))
-            throw new ItemNotInInventoryException();
+        if(armor == null)
+            throw new ArgumentNullException();
         
         this.armor = armor;
     }
@@ -147,15 +107,14 @@ public abstract class Entity extends Identifiable implements Serializable{
         if(weapon == null)
             throw new NoWeaponEquippedException();
 
-        int finalTargetAC = targetAC - (int)inventory.calculateModifiers(ModifierType.ATTACK);
-        return weapon.attack(finalTargetAC, distance);
+        return weapon.attack(targetAC, distance);
     }
 
     public int damage(int distance) throws Exception{
         if(weapon == null)
             throw new NoWeaponEquippedException();
 
-        return weapon.damage(distance) + level + (int)inventory.calculateModifiers(ModifierType.DAMAGE);
+        return weapon.damage(distance) + level;
     }
 
     public boolean move(double distance){
@@ -167,7 +126,7 @@ public abstract class Entity extends Identifiable implements Serializable{
     }
 
     public void resetMovement() throws Exception{
-        currentMovement = movement + inventory.calculateModifiers(ModifierType.MOVEMENT);
+        currentMovement = movement + armor.getMovementBonus();
     }
 
     public boolean takeDamage(int damage) throws InvalidArgumentException{

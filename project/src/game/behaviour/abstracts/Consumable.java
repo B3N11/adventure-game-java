@@ -1,19 +1,26 @@
 package game.behaviour.abstracts;
 
+import exception.general.ArgumentNullException;
 import exception.general.InvalidArgumentException;
+import game.behaviour.interfaces.IEventListener;
 import game.enums.ModifierType;
+import game.utility.general.Identifiable;
 
-public abstract class Consumable extends Event{
+public abstract class Consumable extends Identifiable{
     
     private double modifier;
     private int charges;
     private boolean toggled;
     private ModifierType type;
 
-    public Consumable(ModifierType type, int amount){
+    private Event onOutOfChargesEvent;
+
+    public Consumable(String id, ModifierType type, int amount) throws ArgumentNullException{
+        setID(id);
         toggled = false;
         this.type = type;
         charges = amount;
+        onOutOfChargesEvent = new Event(this);
     }
 
     public int getCharges() { return charges; }
@@ -53,8 +60,12 @@ public abstract class Consumable extends Event{
             charges = 0;
 
         if(charges == 0)
-            triggerEvent();
+            onOutOfChargesEvent.triggerEvent();
 
         return charges;
+    }
+
+    public void addEventListener(IEventListener listener) throws ArgumentNullException{
+        onOutOfChargesEvent.addEventListener(listener);
     }
 }

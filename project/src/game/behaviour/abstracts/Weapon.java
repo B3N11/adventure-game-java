@@ -15,9 +15,7 @@ public abstract class Weapon extends Equipment{
     protected int damageModifier;                  //The bonus value that is added to the rolled damage
 
     protected double range;                        //The maximum distance the weapon can deal damage in
-    protected String name;                         //The name of the weapon (NOT THE TYPE! Type is defined by the weapon class)
-    protected String description;                  //A brief introduction of the weapon
-    protected WeaponType weaponType;               //The type of the weapon
+    protected WeaponType weaponType;               //The type of the weapon, used for type casting
 
     protected Weapon(String id, String weaponName) throws ArgumentNullException{
         setID(id);

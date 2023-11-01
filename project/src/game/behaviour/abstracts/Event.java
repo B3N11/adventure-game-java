@@ -4,16 +4,17 @@ import java.util.ArrayList;
 
 import exception.general.ArgumentNullException;
 import game.behaviour.interfaces.IEventListener;
-import game.utility.general.Identifiable;
 
-public abstract class Event extends Identifiable{
+public class Event{
  
-    protected ArrayList<IEventListener> eventListeners;
-    protected boolean removeOnRun;
+    private Object object;
+    private ArrayList<IEventListener> eventListeners;
+    private boolean removeOnRun;
 
-    public Event(){
+    public Event(Object object){
         eventListeners = new ArrayList<IEventListener>();
         removeOnRun = false;
+        this.object = object;
     }
 
     public final boolean isRemovingOnRun(){ return removeOnRun; }
@@ -33,10 +34,10 @@ public abstract class Event extends Identifiable{
         eventListeners.remove(listener);
     }
 
-    protected final void triggerEvent() throws Exception{
+    public final void triggerEvent() throws Exception{
         var iterator = eventListeners.iterator();
         while (iterator.hasNext()) {
-            iterator.next().run(this);
+            iterator.next().run(object, this);
 
             if(removeOnRun)
                 iterator.remove();
