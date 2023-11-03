@@ -23,7 +23,7 @@ public class CombatLogPanel extends JPanel{
         setBounds(0, 0, width, height);
 
         setLayout(new GridLayout(1,1));
-        setBorder(BorderFactory.createEmptyBorder(0,5,0,5));
+        setBorder(BorderFactory.createEmptyBorder(0,5,0,0));
     }
 
     private void setupTextArea(int width, int height){
@@ -33,11 +33,12 @@ public class CombatLogPanel extends JPanel{
 
         var scroll = new JScrollPane(textArea);
         scroll.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+        scroll.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 
-        add(textArea);
+        add(scroll);
     }
 
     public void addToCombatLog(String text){
-        textArea.append(text);
+        textArea.append(" " + text + "\n");
     }
 }

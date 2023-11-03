@@ -3,7 +3,6 @@ package game.behaviour.abstracts;
 import exception.dice.DefaultDiceNotSetException;
 import exception.dice.InvalidDiceSideCountException;
 import exception.general.ArgumentNullException;
-import exception.general.ElementNotFoundException;
 import exception.general.InvalidArgumentException;
 import game.behaviour.weapons.WeaponType;
 import game.utility.dice.DiceRoller;
@@ -16,9 +15,7 @@ public abstract class Weapon extends Equipment{
     protected int damageModifier;                  //The bonus value that is added to the rolled damage
 
     protected double range;                        //The maximum distance the weapon can deal damage in
-    protected String name;                         //The name of the weapon (NOT THE TYPE! Type is defined by the weapon class)
-    protected String description;                  //A brief introduction of the weapon
-    protected WeaponType weaponType;               //The type of the weapon
+    protected WeaponType weaponType;               //The type of the weapon, used for type casting
 
     protected Weapon(String id, String weaponName) throws ArgumentNullException{
         setID(id);
@@ -40,7 +37,6 @@ public abstract class Weapon extends Equipment{
             throw new InvalidDiceSideCountException();
         
         damageDice = sides;
-
         return this;
     }
 
@@ -50,13 +46,11 @@ public abstract class Weapon extends Equipment{
             throw new InvalidDiceSideCountException();
         
         diceCount = count;
-
         return this;
     }
 
     public Weapon setDamageModifier(int modifier){
         damageModifier = modifier;
-
         return this;
     }
 
@@ -66,26 +60,18 @@ public abstract class Weapon extends Equipment{
             throw new  InvalidArgumentException();
 
         this.range = newRange;
-
         return this;
     }
 
+    @Override
     public Weapon setName(String newName) throws ArgumentNullException{
-        if(newName == null)
-            throw new ArgumentNullException();
-
-        name = newName;
-
+        super.setName(newName);
         return this;
     }
 
+    @Override
     public Weapon setDescription(String newDescription) throws ArgumentNullException{
-        //Description cannot be null
-        if(newDescription == null)
-            throw new ArgumentNullException();
-        
-        description = newDescription;
-
+        super.setDescription(newDescription);
         return this;
     }
 
@@ -105,17 +91,19 @@ public abstract class Weapon extends Equipment{
     }
 
     //Does an attack roll with default dice and returns its value with attackModifier added to it
-    public boolean attack(int armorClass, int distance) throws DefaultDiceNotSetException{
+    public boolean attack(int targetAC, int distance) throws DefaultDiceNotSetException{
         var roller = DiceRoller.getInstance();
 
         //Check if the rolled value succeeds armorClass
-        boolean result = (roller.rollDefault() + attackModifier) >= armorClass;
-        return result;
+        boolean hit = (roller.rollDefault() + attackModifier) >= targetAC;
+        boolean inRange = checkRange(distance);
+        return inRange && hit;
     }
 
-    public int damage(int distance) throws ElementNotFoundException{
+    public int damage(int distance) throws InvalidDiceSideCountException{
         var roller = DiceRoller.getInstance();
-
+        
+        //Only throws exception if damageDice is not set
         return roller.rollDice(damageDice, diceCount, 0) + damageModifier;
     }
 }

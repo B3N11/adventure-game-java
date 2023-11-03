@@ -1,6 +1,12 @@
 import java.awt.Dimension;
 import javax.swing.*;
 
+import game.behaviour.abstracts.EnemyBehaviourController;
+import game.behaviour.entities.enemy.Enemy;
+import game.behaviour.entities.enemy.EnemyEntity;
+import game.behaviour.entities.enemy.EnemyType;
+import game.behaviour.entities.enemy.controller.RangerEnemyController;
+import game.global.EnemyTypeStorage;
 import ui.elements.GridEntityComponent;
 import ui.elements.PlayFrame;
 import ui.elements.PlayfieldPanel;
@@ -14,6 +20,7 @@ public class Main {
 
     public static void main(String[] args) throws Exception{
         //test();
+
         var uiHandler = new UIHandler();
         uiHandler.start();
     }

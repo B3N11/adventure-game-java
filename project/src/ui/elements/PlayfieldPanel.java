@@ -2,7 +2,6 @@ package ui.elements;
 
 import java.awt.Color;
 
-import javax.swing.BorderFactory;
 import javax.swing.JLabel;
 import javax.swing.JLayeredPane;
 import javax.swing.JPanel;

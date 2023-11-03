@@ -14,7 +14,7 @@ public abstract class Identifiable {
         id = newID;
     }
 
-    protected final String getID(){
+    public final String getID(){
         return id;
     }
 }
