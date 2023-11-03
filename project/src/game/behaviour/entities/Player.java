@@ -10,18 +10,24 @@ import game.behaviour.abstracts.Consumable;
 import game.behaviour.abstracts.Entity;
 import game.behaviour.abstracts.Equipment;
 import game.behaviour.abstracts.Weapon;
+import game.behaviour.interfaces.IInteractiveEntity;
+import game.enums.EntityCondition;
 import game.enums.ModifierType;
 
-public class Player extends Entity{
+public class Player extends Entity implements IInteractiveEntity{
     
     //Progression
     private int xp;
     private int requiredXP;
 
+    private int currentHealth;
+    private EntityCondition condition;
+    protected double currentMovement;
+
     private Inventory inventory;
 
     public Player(int health, int movement, int level) throws InvalidArgumentException, ArgumentNullException{
-        super("PLAYER", health, movement, level);
+        super(health, movement, level);
 
         inventory = new Inventory(false);
     }
@@ -101,5 +107,58 @@ public class Player extends Entity{
             throw new ItemNotInInventoryException();
         
         this.armor = armor;
+    }
+
+    @Override
+    public boolean move(double distance) {
+        if(distance > currentMovement)
+            return false;
+
+        currentMovement -= distance;
+        return true;
+    }
+
+    @Override
+    public boolean takeDamage(int damage) throws InvalidArgumentException {
+        if(damage < 0)
+            throw new InvalidArgumentException();
+
+        currentHealth -= damage;
+        Math.clamp(currentHealth, 0, health);
+
+        //If health is 0, set condition to DEAD
+        if(currentHealth == 0){
+            die();
+            return true;
+        }
+
+        return false;
+    }
+
+    @Override
+    public boolean heal(int amount) throws InvalidArgumentException {
+        if(amount < 0)
+            throw new InvalidArgumentException();
+
+        currentHealth += amount;
+        Math.clamp(currentHealth, 0, health);
+
+        //If is dead, then resurrect
+        if(condition == EntityCondition.DEAD){
+            resurrect();
+            return true;
+        }
+
+        return false;
+    }
+
+    @Override
+    public void die() {
+        condition = EntityCondition.DEAD;
+    }
+
+    @Override
+    public void resurrect() {
+        condition = EntityCondition.NORMAL;
     }
 }

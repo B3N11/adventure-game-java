@@ -6,7 +6,7 @@ import game.behaviour.abstracts.Entity;
 
 public class EnitityManager {
     
-    private Entity entity;
+    /* private Entity entity;
     private boolean attackedThisTurn;
     private int rolledInitiative;
 
@@ -38,5 +38,5 @@ public class EnitityManager {
         entity.resetMovement();
     }
 
-    public int getRolledInitiative(){ return rolledInitiative; }
+    public int getRolledInitiative(){ return rolledInitiative; } */
 }

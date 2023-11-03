@@ -63,20 +63,15 @@ public abstract class Weapon extends Equipment{
         return this;
     }
 
+    @Override
     public Weapon setName(String newName) throws ArgumentNullException{
-        if(newName == null)
-            throw new ArgumentNullException();
-
-        name = newName;
+        super.setName(newName);
         return this;
     }
 
+    @Override
     public Weapon setDescription(String newDescription) throws ArgumentNullException{
-        //Description cannot be null
-        if(newDescription == null)
-            throw new ArgumentNullException();
-        
-        description = newDescription;
+        super.setDescription(newDescription);
         return this;
     }
 

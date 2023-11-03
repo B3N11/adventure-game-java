@@ -4,9 +4,8 @@ import exception.general.ArgumentNullException;
 import exception.general.InvalidArgumentException;
 import game.behaviour.interfaces.IEventListener;
 import game.enums.ModifierType;
-import game.utility.general.Identifiable;
 
-public abstract class Consumable extends Identifiable{
+public abstract class Consumable extends Item{
     
     private double modifier;
     private int charges;
@@ -27,11 +26,12 @@ public abstract class Consumable extends Identifiable{
     public ModifierType getType() { return type; }
     public boolean isOn() { return toggled;}
 
-    public void setCharges(int amount) throws InvalidArgumentException{
+    public Consumable setCharges(int amount) throws InvalidArgumentException{
         if(amount < 0)
             throw new InvalidArgumentException();
 
         charges = amount;
+        return this;
     }
 
     public void addCharges(int amount) throws InvalidArgumentException{
