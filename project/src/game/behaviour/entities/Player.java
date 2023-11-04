@@ -1,5 +1,7 @@
 package game.behaviour.entities;
 
+import java.io.Serializable;
+
 import exception.entity.ItemNotInInventoryException;
 import exception.entity.NoWeaponEquippedException;
 import exception.general.ArgumentNullException;
@@ -24,7 +26,7 @@ public class Player extends Entity implements IInteractiveEntity{
     private EntityCondition condition;
     protected double currentMovement;
 
-    private Inventory inventory;
+    transient private Inventory inventory;
 
     public Player(int health, int movement, int level) throws InvalidArgumentException, ArgumentNullException{
         super(health, movement, level);
@@ -57,12 +59,18 @@ public class Player extends Entity implements IInteractiveEntity{
     }
 
     public void addToInventory(Equipment equipment) throws ArgumentNullException{
+        if(inventory == null)
+            inventory = new Inventory(false);
         inventory.add(equipment);
     }
 
     public void addToInventory(Consumable consumable) throws ArgumentNullException{
+        if(inventory == null)
+            inventory = new Inventory(false);
         inventory.add(consumable);
     }
+
+    public Inventory getInventory(){ return inventory; }
 
     @Override
     public boolean attack(int targetAC, int distance) throws Exception{
@@ -97,8 +105,13 @@ public class Player extends Entity implements IInteractiveEntity{
     public void equip(Weapon weapon) throws ItemNotInInventoryException, ArgumentNullException{
         if(!inventory.contains(weapon.getID()))
             throw new ItemNotInInventoryException();
-        
+
+        //Unequip current
+        if(this.weapon != null)
+            this.weapon.equip(false);
+
         this.weapon = weapon;
+        this.weapon.equip(true);
     }
 
     @Override
@@ -106,7 +119,11 @@ public class Player extends Entity implements IInteractiveEntity{
         if(!inventory.contains(armor.getID()))
             throw new ItemNotInInventoryException();
         
+        if(this.armor != null)
+            this.armor.equip(false);
+
         this.armor = armor;
+        this.armor.equip(true);
     }
 
     @Override

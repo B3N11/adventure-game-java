@@ -46,7 +46,7 @@ public class PlayfieldPanel extends JPanel{
         //Set panel
         initPanel(width, height);
 
-        var defaultMapLayout = new MapLayoutData(20, 11, null);
+        var defaultMapLayout = new MapLayoutData("default-layout-000", 20, 11, null);
 
         //Set componet size
         setComponentSize(defaultMapLayout.getHorizontal(), defaultMapLayout.getVertical());

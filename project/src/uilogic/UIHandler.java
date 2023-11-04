@@ -35,6 +35,10 @@ public class UIHandler {
         utilityButtonHandler = new UtilityButtonHandler();
     }
 
+    public void setCurrentMapLayout(MapLayoutData data){
+        
+    }
+
     private void createPlayFrame() throws Exception{
         playFrame = new PlayFrame(playFrameMenuBarHandler, utilityButtonHandler, interactButtonHandler);
     }

@@ -6,7 +6,7 @@ import game.behaviour.entities.enemy.Enemy;
 import game.behaviour.entities.enemy.EnemyEntity;
 import game.behaviour.entities.enemy.EnemyType;
 import game.behaviour.entities.enemy.controller.RangerEnemyController;
-import game.global.EnemyTypeStorage;
+import game.global.storage.EnemyTypeStorage;
 import ui.elements.CombatFrame;
 import ui.elements.GridEntityComponent;
 import ui.elements.PlayFrame;
@@ -34,7 +34,7 @@ public class Main {
         frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
         var handler = new GridButtonHandler();
-        var layout = new MapLayoutData(20, 11, "resources/img/maps/2.jpg");
+        var layout = new MapLayoutData("map-01", 20, 11, "resources/img/maps/2.jpg");
         var field = new PlayfieldPanel(1200, 675).setMapLayout(layout, handler, false);
         frame.add(field);
 
