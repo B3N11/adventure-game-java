@@ -7,6 +7,7 @@ import game.behaviour.entities.enemy.EnemyEntity;
 import game.behaviour.entities.enemy.EnemyType;
 import game.behaviour.entities.enemy.controller.RangerEnemyController;
 import game.global.EnemyTypeStorage;
+import ui.elements.CombatFrame;
 import ui.elements.GridEntityComponent;
 import ui.elements.PlayFrame;
 import ui.elements.PlayfieldPanel;
@@ -21,8 +22,11 @@ public class Main {
     public static void main(String[] args) throws Exception{
         //test();
 
-        var uiHandler = new UIHandler();
-        uiHandler.start();
+        var frame = new CombatFrame("resources/img/combatImages/1.jpg", "resources/img/combatImages/2.jpg", "Cyber Thug").setLocationOrigin(null);
+        frame.setVisible(true);
+
+        /* var uiHandler = new UIHandler();
+        uiHandler.start(); */
     }
 
     static void test() throws Exception{

@@ -18,7 +18,7 @@ public class PlayFrame extends JFrame{
 
     private JPanel panel;
     private PlayfieldPanel playfieldPanel;
-    private CombatLogPanel combatLogPanel;
+    private ScrollableTextPanel combatLogPanel;
 
     //Sizes
     public static int PLAYFIELD_WIDTH = 1200;
@@ -103,7 +103,7 @@ public class PlayFrame extends JFrame{
         gbc.gridx = 2;
         gbc.gridy = 0;
         gbc.gridheight = 2;
-        combatLogPanel = new CombatLogPanel(COMBATLOGPANEL_WIDTH, COMBATLOGPANEL_HEIGHT);
+        combatLogPanel = new ScrollableTextPanel(COMBATLOGPANEL_WIDTH, COMBATLOGPANEL_HEIGHT);
         addToPanel(combatLogPanel, gbc);
     }
 
@@ -119,7 +119,7 @@ public class PlayFrame extends JFrame{
     }
 
     public void addToCombatLog(String text){
-        combatLogPanel.addToCombatLog(text);
+        combatLogPanel.addToText(text);
     }
 
     public void refresh(){
