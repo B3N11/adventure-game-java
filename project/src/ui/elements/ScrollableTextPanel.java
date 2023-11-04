@@ -9,11 +9,11 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.ScrollPaneConstants;
 
-public class CombatLogPanel extends JPanel{
+public class ScrollableTextPanel extends JPanel{
     
     private JTextArea textArea;
 
-    public CombatLogPanel(int width, int height){
+    public ScrollableTextPanel(int width, int height){
         initPanel(width, height);
         setupTextArea(width, height);
     }
@@ -38,7 +38,7 @@ public class CombatLogPanel extends JPanel{
         add(scroll);
     }
 
-    public void addToCombatLog(String text){
+    public void addToText(String text){
         textArea.append(" " + text + "\n");
     }
 }
