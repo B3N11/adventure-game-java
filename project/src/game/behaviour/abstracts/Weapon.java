@@ -5,7 +5,6 @@ import exception.dice.InvalidDiceSideCountException;
 import exception.general.ArgumentNullException;
 import exception.general.InvalidArgumentException;
 import game.behaviour.weapons.WeaponType;
-import game.enums.ItemType;
 import game.utility.dice.DiceRoller;
 
 public abstract class Weapon extends Equipment{

@@ -34,6 +34,8 @@ public class PlayFrame extends JFrame{
         initPlayFrame(menuBarListener, utilityButtonListener, interactButtonListener);
     }
 
+    public PlayfieldPanel getPlayField() { return playfieldPanel; }
+
     private void initPlayFrame(ActionListener menuBarListener, ActionListener utilityButtonListener, ActionListener interactButtonListener) throws Exception{
         initFrame();
         setupMenuBar(menuBarListener);

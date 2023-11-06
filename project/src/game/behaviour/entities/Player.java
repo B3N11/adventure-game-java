@@ -1,7 +1,5 @@
 package game.behaviour.entities;
 
-import java.io.Serializable;
-
 import exception.entity.ItemNotInInventoryException;
 import exception.entity.NoWeaponEquippedException;
 import exception.general.ArgumentNullException;
@@ -15,6 +13,7 @@ import game.behaviour.abstracts.Weapon;
 import game.behaviour.interfaces.IInteractiveEntity;
 import game.enums.EntityCondition;
 import game.enums.ModifierType;
+import ui.data.GridPosition;
 
 public class Player extends Entity implements IInteractiveEntity{
     
@@ -24,7 +23,9 @@ public class Player extends Entity implements IInteractiveEntity{
 
     private int currentHealth;
     private EntityCondition condition;
-    protected double currentMovement;
+    private double currentMovement;
+
+    private GridPosition position;
 
     transient private Inventory inventory;
 
@@ -36,6 +37,13 @@ public class Player extends Entity implements IInteractiveEntity{
 
     public int getXP(){ return xp; }
     public int getRequiredXP(){ return requiredXP; }
+    public GridPosition getPosition(){ return position; }
+
+    public void setPosition(GridPosition position) throws ArgumentNullException{
+        if(position == null)
+            throw new ArgumentNullException();
+        this.position = position;
+    }
 
     public int addXP(int newXP){
         int leftoverXP = newXP - (requiredXP - xp);

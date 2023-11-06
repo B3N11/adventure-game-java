@@ -3,7 +3,7 @@ package file.elements;
 import java.io.Serializable;
 
 import exception.general.ArgumentNullException;
-import uilogic.GridPosition;
+import ui.data.GridPosition;
 
 public class EnemyMapData implements Serializable{
     

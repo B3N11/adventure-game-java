@@ -1,8 +1,6 @@
 package game.behaviour.abstracts;
 
-import game.enums.ItemType;
-
-public class Armor extends Equipment{
+public abstract class Armor extends Equipment{
  
     protected int armorClass;
     protected int movementBonus;
