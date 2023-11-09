@@ -128,10 +128,12 @@ public class FileHandler {
         player.equip(weapon);
         GameHandler.getInstance().setSessionPlayer(player);
         loadCurrentMap(playerProgress.getCurrentMapID());
+
+        //TODO: Implement enemy placement
     }
 
     private void loadModifiedEnemies(){
-        
+
     }
 
     public void loadCurrentMap(String id) throws FileNotFoundException, ClassNotFoundException, ArgumentNullException, IOException, ItemNotInInventoryException, ElementAlreadyInCollectionException, InvalidArgumentException{

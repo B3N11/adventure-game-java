@@ -1,13 +1,21 @@
 import java.awt.Dimension;
 import javax.swing.*;
 
+import exception.dice.InvalidDiceSideCountException;
+import exception.entity.ItemNotInInventoryException;
+import exception.general.ArgumentNullException;
+import exception.general.InvalidArgumentException;
 import file.FileIOUtil;
+import game.behaviour.abstracts.Armor;
 import game.behaviour.abstracts.EnemyBehaviourController;
 import game.behaviour.entities.enemy.Enemy;
 import game.behaviour.entities.enemy.EnemyEntity;
 import game.behaviour.entities.enemy.EnemyType;
 import game.behaviour.entities.enemy.controller.RangerEnemyController;
+import game.behaviour.weapons.Shotgun;
+import game.global.GameHandler;
 import game.global.storage.EnemyTypeStorage;
+import game.utility.dice.DiceRoller;
 import ui.data.GridPosition;
 import ui.elements.CombatFrame;
 import ui.elements.GridEntityComponent;
@@ -21,20 +29,32 @@ import uilogic.UIHandler;
 public class Main {
 
     public static void main(String[] args) throws Exception{
-        //test();
-
-        var frame = new CombatFrame("resources/img/combatImages/1.jpg", "resources/img/combatImages/2.jpg", "Cyber Thug").setLocationOrigin(null);
-        frame.setVisible(true);
-
-        /* var uiHandler = new UIHandler();
-        uiHandler.start(); */
+        //GameHandler.getInstance().start();
+        test();
     }
 
     static void createTestDate(){
         var fileIO = new FileIOUtil();
     }
 
-    static void test() throws Exception{
+    private static void test() throws Exception{
+        DiceRoller.getInstance().setDefault(20);
+
+        var enemyArmor = (Armor)new Armor(15, 1).setName("Chaim Mail").setDescription("Simple but durable.").setID("chaim-mail-001");
+        var enemyWeapon = (Shotgun)new Shotgun("shotgun-001", "Tech Shotgun", 0.5).setDamageDice(6).setDiceCount(3).setAttackModifier(4).setDamageModifier(2).setRange(3).setDescription("Good shit.");
+        var enemyEntity = new EnemyEntity(20, 5, 1).setRewardXP(20);
+        enemyEntity.equip(enemyArmor);
+        enemyEntity.equip(enemyWeapon);
+
+        var enemyController = new RangerEnemyController(enemyEntity);
+        var enemyType = new EnemyType("shotgun-thug", enemyController, "resources/img/characters/7.png");
+        var enemy = new Enemy("shotgun-thug-I-001", enemyType);
+
+        System.out.println(enemy.getEnemyType().getEntity().getArmorClass());
+        System.out.println(enemy.getEnemyType().getEntity().attack(15, 1));
+    }
+
+    private static void playFieldTest() throws Exception{
         var frame = new JFrame();
         frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 

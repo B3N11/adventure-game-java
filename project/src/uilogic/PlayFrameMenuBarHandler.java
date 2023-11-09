@@ -22,6 +22,14 @@ public class PlayFrameMenuBarHandler implements ActionListener{
         menuActions.put("QUICK_SAVE_GAME", new Runnable() {
            public void run(){ saveHandler.quickSave(); } 
         });
+
+        menuActions.put("LOAD_CONFIGFILE", new Runnable(){
+            public void run(){ UIHandler.getInstance().openFileDialog(FileChooserType.BASEINFO); }
+        });
+
+        menuActions.put("LOAD_GAME", new Runnable() {
+            public void run(){ UIHandler.getInstance().openFileDialog(FileChooserType.PLAYERPROGRESS); }
+        });
     }
 
     @Override

@@ -20,18 +20,19 @@ public class Shotgun extends Weapon implements Serializable{
     
     public double getHitRange(){ return hitRange; }
 
-    public void setHitRange(double newHitRange) throws InvalidArgumentException{
+    public Shotgun setHitRange(double newHitRange) throws InvalidArgumentException{
         if(newHitRange < 0 || newHitRange > 1)
             throw new InvalidArgumentException();
         
         hitRange = newHitRange;
+        return this;
     }
 
     @Override
     public boolean attack(int targetAC, int distance) throws DefaultDiceNotSetException{
 
         //Shotgun customisation: Garanteed Hit
-        if(distance < (range * hitRange))
+        if(distance <= (range * hitRange))
             return true;
 
         return super.attack(targetAC, distance);

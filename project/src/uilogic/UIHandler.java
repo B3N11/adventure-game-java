@@ -1,10 +1,21 @@
 package uilogic;
 
+import java.io.FileNotFoundException;
+
+import javax.swing.JFileChooser;
+import javax.swing.JOptionPane;
+import javax.swing.filechooser.FileFilter;
+import javax.swing.filechooser.FileNameExtensionFilter;
+
+import exception.general.ArgumentNullException;
 import exception.ui.UIHandlerAlreadyStartedException;
 import game.behaviour.abstracts.Entity;
+import game.global.GameHandler;
 import ui.elements.PlayFrame;
 
 public class UIHandler {
+
+    private static UIHandler instance;
 
     //Button Handlers
     private GridButtonHandler gridButtonHandler;
@@ -15,10 +26,17 @@ public class UIHandler {
     private PlayFrame playFrame;
 
     //Logic
-    private boolean started = false;
+    private boolean started;
 
-    public UIHandler(){
+    private UIHandler(){
+        started = false;
         initUIHandlers();
+    }
+
+    public static UIHandler getInstance(){
+        if(instance == null)
+            instance = new UIHandler();
+        return instance;
     }
 
     public void start() throws Exception{
@@ -42,6 +60,27 @@ public class UIHandler {
 
     public void placeEntity(Entity entity){
         
+    }
+
+    public void openFileDialog(FileChooserType type){
+        var fileChooser = new JFileChooser();
+        fileChooser.setDialogTitle("Choose a file");
+        fileChooser.setFileFilter(new FileNameExtensionFilter("TEXT FILES", "txt", "text"));
+
+        int response = fileChooser.showOpenDialog(null);
+
+        if(response == JFileChooser.APPROVE_OPTION){
+            var result = fileChooser.getSelectedFile().getAbsolutePath();
+            
+            try{GameHandler.getInstance().handleChosenFile(result, type);}
+            catch(Exception e){
+                showErrorMessage("Please select a valid file!");
+            };
+        }
+    }
+
+    public void showErrorMessage(String message){
+        JOptionPane.showMessageDialog(null, message,"Error!", JOptionPane.ERROR_MESSAGE);
     }
 
     private void createPlayFrame() throws Exception{

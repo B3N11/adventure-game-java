@@ -1,6 +1,6 @@
 package game.behaviour.abstracts;
 
-public abstract class Armor extends Equipment{
+public class Armor extends Equipment{
  
     protected int armorClass;
     protected int movementBonus;

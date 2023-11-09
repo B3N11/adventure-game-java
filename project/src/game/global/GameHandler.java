@@ -1,7 +1,12 @@
 package game.global;
 
+import java.io.FileNotFoundException;
+
 import exception.general.ArgumentNullException;
+import file.handlers.FileHandler;
 import game.behaviour.entities.Player;
+import uilogic.FileChooserType;
+import uilogic.UIHandler;
 
 public class GameHandler {
     
@@ -30,9 +35,21 @@ public class GameHandler {
         this.player = player;
     }
 
-    public void start(){
-        //start UI handler
-        //ask for progress file and asset file
-        //load progress
+    public void start() throws Exception{
+        UIHandler.getInstance().start();
+    }
+
+    public void handleChosenFile(String filePath, FileChooserType type) throws ArgumentNullException, FileNotFoundException{
+        if(filePath == null)
+            throw new ArgumentNullException();
+
+        switch (type) {
+            case BASEINFO:
+                FileHandler.getInstance().startHandler(filePath);
+                break;
+        
+            default:
+                break;
+        }
     }
 }

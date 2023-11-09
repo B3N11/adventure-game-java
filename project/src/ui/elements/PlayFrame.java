@@ -64,13 +64,20 @@ public class PlayFrame extends JFrame{
         menuBar.add(gameMenu);
         menuBar.add(creatorMenu);
 
+        var fileSubMenu = new JMenu("File");
+        var loadBaseInfoMenuItem = new JMenuItem("Load Config File");
+        loadBaseInfoMenuItem.setActionCommand("LOAD_CONFIGFILE");
+        loadBaseInfoMenuItem.addActionListener(menuBarListener);
+        gameMenu.add(fileSubMenu);
+        
         var saveSubMenu = new JMenu("Save Game");
         var loadMenuItem = new JMenuItem("Load Game");
         loadMenuItem.setActionCommand("LOAD_GAME");
         loadMenuItem.addActionListener(menuBarListener);
-        gameMenu.add(saveSubMenu);
-        gameMenu.add(loadMenuItem);
-
+        fileSubMenu.add(saveSubMenu);
+        fileSubMenu.add(loadMenuItem);
+        fileSubMenu.add(loadBaseInfoMenuItem);
+        
         var saveQuickMenuItem = new JMenuItem("Quick Save");
         saveQuickMenuItem.setActionCommand("QUICK_SAVE_GAME");
         saveQuickMenuItem.addActionListener(menuBarListener);
