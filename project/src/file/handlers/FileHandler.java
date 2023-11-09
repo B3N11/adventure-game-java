@@ -36,6 +36,7 @@ public class FileHandler {
     private String itemFolderFilePath;
     private String enemyTypeFolderFilePath;
     private String mapLayoutFolderFilePath;
+    private String baseInfoFolderFilePath;
 
     private static FileHandler instance;
 
@@ -79,18 +80,23 @@ public class FileHandler {
         var parts = fileLine.split(":");
 
         switch (parts[0]) {
+             
+            case "base":
+                baseInfoFolderFilePath = parts[0];
+                break;
+
             case "items":
                 itemFolderFilePath = parts[1];
                 break;
 
             case "enemies":
-                enemyTypeFolderFilePath = parts[1];
+                enemyTypeFolderFilePath = parts[2];
                 break;
 
             case "mapdata":
-                mapLayoutFolderFilePath = parts[2];
+                mapLayoutFolderFilePath = parts[3];
                 break;
-        
+
             default:
                 return;
         }
@@ -122,6 +128,10 @@ public class FileHandler {
         player.equip(weapon);
         GameHandler.getInstance().setSessionPlayer(player);
         loadCurrentMap(playerProgress.getCurrentMapID());
+    }
+
+    private void loadModifiedEnemies(){
+        
     }
 
     public void loadCurrentMap(String id) throws FileNotFoundException, ClassNotFoundException, ArgumentNullException, IOException, ItemNotInInventoryException, ElementAlreadyInCollectionException, InvalidArgumentException{
