@@ -1,4 +1,4 @@
-package game.global;
+package game.global.storage;
 
 import java.util.HashMap;
 
@@ -28,5 +28,19 @@ public class Storage<T> {
          throw new ArgumentNullException();
 
         return storage.get(id);
+    }
+
+    public boolean contains(String id) throws ArgumentNullException{
+        if(id == null)
+            throw new ArgumentNullException();
+        
+        return storage.containsKey(id);
+    }
+
+    public boolean contains(T value) throws ArgumentNullException{
+        if(value == null)
+            throw new ArgumentNullException();
+
+        return storage.containsValue(value);
     }
 }

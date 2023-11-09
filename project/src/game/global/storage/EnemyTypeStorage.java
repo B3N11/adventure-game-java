@@ -1,4 +1,4 @@
-package game.global;
+package game.global.storage;
 
 import game.behaviour.entities.enemy.EnemyType;
 

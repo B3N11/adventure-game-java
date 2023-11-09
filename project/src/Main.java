@@ -1,19 +1,20 @@
 import java.awt.Dimension;
 import javax.swing.*;
 
+import file.FileIOUtil;
 import game.behaviour.abstracts.EnemyBehaviourController;
 import game.behaviour.entities.enemy.Enemy;
 import game.behaviour.entities.enemy.EnemyEntity;
 import game.behaviour.entities.enemy.EnemyType;
 import game.behaviour.entities.enemy.controller.RangerEnemyController;
-import game.global.EnemyTypeStorage;
+import game.global.storage.EnemyTypeStorage;
+import ui.data.GridPosition;
 import ui.elements.CombatFrame;
 import ui.elements.GridEntityComponent;
 import ui.elements.PlayFrame;
 import ui.elements.PlayfieldPanel;
 import ui.elements.UtilityButtonPanel;
 import uilogic.GridButtonHandler;
-import uilogic.GridPosition;
 import uilogic.MapLayoutData;
 import uilogic.UIHandler;
 
@@ -29,12 +30,16 @@ public class Main {
         uiHandler.start(); */
     }
 
+    static void createTestDate(){
+        var fileIO = new FileIOUtil();
+    }
+
     static void test() throws Exception{
         var frame = new JFrame();
         frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
         var handler = new GridButtonHandler();
-        var layout = new MapLayoutData(20, 11, "resources/img/maps/2.jpg");
+        var layout = new MapLayoutData("map-01", 20, 11, "resources/img/maps/2.jpg", new GridPosition(0,0));
         var field = new PlayfieldPanel(1200, 675).setMapLayout(layout, handler, false);
         frame.add(field);
 

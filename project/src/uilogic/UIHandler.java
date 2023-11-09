@@ -1,6 +1,7 @@
 package uilogic;
 
 import exception.ui.UIHandlerAlreadyStartedException;
+import game.behaviour.abstracts.Entity;
 import ui.elements.PlayFrame;
 
 public class UIHandler {
@@ -33,6 +34,14 @@ public class UIHandler {
         gridButtonHandler = new GridButtonHandler();
         playFrameMenuBarHandler = new PlayFrameMenuBarHandler();
         utilityButtonHandler = new UtilityButtonHandler();
+    }
+
+    public void setCurrentMapLayout(MapLayoutData data){
+        
+    }
+
+    public void placeEntity(Entity entity){
+        
     }
 
     private void createPlayFrame() throws Exception{

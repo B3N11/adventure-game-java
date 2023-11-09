@@ -1,21 +1,20 @@
 package game.behaviour.abstracts;
 
-import exception.dice.DefaultDiceNotSetException;
+import java.io.Serializable;
+
 import exception.entity.ItemNotInInventoryException;
 import exception.entity.NoWeaponEquippedException;
 import exception.general.ArgumentNullException;
 import exception.general.InvalidArgumentException;
-import game.enums.EntityCondition;
-import game.utility.dice.DiceRoller;
 
-public abstract class Entity{
+public abstract class Entity implements Serializable{
         
     protected int health;
     protected double movement;    
     protected int level;
 
-    protected Armor armor;
-    protected Weapon weapon;
+    transient protected Armor armor;
+    transient protected Weapon weapon;
 
     public Entity(int health, int movement, int level) throws InvalidArgumentException, ArgumentNullException{
         setHealth(health);
@@ -61,6 +60,7 @@ public abstract class Entity{
     }
 
     public Weapon getWeapon(){ return weapon; }
+    public Armor getArmor(){ return armor; }
 
     public void equip(Weapon weapon) throws ItemNotInInventoryException, ArgumentNullException{
         if(weapon == null)

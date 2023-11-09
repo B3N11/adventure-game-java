@@ -12,8 +12,8 @@ import exception.general.ElementNotFoundException;
 import exception.general.InvalidArgumentException;
 import exception.ui.ComponentAlreadyAtPositionException;
 import ui.data.GridDimension;
+import ui.data.GridPosition;
 import ui.interfaces.IGridPositionable;
-import uilogic.GridPosition;
 
 //GridPanel stores IGridPositionable objects in a GridBagLayout. Its purpose is to handle the UI components in the layout and manage them by position
 public class GridPanel{

@@ -13,9 +13,9 @@ import exception.ui.ComponentAlreadyAtPositionException;
 import exception.ui.PlayfieldNotEmptyException;
 import uilogic.GridButtonHandler;
 import uilogic.GridEntityComponentHandler;
-import uilogic.GridPosition;
 import uilogic.MapLayoutData;
 import ui.data.GridDimension;
+import ui.data.GridPosition;
 
 //Manages UI related to the area where the game is displayed
 public class PlayfieldPanel extends JPanel{
@@ -46,13 +46,13 @@ public class PlayfieldPanel extends JPanel{
         //Set panel
         initPanel(width, height);
 
-        var defaultMapLayout = new MapLayoutData(20, 11, null);
+        var defaultMapLayout = new MapLayoutData("default-layout-000", 20, 11, null, new GridPosition(0,0));
 
         //Set componet size
         setComponentSize(defaultMapLayout.getHorizontal(), defaultMapLayout.getVertical());
 
         //Create the 3 layers
-        initBackground(preferredSize.getHorizontal(), preferredSize.getVertical(), defaultMapLayout.getFilePath());
+        initBackground(preferredSize.getHorizontal(), preferredSize.getVertical(), defaultMapLayout.getBackgroundFilePath());
         initEntityPanel(defaultMapLayout.getHorizontal(), defaultMapLayout.getVertical());
         initButtonPanel(defaultMapLayout.getHorizontal(), defaultMapLayout.getVertical(), null);
 
@@ -135,7 +135,7 @@ public class PlayfieldPanel extends JPanel{
         
         initEntityPanel(data.getHorizontal(), data.getVertical());
         initButtonPanel(data.getHorizontal(), data.getVertical(), buttonHandler);
-        initBackground(preferredSize.getHorizontal(), preferredSize.getVertical(), data.getFilePath());
+        initBackground(preferredSize.getHorizontal(), preferredSize.getVertical(), data.getBackgroundFilePath());
         
         setLayers();
         return this;

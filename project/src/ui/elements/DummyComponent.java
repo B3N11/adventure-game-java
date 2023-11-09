@@ -4,8 +4,8 @@ import java.awt.Dimension;
 import javax.swing.JPanel;
 
 import exception.general.ArgumentNullException;
+import ui.data.GridPosition;
 import ui.interfaces.IGridPositionable;
-import uilogic.GridPosition;
 
 public class DummyComponent extends JPanel implements IGridPositionable{
 

@@ -3,8 +3,8 @@ package ui.elements;
 import java.io.IOException;
 
 import exception.general.ArgumentNullException;
+import ui.data.GridPosition;
 import ui.interfaces.IGridPositionable;
-import uilogic.GridPosition;
 
 public class GridEntityComponent extends ImageComponent implements IGridPositionable{
 

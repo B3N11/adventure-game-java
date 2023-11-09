@@ -5,6 +5,7 @@ import exception.general.InvalidArgumentException;
 import game.behaviour.interfaces.IInteractiveEntity;
 import game.enums.EntityCondition;
 import game.utility.general.Identifiable;
+import ui.data.GridPosition;
 
 public class Enemy extends Identifiable implements IInteractiveEntity{
     
@@ -12,8 +13,9 @@ public class Enemy extends Identifiable implements IInteractiveEntity{
 
     private int currentHealth;
     private EntityCondition condition;
+    private double currentMovement;
 
-    protected double currentMovement;
+    private GridPosition position;
 
     public Enemy(String id, EnemyType enemyType) throws ArgumentNullException{
         if(enemyType == null)
@@ -25,6 +27,23 @@ public class Enemy extends Identifiable implements IInteractiveEntity{
     }
 
     public EnemyType getEnemyType() { return enemyType; }
+    public GridPosition getPosition() { return position; }
+
+    public Enemy setCurrentHealth(int health) throws InvalidArgumentException{
+        if(health < 0)
+            throw new InvalidArgumentException();
+        int damage = currentHealth - health;
+        takeDamage(damage);
+        return this;
+    }
+
+    public Enemy setPosition(GridPosition position) throws ArgumentNullException{
+        if(position == null)
+            throw new ArgumentNullException();
+
+        this.position = position;
+        return this;
+    }
 
     public boolean move(double distance){
         if(distance > currentMovement)

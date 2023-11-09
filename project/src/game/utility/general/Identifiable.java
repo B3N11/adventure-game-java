@@ -1,8 +1,10 @@
 package game.utility.general;
 
+import java.io.Serializable;
+
 import exception.general.ArgumentNullException;
 
-public abstract class Identifiable {
+public abstract class Identifiable implements Serializable{
 
     protected String id;            //The ID of the game object
 
