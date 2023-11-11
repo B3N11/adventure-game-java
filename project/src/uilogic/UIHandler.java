@@ -1,6 +1,7 @@
 package uilogic;
 
 import java.io.FileNotFoundException;
+import java.io.IOException;
 
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
@@ -8,9 +9,13 @@ import javax.swing.filechooser.FileFilter;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 import exception.general.ArgumentNullException;
+import exception.general.InvalidArgumentException;
+import exception.ui.ComponentAlreadyAtPositionException;
 import exception.ui.UIHandlerAlreadyStartedException;
 import game.behaviour.abstracts.Entity;
+import game.behaviour.interfaces.IInteractiveEntity;
 import game.global.GameHandler;
+import ui.elements.GridEntityComponent;
 import ui.elements.PlayFrame;
 
 public class UIHandler {
@@ -54,12 +59,19 @@ public class UIHandler {
         utilityButtonHandler = new UtilityButtonHandler();
     }
 
-    public void setCurrentMapLayout(MapLayoutData data){
-        
+    public void setCurrentMapLayout(MapLayoutData data) throws Exception{
+        playFrame.getPlayField().setMapLayout(data, gridButtonHandler, true);
     }
 
-    public void placeEntity(Entity entity){
-        
+    public void placeEntity(IInteractiveEntity entity, String imagePath) throws ArgumentNullException, InvalidArgumentException, ComponentAlreadyAtPositionException, IOException{
+        var component = new GridEntityComponent(entity.getInstanceID(),
+            playFrame.getPlayField().getComponentSize().getHorizontal(),
+            playFrame.getPlayField().getComponentSize().getVertical(),
+            entity.getPosition());
+
+        component.setImage(imagePath);
+
+        playFrame.getPlayField().addEntity(component);
     }
 
     public void openFileDialog(FileChooserType type){
@@ -77,6 +89,10 @@ public class UIHandler {
                 showErrorMessage("Please select a valid file!");
             };
         }
+    }
+
+    public void addToCombatLog(String text){
+        playFrame.addToCombatLog(text);
     }
 
     public void showErrorMessage(String message){

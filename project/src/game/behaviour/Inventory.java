@@ -9,11 +9,12 @@ import exception.general.ArgumentNullException;
 import exception.general.InvalidArgumentException;
 import game.behaviour.abstracts.Consumable;
 import game.behaviour.abstracts.Equipment;
-import game.behaviour.abstracts.Event;
 import game.behaviour.abstracts.Item;
-import game.behaviour.interfaces.IEventListener;
 import game.enums.ModifierType;
 import game.logic.InventoryMarker;
+import game.logic.event.Event;
+import game.logic.event.EventArgument;
+import game.logic.event.IEventListener;
 
 public class Inventory implements IEventListener{
     
@@ -107,11 +108,11 @@ public class Inventory implements IEventListener{
     }
 
     @Override
-    public void run(Object object, Event triggeredEvent) throws Exception{
-        if(!(object instanceof Consumable))
+    public void run(EventArgument object, Event triggeredEvent) throws Exception{
+        if(!(object.getArgument() instanceof Consumable))
             throw new InvalidArgumentException();
         
-        var consumable = (Consumable)object;
+        var consumable = (Consumable)object.getArgument();
         
         if(!removeOnRanOut){
             if(triggeredEvent.isRemovingOnRun())

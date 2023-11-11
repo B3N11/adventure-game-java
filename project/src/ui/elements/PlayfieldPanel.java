@@ -131,6 +131,8 @@ public class PlayfieldPanel extends JPanel{
         if(!entityHandler.isEmpty() && !force)
             throw new PlayfieldNotEmptyException();
 
+        entityHandler.clear();
+
         setComponentSize(data.getHorizontal(), data.getVertical());
         
         initEntityPanel(data.getHorizontal(), data.getVertical());

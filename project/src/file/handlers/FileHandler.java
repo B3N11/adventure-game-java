@@ -8,6 +8,7 @@ import exception.entity.ItemNotInInventoryException;
 import exception.general.ArgumentNullException;
 import exception.general.ElementAlreadyInCollectionException;
 import exception.general.InvalidArgumentException;
+import exception.ui.ComponentAlreadyAtPositionException;
 import file.FileIOUtil;
 import file.elements.EnemyTypeSave;
 import file.elements.PlayerProgressSave;
@@ -26,6 +27,7 @@ import game.global.storage.EnemyTypeStorage;
 import game.global.storage.ItemStorage;
 import game.global.storage.ModifiedEnemyStorage;
 import uilogic.MapLayoutData;
+import uilogic.UIHandler;
 
 public class FileHandler {
     
@@ -102,7 +104,7 @@ public class FileHandler {
         }
     }
 
-    private void loadPlayerProgressSave(String filePath) throws ArgumentNullException, FileNotFoundException, ClassNotFoundException, IOException, ElementAlreadyInCollectionException, ItemNotInInventoryException, InvalidArgumentException{
+    private void loadPlayerProgressSave(String filePath) throws ArgumentNullException, FileNotFoundException, ClassNotFoundException, IOException, ElementAlreadyInCollectionException, ItemNotInInventoryException, InvalidArgumentException, ComponentAlreadyAtPositionException{
         if(filePath == null)
             throw new ArgumentNullException();
 
@@ -136,7 +138,7 @@ public class FileHandler {
 
     }
 
-    public void loadCurrentMap(String id) throws FileNotFoundException, ClassNotFoundException, ArgumentNullException, IOException, ItemNotInInventoryException, ElementAlreadyInCollectionException, InvalidArgumentException{
+    public void loadCurrentMap(String id) throws FileNotFoundException, ClassNotFoundException, ArgumentNullException, IOException, ItemNotInInventoryException, ElementAlreadyInCollectionException, InvalidArgumentException, ComponentAlreadyAtPositionException{
         String fileName = id + ".txt";
         var mapData = (MapLayoutData)fileIOUtil.readObjectFromFile(new File(mapLayoutFolderFilePath, fileName));
 
@@ -145,14 +147,21 @@ public class FileHandler {
             var enemyType = loadEnemyType(enemyData.getAssetID());
             var enemy = new Enemy(enemyData.getInstanceID(), enemyType);
 
-            ActiveEnemyStorage.getInstance().add(enemy.getID(), enemy);
-
-            if(!ModifiedEnemyStorage.getInstance().contains(enemyData.getInstanceID()))
+            if(!ModifiedEnemyStorage.getInstance().contains(enemyData.getInstanceID())){
+                ActiveEnemyStorage.getInstance().add(enemy.getID(), enemy);
+                UIHandler.getInstance().placeEntity(enemy, enemyType.getIconFilePath());
                 continue;
+            }
             
             var modifiedData = ModifiedEnemyStorage.getInstance().get(enemy.getID());
             enemy.setPosition(modifiedData.getPosition());
             enemy.setCurrentHealth(modifiedData.getHealth());
+
+            if(enemy.getCurrentHealth() == 0)
+                continue;
+            
+            ActiveEnemyStorage.getInstance().add(enemy.getID(), enemy);
+            UIHandler.getInstance().placeEntity(enemy, enemyType.getIconFilePath());
 
             //TODO: Implement looted state
         }

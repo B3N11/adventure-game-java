@@ -2,8 +2,10 @@ package game.behaviour.abstracts;
 
 import exception.general.ArgumentNullException;
 import exception.general.InvalidArgumentException;
-import game.behaviour.interfaces.IEventListener;
 import game.enums.ModifierType;
+import game.logic.event.Event;
+import game.logic.event.EventArgument;
+import game.logic.event.IEventListener;
 
 public abstract class Consumable extends Item{
     
@@ -19,7 +21,7 @@ public abstract class Consumable extends Item{
         toggled = false;
         this.type = type;
         charges = amount;
-        onOutOfChargesEvent = new Event(this);
+        onOutOfChargesEvent = new Event(new EventArgument<Consumable>().setArgument(this));
     }
 
     public int getCharges() { return charges; }

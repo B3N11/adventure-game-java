@@ -2,6 +2,7 @@ package game.behaviour.entities.enemy;
 
 import exception.general.ArgumentNullException;
 import exception.general.InvalidArgumentException;
+import game.behaviour.abstracts.Entity;
 import game.behaviour.interfaces.IInteractiveEntity;
 import game.enums.EntityCondition;
 import game.utility.general.Identifiable;
@@ -26,8 +27,12 @@ public class Enemy extends Identifiable implements IInteractiveEntity{
         condition = EntityCondition.NORMAL;
     }
 
+    public String getInstanceID() { return getID(); }
     public EnemyType getEnemyType() { return enemyType; }
     public GridPosition getPosition() { return position; }
+    public Entity getEntity() { return enemyType.getEntity(); }
+    public int getCurrentHealth() { return currentHealth; }
+    public double getCurrentMovement() { return currentMovement; }
 
     public Enemy setCurrentHealth(int health) throws InvalidArgumentException{
         if(health < 0)

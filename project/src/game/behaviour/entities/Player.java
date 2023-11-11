@@ -27,6 +27,8 @@ public class Player extends Entity implements IInteractiveEntity{
 
     private GridPosition position;
 
+    private static String playerID = "Player";
+
     transient private Inventory inventory;
 
     public Player(int health, int movement, int level) throws InvalidArgumentException, ArgumentNullException{
@@ -35,9 +37,13 @@ public class Player extends Entity implements IInteractiveEntity{
         inventory = new Inventory(false);
     }
 
+    public String getInstanceID() { return playerID; }
     public int getXP(){ return xp; }
     public int getRequiredXP(){ return requiredXP; }
     public GridPosition getPosition(){ return position; }
+    public Entity getEntity() { return this; }
+    public int getCurrentHealth() { return currentHealth; }
+    public double getCurrentMovement() { return currentMovement; }
 
     public void setPosition(GridPosition position) throws ArgumentNullException{
         if(position == null)
@@ -81,7 +87,7 @@ public class Player extends Entity implements IInteractiveEntity{
     public Inventory getInventory(){ return inventory; }
 
     @Override
-    public boolean attack(int targetAC, int distance) throws Exception{
+    public boolean attack(int targetAC, double distance) throws Exception{
         if(weapon == null)
             throw new NoWeaponEquippedException();
 
@@ -90,7 +96,7 @@ public class Player extends Entity implements IInteractiveEntity{
     }
 
     @Override
-    public int damage(int distance) throws Exception{
+    public int damage(double distance) throws Exception{
         if(weapon == null)
             throw new NoWeaponEquippedException();
 

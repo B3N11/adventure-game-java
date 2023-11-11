@@ -8,13 +8,18 @@ import exception.general.InvalidArgumentException;
 import file.FileIOUtil;
 import game.behaviour.abstracts.Armor;
 import game.behaviour.abstracts.EnemyBehaviourController;
+import game.behaviour.entities.Player;
 import game.behaviour.entities.enemy.Enemy;
 import game.behaviour.entities.enemy.EnemyEntity;
 import game.behaviour.entities.enemy.EnemyType;
+import game.behaviour.entities.enemy.controller.BerserkerEnemyController;
 import game.behaviour.entities.enemy.controller.RangerEnemyController;
 import game.behaviour.weapons.Shotgun;
 import game.global.GameHandler;
 import game.global.storage.EnemyTypeStorage;
+import game.logic.event.Event;
+import game.logic.event.EventArgument;
+import game.logic.event.IEventListener;
 import game.utility.dice.DiceRoller;
 import ui.data.GridPosition;
 import ui.elements.CombatFrame;
@@ -39,6 +44,7 @@ public class Main {
 
     private static void test() throws Exception{
         DiceRoller.getInstance().setDefault(20);
+        UIHandler.getInstance().start();
 
         var enemyArmor = (Armor)new Armor(15, 1).setName("Chaim Mail").setDescription("Simple but durable.").setID("chaim-mail-001");
         var enemyWeapon = (Shotgun)new Shotgun("shotgun-001", "Tech Shotgun", 0.5).setDamageDice(6).setDiceCount(3).setAttackModifier(4).setDamageModifier(2).setRange(3).setDescription("Good shit.");
@@ -46,12 +52,32 @@ public class Main {
         enemyEntity.equip(enemyArmor);
         enemyEntity.equip(enemyWeapon);
 
-        var enemyController = new RangerEnemyController(enemyEntity);
+        var enemyController = new BerserkerEnemyController(enemyEntity);
         var enemyType = new EnemyType("shotgun-thug", enemyController, "resources/img/characters/7.png");
         var enemy = new Enemy("shotgun-thug-I-001", enemyType);
+        enemy.setPosition(new GridPosition(1,3));
 
-        System.out.println(enemy.getEnemyType().getEntity().getArmorClass());
-        System.out.println(enemy.getEnemyType().getEntity().attack(15, 1));
+        enemyController.addEventListeners(new IEventListener() {
+            public void run(EventArgument argument, Event trigger){
+                String arg = argument.getArgument().toString();
+                UIHandler.getInstance().addToCombatLog(arg);
+            }
+        }, new IEventListener() {
+            public void run(EventArgument argument, Event trigger){
+                String arg = argument.getArgument().toString();
+                UIHandler.getInstance().addToCombatLog(arg);
+            }
+        });
+
+        UIHandler.getInstance().placeEntity(enemy, enemyType.getIconFilePath());
+
+        var player = new Player(100, 5, 2);
+        player.addToInventory(enemyArmor);
+        player.equip(enemyArmor);
+
+        enemyController.runEnemy(player, 2);
+
+        System.out.println(player.getCurrentHealth());
     }
 
     private static void playFieldTest() throws Exception{

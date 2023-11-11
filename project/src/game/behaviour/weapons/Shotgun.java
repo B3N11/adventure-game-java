@@ -29,7 +29,7 @@ public class Shotgun extends Weapon implements Serializable{
     }
 
     @Override
-    public boolean attack(int targetAC, int distance) throws DefaultDiceNotSetException{
+    public boolean attack(int targetAC, double distance) throws DefaultDiceNotSetException{
 
         //Shotgun customisation: Garanteed Hit
         if(distance <= (range * hitRange))

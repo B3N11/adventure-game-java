@@ -86,12 +86,12 @@ public abstract class Weapon extends Equipment{
     //#endregion
 
     //Checks if the weapon can attack to that distance
-    public boolean checkRange(int distance){
+    public boolean checkRange(double distance){
         return range >= distance;
     }
 
     //Does an attack roll with default dice and returns its value with attackModifier added to it
-    public boolean attack(int targetAC, int distance) throws DefaultDiceNotSetException{
+    public boolean attack(int targetAC, double distance) throws DefaultDiceNotSetException{
         var roller = DiceRoller.getInstance();
 
         //Check if the rolled value succeeds armorClass
@@ -100,7 +100,7 @@ public abstract class Weapon extends Equipment{
         return inRange && hit;
     }
 
-    public int damage(int distance) throws InvalidDiceSideCountException{
+    public int damage(double distance) throws InvalidDiceSideCountException{
         var roller = DiceRoller.getInstance();
         
         //Only throws exception if damageDice is not set
