@@ -30,6 +30,7 @@ public class PlayFieldHandler {
     }
 
     public PlayfieldPanel getPlayField() { return playField; }
+    public GridButtonHandler getGridButtonHandler() { return gridButtonHandler; }
 
     public void setPlayField(PlayfieldPanel playField) throws ArgumentNullException{
         if(playField == null)

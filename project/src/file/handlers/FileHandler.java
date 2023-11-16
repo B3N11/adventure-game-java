@@ -72,7 +72,7 @@ public class FileHandler {
         UIHandler.getInstance().showMessage("Config successfully loaded!", JOptionPane.INFORMATION_MESSAGE);
     }
 
-    public void loadPlayerProgressSave(String filePath) throws ArgumentNullException, FileNotFoundException, ClassNotFoundException, IOException, ElementAlreadyInCollectionException, ItemNotInInventoryException, InvalidArgumentException, ComponentAlreadyAtPositionException{
+    public void loadPlayerProgressSave(String filePath) throws Exception{
         if(filePath == null)
             throw new ArgumentNullException();
 
@@ -99,6 +99,8 @@ public class FileHandler {
         GameHandler.getInstance().setSessionPlayer(player);
         loadCurrentMap(playerProgress.currentMapID);
 
+        //TODO: Place player GridEntity here
+
         //TODO: Implement enemy placement
     }
 
@@ -106,16 +108,16 @@ public class FileHandler {
 
     }
 
-    public void loadCurrentMap(String id) throws FileNotFoundException, ClassNotFoundException, ArgumentNullException, IOException, ItemNotInInventoryException, ElementAlreadyInCollectionException, InvalidArgumentException, ComponentAlreadyAtPositionException{
+    public void loadCurrentMap(String id) throws Exception{
         String fileName = id + ".txt";
         var mapData = (MapLayoutData)fileIOUtil.readObjectFromFile(new File(mapLayoutFolderFilePath, fileName));
 
-        //TODO: set playfield maplayout and create new playfield in UI handler
+        UIHandler.getInstance().getPlayFieldHandler().setCurrentMapLayout(mapData);
 
         for(var enemyData : mapData.getEnemies()){
 
             var enemyType = loadEnemyType(enemyData.getAssetID());
-            var enemy = new Enemy(enemyData.getInstanceID(), enemyType);
+            var enemy = new Enemy(enemyData.getInstanceID(), enemyType).setPosition(enemyData.getPosition());
 
             if(!ModifiedEnemyStorage.getInstance().contains(enemyData.getInstanceID())){
                 ActiveEnemyStorage.getInstance().add(enemy.getID(), enemy);
