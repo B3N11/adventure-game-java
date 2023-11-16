@@ -6,6 +6,7 @@ import exception.general.ArgumentNullException;
 import exception.general.InvalidArgumentException;
 import exception.ui.ComponentAlreadyAtPositionException;
 import game.behaviour.interfaces.IInteractiveEntity;
+import game.utility.dataclass.MapLayoutData;
 import game.utility.delegates.GenericDelegate;
 import ui.data.GridPosition;
 import ui.elements.GridEntityComponent;

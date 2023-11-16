@@ -1,4 +1,4 @@
-package game.logic;
+package game.utility.dataclass;
 
 import exception.general.ArgumentNullException;
 import exception.general.InvalidArgumentException;

@@ -2,12 +2,12 @@ package game.behaviour.entities.enemy;
 
 import exception.general.ArgumentNullException;
 import game.behaviour.abstracts.EnemyBehaviourController;
-import game.behaviour.abstracts.Identity;
+import game.utility.general.Identity;
 
 public class EnemyType extends Identity{
     
     private EnemyBehaviourController controller;
-    private String iconFilePath;
+    private String iconFilePath;    //TODO: remove this, abstraction is violated
 
     public EnemyType(String id, EnemyBehaviourController enemyController, String iconFilePath) throws ArgumentNullException{
         if(enemyController == null || iconFilePath == null)

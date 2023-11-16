@@ -1,6 +1,9 @@
 package game.global;
 
 import java.io.FileNotFoundException;
+import java.util.HashMap;
+
+import javax.swing.JOptionPane;
 
 import exception.general.ArgumentNullException;
 import file.handlers.FileHandler;
@@ -15,8 +18,14 @@ public class GameHandler {
     private SaveHandler saveHandler;
     private Player player;
 
+    //Game Config
+    private String gameTitle;
+    private String gameCreator;
+    private HashMap<String, String> maps;
+
     private GameHandler(){
         saveHandler = new SaveHandler();
+        maps = new HashMap<String, String>();
     }
 
     public static GameHandler getInstance(){
@@ -43,13 +52,18 @@ public class GameHandler {
         if(filePath == null)
             throw new ArgumentNullException();
 
-        switch (type) {
-            case BASEINFO:
-                FileHandler.getInstance().startHandler(filePath);
-                break;
+        try{
+            switch (type) {
+                case CONFIG:
+                    FileHandler.getInstance().loadConfigFile(filePath);
+                    break;
         
-            default:
-                break;
-        }
+                case PLAYERPROGRESS:
+                    FileHandler.getInstance().loadPlayerProgressSave(filePath);
+                    break;
+            }
+        }catch(ClassNotFoundException e) { UIHandler.getInstance().showMessage("Given file is not in required format!", JOptionPane.ERROR_MESSAGE);
+        }catch(FileNotFoundException e) { UIHandler.getInstance().showMessage("Given file(s) don't exist.", JOptionPane.ERROR_MESSAGE);
+        }catch(Exception e){ UIHandler.getInstance().showMessage("Error reading the file!", JOptionPane.ERROR_MESSAGE);}
     }
 }

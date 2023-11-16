@@ -1,10 +1,11 @@
 package uilogic;
 
+import java.io.File;
+
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
-import exception.general.ArgumentNullException;
 import exception.ui.UIHandlerAlreadyStartedException;
 import game.global.GameHandler;
 import ui.elements.PlayFrame;
@@ -57,6 +58,7 @@ public class UIHandler {
         var fileChooser = new JFileChooser();
         fileChooser.setDialogTitle("Choose a file");
         fileChooser.setFileFilter(new FileNameExtensionFilter("TEXT FILES", "txt", "text"));
+        fileChooser.setCurrentDirectory(new File("G:\\uni\\sub\\3\\prog\\hf\\adventure-game-java\\project\\resources\\gamedata"));
 
         int response = fileChooser.showOpenDialog(null);
 
@@ -65,7 +67,7 @@ public class UIHandler {
             
             try{GameHandler.getInstance().handleChosenFile(result, type);}
             catch(Exception e){
-                showErrorMessage("Please select a valid file!");
+                showMessage("Please select a valid file!", JOptionPane.ERROR_MESSAGE);
             };
         }
     }
@@ -74,8 +76,8 @@ public class UIHandler {
         playFrame.addToCombatLog(text);
     }
 
-    public void showErrorMessage(String message){
-        JOptionPane.showMessageDialog(null, message,"Error!", JOptionPane.ERROR_MESSAGE);
+    public void showMessage(String message, int messageType){
+        JOptionPane.showMessageDialog(null, message,"Error!", messageType);
     }
 
     private void createPlayFrame() throws Exception{

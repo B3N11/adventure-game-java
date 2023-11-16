@@ -24,7 +24,7 @@ public class PlayFrameMenuBarHandler implements ActionListener{
         });
 
         menuActions.put("LOAD_CONFIGFILE", new Runnable(){
-            public void run(){ UIHandler.getInstance().openFileDialog(FileChooserType.BASEINFO); }
+            public void run(){ UIHandler.getInstance().openFileDialog(FileChooserType.CONFIG); }
         });
 
         menuActions.put("LOAD_GAME", new Runnable() {

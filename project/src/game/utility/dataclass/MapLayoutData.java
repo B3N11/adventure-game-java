@@ -1,14 +1,13 @@
-package uilogic;
+package game.utility.dataclass;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 
 import exception.general.ArgumentNullException;
 import file.elements.EnemyMapData;
-import game.utility.general.Identifiable;
+import game.utility.general.Identity;
 import ui.data.GridPosition;
 
-public class MapLayoutData extends Identifiable implements Serializable{
+public class MapLayoutData extends Identity{
     
     private int horizontal;
     private int vertical;

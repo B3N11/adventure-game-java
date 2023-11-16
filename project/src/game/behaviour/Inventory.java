@@ -11,10 +11,10 @@ import game.behaviour.abstracts.Consumable;
 import game.behaviour.abstracts.Equipment;
 import game.behaviour.abstracts.Item;
 import game.enums.ModifierType;
-import game.logic.InventoryMarker;
 import game.logic.event.Event;
 import game.logic.event.EventArgument;
 import game.logic.event.IEventListener;
+import game.utility.general.InventoryMarker;
 
 public class Inventory implements IEventListener{
     

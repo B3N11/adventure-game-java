@@ -4,6 +4,8 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 
+import javax.swing.JOptionPane;
+
 import exception.entity.ItemNotInInventoryException;
 import exception.general.ArgumentNullException;
 import exception.general.ElementAlreadyInCollectionException;
@@ -11,6 +13,7 @@ import exception.general.InvalidArgumentException;
 import exception.ui.ComponentAlreadyAtPositionException;
 import file.FileIOUtil;
 import file.elements.EnemyTypeSave;
+import file.elements.GameConfigSave;
 import file.elements.PlayerProgressSave;
 import game.behaviour.abstracts.Armor;
 import game.behaviour.abstracts.Consumable;
@@ -26,7 +29,7 @@ import game.global.storage.ActiveEnemyStorage;
 import game.global.storage.EnemyTypeStorage;
 import game.global.storage.ItemStorage;
 import game.global.storage.ModifiedEnemyStorage;
-import uilogic.MapLayoutData;
+import game.utility.dataclass.MapLayoutData;
 import uilogic.UIHandler;
 
 public class FileHandler {
@@ -35,10 +38,9 @@ public class FileHandler {
 
     private FileIOUtil fileIOUtil;
 
-    private String itemFolderFilePath;
-    private String enemyTypeFolderFilePath;
-    private String mapLayoutFolderFilePath;
-    private String baseInfoFolderFilePath;
+    private File itemFolderFilePath;
+    private File enemyTypeFolderFilePath;
+    private File mapLayoutFolderFilePath;
 
     private static FileHandler instance;
 
@@ -53,65 +55,31 @@ public class FileHandler {
         return instance;
     }
 
-    public boolean isStarted() { return started; }
-
-    public void startHandler(String loadUpFilePath) throws ArgumentNullException, FileNotFoundException{
-        if(loadUpFilePath == null)
+    public void loadConfigFile(String filePath) throws ArgumentNullException, FileNotFoundException, ClassNotFoundException, IOException{
+        if(filePath == null)
             throw new ArgumentNullException();
 
-        String content = fileIOUtil.readFile(loadUpFilePath);
-        runHandler(content);
+        var config = (GameConfigSave)fileIOUtil.readObjectFromFile(filePath);
+        String folderPath = new File(filePath).getParent();
+
+        itemFolderFilePath = new File(folderPath, config.itemFolder);
+        enemyTypeFolderFilePath = new File(folderPath, config.enemyFolder);
+        mapLayoutFolderFilePath = new File(folderPath, config.mapdataFolder);
+
+        if(!itemFolderFilePath.exists() || !enemyTypeFolderFilePath.exists() || !mapLayoutFolderFilePath.exists())
+            throw new FileNotFoundException();
+
+        UIHandler.getInstance().showMessage("Config successfully loaded!", JOptionPane.INFORMATION_MESSAGE);
     }
 
-    public void runHandler(String loadUpFileContent) throws ArgumentNullException{
-        if(loadUpFileContent == null)
-            throw new ArgumentNullException();
-        
-        var lines = loadUpFileContent.split("\n");
-
-        for(var line : lines)
-            setFolderPaths(line);
-        
-        started = true;
-    }
-
-    private void setFolderPaths(String fileLine) throws ArgumentNullException{
-        if(fileLine == null)
-            throw new ArgumentNullException();
-
-        var parts = fileLine.split(":");
-
-        switch (parts[0]) {
-             
-            case "base":
-                baseInfoFolderFilePath = parts[0];
-                break;
-
-            case "items":
-                itemFolderFilePath = parts[1];
-                break;
-
-            case "enemies":
-                enemyTypeFolderFilePath = parts[2];
-                break;
-
-            case "mapdata":
-                mapLayoutFolderFilePath = parts[3];
-                break;
-
-            default:
-                return;
-        }
-    }
-
-    private void loadPlayerProgressSave(String filePath) throws ArgumentNullException, FileNotFoundException, ClassNotFoundException, IOException, ElementAlreadyInCollectionException, ItemNotInInventoryException, InvalidArgumentException, ComponentAlreadyAtPositionException{
+    public void loadPlayerProgressSave(String filePath) throws ArgumentNullException, FileNotFoundException, ClassNotFoundException, IOException, ElementAlreadyInCollectionException, ItemNotInInventoryException, InvalidArgumentException, ComponentAlreadyAtPositionException{
         if(filePath == null)
             throw new ArgumentNullException();
 
         var playerProgress = (PlayerProgressSave)fileIOUtil.readObjectFromFile(filePath);
-        var player = playerProgress.getPlayer();
+        var player = playerProgress.player;
 
-        for(var item : playerProgress.getInventory()){
+        for(var item : playerProgress.inventory){
             var itemObject = loadItem(item);
 
             if(itemObject.getItemType() == ItemType.EQUIPMENT)
@@ -124,12 +92,12 @@ public class FileHandler {
 
         //TODO: Implement modified enemy load
 
-        var armor = (Armor)loadItem(playerProgress.getPlayerArmorID());
-        var weapon = (Weapon)loadItem(playerProgress.getPlayerWeaponID());
+        var armor = (Armor)loadItem(playerProgress.playerArmorID);
+        var weapon = (Weapon)loadItem(playerProgress.playerWeaponID);
         player.equip(armor);
         player.equip(weapon);
         GameHandler.getInstance().setSessionPlayer(player);
-        loadCurrentMap(playerProgress.getCurrentMapID());
+        loadCurrentMap(playerProgress.currentMapID);
 
         //TODO: Implement enemy placement
     }
@@ -177,11 +145,11 @@ public class FileHandler {
 
         String fileName = id + ".txt";
         var save = (EnemyTypeSave)fileIOUtil.readObjectFromFile(new File(enemyTypeFolderFilePath, fileName));
-        var entity = save.getEntity();
-        entity.equip((Armor)loadItem(save.getArmorID()));
-        entity.equip((Weapon)loadItem(save.getWeaponID()));
+        var entity = save.entity;
+        entity.equip((Armor)loadItem(save.enemyArmorID));
+        entity.equip((Weapon)loadItem(save.enemyWeaponID));
 
-        for(var itemID : save.getInventory()){
+        for(var itemID : save.inventory){
             var item = loadItem(itemID);
             if(item.getItemType() == ItemType.CONSUMABLE)
                 entity.addToInventory((Consumable)item);
@@ -189,8 +157,8 @@ public class FileHandler {
                 entity.addToInventory((Equipment)item);
         }
 
-        var controller = EnemyBehaviourController.getTypeInstance(save.getControllerType(), entity);
-        result = new EnemyType(save.getEnemyTypeID(), controller, save.getIconFilePath());
+        var controller = EnemyBehaviourController.getTypeInstance(save.controllerType, entity);
+        result = new EnemyType(save.enemyTypeID, controller, save.iconFilePath);
         EnemyTypeStorage.getInstance().add(result.getID(), result);
 
         return result;

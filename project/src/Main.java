@@ -1,4 +1,7 @@
 import java.awt.Dimension;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+
 import javax.swing.*;
 
 import exception.dice.InvalidDiceSideCountException;
@@ -6,6 +9,11 @@ import exception.entity.ItemNotInInventoryException;
 import exception.general.ArgumentNullException;
 import exception.general.InvalidArgumentException;
 import file.FileIOUtil;
+import file.elements.EnemyMapData;
+import file.elements.EnemyTypeSave;
+import file.elements.GameConfigSave;
+import file.elements.PlayerProgressSave;
+import file.handlers.FileHandler;
 import game.behaviour.abstracts.Armor;
 import game.behaviour.abstracts.EnemyBehaviourController;
 import game.behaviour.entities.Player;
@@ -15,11 +23,13 @@ import game.behaviour.entities.enemy.EnemyType;
 import game.behaviour.entities.enemy.controller.BerserkerEnemyController;
 import game.behaviour.entities.enemy.controller.RangerEnemyController;
 import game.behaviour.weapons.Shotgun;
+import game.enums.EnemyBehaviourControllerType;
 import game.global.GameHandler;
 import game.global.storage.EnemyTypeStorage;
 import game.logic.event.Event;
 import game.logic.event.EventArgument;
 import game.logic.event.IEventListener;
+import game.utility.dataclass.MapLayoutData;
 import game.utility.delegates.GenericDelegate;
 import game.utility.dice.DiceRoller;
 import ui.data.GridPosition;
@@ -29,19 +39,72 @@ import ui.elements.PlayFrame;
 import ui.elements.PlayfieldPanel;
 import ui.elements.UtilityButtonPanel;
 import uilogic.GridButtonHandler;
-import uilogic.MapLayoutData;
 import uilogic.UIHandler;
 
 public class Main {
 
     public static void main(String[] args) throws Exception{
-        //GameHandler.getInstance().start();
-        test();
+        GameHandler.getInstance().start();
+        //FileHandler.getInstance().loadCurrentMap("default-map-001");
+        //createTestData();
     }
 
-    static void createTestData(){
+    static void createTestData() throws ArgumentNullException, InvalidArgumentException, FileNotFoundException, IOException, InvalidDiceSideCountException, ItemNotInInventoryException{
         var fileIO = new FileIOUtil();
+
+        var data = new MapLayoutData("default-map-001", 20, 11, "resources/img/maps/2.jpg", new GridPosition(11,8));
+        var enemyMapData = new EnemyMapData("shotgun-thug", "shotgun-thug-I-001").setPosition(new GridPosition(10, 5));
+        var enemyMapData1 = new EnemyMapData("shotgun-thug", "shotgun-thug-I-002").setPosition(new GridPosition(12, 5));
+        data.addEnemy(enemyMapData);
+        data.addEnemy(enemyMapData1);
+
+        String dataFileName = "dafault-map-001.txt";
+        fileIO.writeObjectToFile("G:\\uni\\sub\\3\\prog\\hf\\adventure-game-java\\project\\resources\\gamedata\\mapdata\\" + dataFileName, data);
+
+        var config = new GameConfigSave();
+        config.defaultMapID = "default-map-001";
+        config.enemyFolder = "enemy";
+        config.itemFolder = "item";
+        config.mapdataFolder = "mapdata";
+
+        String configFileName = "game-config.txt";
+        fileIO.writeObjectToFile("G:\\uni\\sub\\3\\prog\\hf\\adventure-game-java\\project\\resources\\gamedata\\" + configFileName, config);
+
+        var armor = (Armor)new Armor(15, 1).setName("Chaim Mail").setDescription("Simple but durable.").setID("chaim-mail-001");
+        var weapon = (Shotgun)new Shotgun("shotgun-001", "Tech Shotgun", 0.5).setDamageDice(6).setDiceCount(3).setAttackModifier(4).setDamageModifier(2).setRange(3).setDescription("Good shit.");
         
+        String armorFileName = "chaim-mail-001.txt";
+        String weaponFileName = "shotgun-001.txt";
+        fileIO.writeObjectToFile("G:\\uni\\sub\\3\\prog\\hf\\adventure-game-java\\project\\resources\\gamedata\\item\\" + armorFileName, armor);        
+        fileIO.writeObjectToFile("G:\\uni\\sub\\3\\prog\\hf\\adventure-game-java\\project\\resources\\gamedata\\item\\" + weaponFileName, weapon);
+
+        var enemyEntity = new EnemyEntity(20, 5, 1).setRewardXP(20);
+        enemyEntity.equip(armor);
+        enemyEntity.equip(weapon);
+
+        var enemyData = new EnemyTypeSave();
+        enemyData.enemyTypeID = "shotgun-thug";
+        enemyData.controllerType = EnemyBehaviourControllerType.BERSERK;
+        enemyData.entity = enemyEntity;
+        enemyData.iconFilePath = "resources/img/characters/7.png";
+        enemyData.enemyArmorID = armor.getID();
+        enemyData.enemyWeaponID = weapon.getID();
+
+        String enemyFileName = "shotgun-thug.txt";
+        fileIO.writeObjectToFile("G:\\uni\\sub\\3\\prog\\hf\\adventure-game-java\\project\\resources\\gamedata\\enemy\\" + enemyFileName, enemyData);
+
+        var player = new Player(30, 5, 1);
+        var playerSave = new PlayerProgressSave();
+        playerSave.player = player;
+        playerSave.currentMapID = "default-map-001";
+        playerSave.modifiedEnemyFilePath = "";
+        playerSave.playerArmorID = armor.getID();
+        playerSave.playerWeaponID = weapon.getID();
+        playerSave.inventory.add(armor.getID());
+        playerSave.inventory.add(weapon.getID());
+
+        String playerFileName = "save-001.txt";
+        fileIO.writeObjectToFile("G:\\uni\\sub\\3\\prog\\hf\\adventure-game-java\\project\\resources\\gamedata\\" + playerFileName, playerSave);
     }
 
     private static void test() throws Exception{

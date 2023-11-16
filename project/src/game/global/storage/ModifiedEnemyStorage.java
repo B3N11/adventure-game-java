@@ -1,6 +1,6 @@
 package game.global.storage;
 
-import game.logic.ModifiedEnemyData;
+import game.utility.dataclass.ModifiedEnemyData;
 
 public class ModifiedEnemyStorage extends Storage<ModifiedEnemyData>{
     

@@ -11,8 +11,8 @@ import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 
 import exception.general.ArgumentNullException;
+import game.utility.dataclass.MapLayoutData;
 import uilogic.GridButtonHandler;
-import uilogic.MapLayoutData;
 
 public class PlayFrame extends JFrame{
 

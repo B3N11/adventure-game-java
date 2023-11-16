@@ -1,7 +1,6 @@
-package game.behaviour.abstracts;
+package game.utility.general;
 
 import exception.general.ArgumentNullException;
-import game.utility.general.Identifiable;
 
 public abstract class Identity extends Identifiable{
     protected String name;

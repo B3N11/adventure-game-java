@@ -1,10 +1,11 @@
 package ui.data;
 
 import java.awt.GridBagConstraints;
+import java.io.Serializable;
 
 import exception.general.InvalidArgumentException;
 
-public class GridPosition {
+public class GridPosition implements Serializable{
     
     private int x;
     private int y;
