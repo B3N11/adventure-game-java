@@ -58,7 +58,7 @@ public class Main {
         data.addEnemy(enemyMapData);
         data.addEnemy(enemyMapData1);
 
-        String dataFileName = "dafault-map-001.txt";
+        String dataFileName = "default-map-001.txt";
         fileIO.writeObjectToFile("G:\\uni\\sub\\3\\prog\\hf\\adventure-game-java\\project\\resources\\gamedata\\mapdata\\" + dataFileName, data);
 
         var config = new GameConfigSave();

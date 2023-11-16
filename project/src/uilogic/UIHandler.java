@@ -77,7 +77,7 @@ public class UIHandler {
     }
 
     public void showMessage(String message, int messageType){
-        JOptionPane.showMessageDialog(null, message,"Error!", messageType);
+        JOptionPane.showMessageDialog(null, message, "Message", messageType);
     }
 
     private void createPlayFrame() throws Exception{

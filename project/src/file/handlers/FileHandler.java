@@ -110,6 +110,8 @@ public class FileHandler {
         String fileName = id + ".txt";
         var mapData = (MapLayoutData)fileIOUtil.readObjectFromFile(new File(mapLayoutFolderFilePath, fileName));
 
+        //TODO: set playfield maplayout and create new playfield in UI handler
+
         for(var enemyData : mapData.getEnemies()){
 
             var enemyType = loadEnemyType(enemyData.getAssetID());
@@ -149,12 +151,14 @@ public class FileHandler {
         entity.equip((Armor)loadItem(save.enemyArmorID));
         entity.equip((Weapon)loadItem(save.enemyWeaponID));
 
-        for(var itemID : save.inventory){
-            var item = loadItem(itemID);
-            if(item.getItemType() == ItemType.CONSUMABLE)
-                entity.addToInventory((Consumable)item);
-            else if(item.getItemType() == ItemType.EQUIPMENT)
-                entity.addToInventory((Equipment)item);
+        if(save.inventory != null){
+            for(var itemID : save.inventory){
+                var item = loadItem(itemID);
+                if(item.getItemType() == ItemType.CONSUMABLE)
+                    entity.addToInventory((Consumable)item);
+                else if(item.getItemType() == ItemType.EQUIPMENT)
+                    entity.addToInventory((Equipment)item);
+            }
         }
 
         var controller = EnemyBehaviourController.getTypeInstance(save.controllerType, entity);
