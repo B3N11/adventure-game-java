@@ -17,6 +17,7 @@ import ui.data.GridPosition;
 
 public class Player extends Entity implements IInteractiveEntity{
     
+    //TODO: Player is only used via the IInteractiveEntity interface, so it should only use Entity as a property and extend Identity
     //Progression
     private int xp;
     private int requiredXP;

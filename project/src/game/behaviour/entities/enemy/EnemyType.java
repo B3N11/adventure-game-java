@@ -2,9 +2,9 @@ package game.behaviour.entities.enemy;
 
 import exception.general.ArgumentNullException;
 import game.behaviour.abstracts.EnemyBehaviourController;
-import game.utility.general.Identifiable;
+import game.behaviour.abstracts.Identity;
 
-public class EnemyType extends Identifiable{
+public class EnemyType extends Identity{
     
     private EnemyBehaviourController controller;
     private String iconFilePath;

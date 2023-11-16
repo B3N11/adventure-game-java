@@ -1,29 +1,21 @@
 package uilogic;
 
-import java.io.FileNotFoundException;
-import java.io.IOException;
-
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
-import javax.swing.filechooser.FileFilter;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 import exception.general.ArgumentNullException;
-import exception.general.InvalidArgumentException;
-import exception.ui.ComponentAlreadyAtPositionException;
 import exception.ui.UIHandlerAlreadyStartedException;
-import game.behaviour.abstracts.Entity;
-import game.behaviour.interfaces.IInteractiveEntity;
 import game.global.GameHandler;
-import ui.elements.GridEntityComponent;
 import ui.elements.PlayFrame;
 
 public class UIHandler {
 
     private static UIHandler instance;
 
-    //Button Handlers
-    private GridButtonHandler gridButtonHandler;
+    private PlayFieldHandler playFieldHandler;
+
+    //Button Handler
     private PlayFrameMenuBarHandler playFrameMenuBarHandler;
     private UtilityButtonHandler utilityButtonHandler;
     private InteractButtonHandler interactButtonHandler;
@@ -44,6 +36,8 @@ public class UIHandler {
         return instance;
     }
 
+    public PlayFieldHandler getPlayFieldHandler() { return playFieldHandler; }
+
     public void start() throws Exception{
         if(started)
             throw new UIHandlerAlreadyStartedException();
@@ -54,24 +48,9 @@ public class UIHandler {
     }
 
     private void initUIHandlers(){
-        gridButtonHandler = new GridButtonHandler();
         playFrameMenuBarHandler = new PlayFrameMenuBarHandler();
         utilityButtonHandler = new UtilityButtonHandler();
-    }
-
-    public void setCurrentMapLayout(MapLayoutData data) throws Exception{
-        playFrame.getPlayField().setMapLayout(data, gridButtonHandler, true);
-    }
-
-    public void placeEntity(IInteractiveEntity entity, String imagePath) throws ArgumentNullException, InvalidArgumentException, ComponentAlreadyAtPositionException, IOException{
-        var component = new GridEntityComponent(entity.getInstanceID(),
-            playFrame.getPlayField().getComponentSize().getHorizontal(),
-            playFrame.getPlayField().getComponentSize().getVertical(),
-            entity.getPosition());
-
-        component.setImage(imagePath);
-
-        playFrame.getPlayField().addEntity(component);
+        playFieldHandler = new PlayFieldHandler(null);
     }
 
     public void openFileDialog(FileChooserType type){
@@ -101,5 +80,10 @@ public class UIHandler {
 
     private void createPlayFrame() throws Exception{
         playFrame = new PlayFrame(playFrameMenuBarHandler, utilityButtonHandler, interactButtonHandler);
+        playFieldHandler.setPlayField(playFrame.getPlayField());
+    }
+
+    public void togglePlayerControlls(boolean on){
+        //Turn on or off the player controlls while enemies are doing their turns
     }
 }

@@ -20,6 +20,7 @@ import game.global.storage.EnemyTypeStorage;
 import game.logic.event.Event;
 import game.logic.event.EventArgument;
 import game.logic.event.IEventListener;
+import game.utility.delegates.GenericDelegate;
 import game.utility.dice.DiceRoller;
 import ui.data.GridPosition;
 import ui.elements.CombatFrame;
@@ -38,8 +39,9 @@ public class Main {
         test();
     }
 
-    static void createTestDate(){
+    static void createTestData(){
         var fileIO = new FileIOUtil();
+        
     }
 
     private static void test() throws Exception{
@@ -69,7 +71,7 @@ public class Main {
             }
         });
 
-        UIHandler.getInstance().placeEntity(enemy, enemyType.getIconFilePath());
+        UIHandler.getInstance().getPlayFieldHandler().placeEntity(enemy, enemyType.getIconFilePath());
 
         var player = new Player(100, 5, 2);
         player.addToInventory(enemyArmor);
@@ -84,7 +86,7 @@ public class Main {
         var frame = new JFrame();
         frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
-        var handler = new GridButtonHandler();
+        var handler = new GridButtonHandler(new GenericDelegate() { public void run(Object o){} });
         var layout = new MapLayoutData("map-01", 20, 11, "resources/img/maps/2.jpg", new GridPosition(0,0));
         var field = new PlayfieldPanel(1200, 675).setMapLayout(layout, handler, false);
         frame.add(field);

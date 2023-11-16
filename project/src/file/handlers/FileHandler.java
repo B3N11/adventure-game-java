@@ -149,7 +149,7 @@ public class FileHandler {
 
             if(!ModifiedEnemyStorage.getInstance().contains(enemyData.getInstanceID())){
                 ActiveEnemyStorage.getInstance().add(enemy.getID(), enemy);
-                UIHandler.getInstance().placeEntity(enemy, enemyType.getIconFilePath());
+                UIHandler.getInstance().getPlayFieldHandler().placeEntity(enemy, enemyType.getIconFilePath());
                 continue;
             }
             
@@ -161,7 +161,7 @@ public class FileHandler {
                 continue;
             
             ActiveEnemyStorage.getInstance().add(enemy.getID(), enemy);
-            UIHandler.getInstance().placeEntity(enemy, enemyType.getIconFilePath());
+            UIHandler.getInstance().getPlayFieldHandler().placeEntity(enemy, enemyType.getIconFilePath());
 
             //TODO: Implement looted state
         }
