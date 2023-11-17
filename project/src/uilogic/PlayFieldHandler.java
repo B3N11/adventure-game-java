@@ -53,20 +53,7 @@ public class PlayFieldHandler {
     public void selectTile(Object o){            
         selectedTile = (GridPosition)o;
 
-        String entityType = "EMPTY";
-        try{ 
-            var entity = getEntityByPosition(selectedTile);
-            entityType = entity.getEntity().getEntityType().toString();
-        }catch(ElementNotFoundException e){
-        }catch(ArgumentNullException e){}
-
         try{ selectedTileDistance = GridPosition.calculateAbsoluteDistance(GameHandler.getInstance().getPlayer().getPosition(), selectedTile); }
-        catch(ArgumentNullException e){}
-
-        String message = "Tile selected: {distance=" + selectedTileDistance + "}\n" +
-                         "Tile type: " + entityType;
-
-        try{ UIHandler.getInstance().getCombatLogger().addSystemLog(message); }
         catch(ArgumentNullException e){}
     }
 

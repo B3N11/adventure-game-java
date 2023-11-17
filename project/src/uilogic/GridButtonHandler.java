@@ -10,6 +10,7 @@ import ui.elements.GridButton;
 public class GridButtonHandler implements ActionListener {
 
     private GenericDelegate delegate;
+    private GridButton lastSelected;
 
     public GridButtonHandler(GenericDelegate delegate) throws ArgumentNullException{
         if(delegate == null)
@@ -18,10 +19,26 @@ public class GridButtonHandler implements ActionListener {
         this.delegate = delegate;
     }
 
+    public void clearSelected(){
+        if(lastSelected == null)
+            return;
+
+        lastSelected.hightlightButton(false);
+        lastSelected.getParent().revalidate();
+        lastSelected.getParent().repaint();
+        lastSelected = null;
+    }
+
     @Override
     public void actionPerformed(ActionEvent e) {
+        clearSelected();
+
         var button = (GridButton)e.getSource();
+        lastSelected = button;
+
         button.hightlightButton(true);
+        button.getParent().revalidate();
+        button.getParent().repaint();
 
         var buttonPosition = ((GridButton)e.getSource()).getGridPosition();
         delegate.run(buttonPosition);

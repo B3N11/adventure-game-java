@@ -12,6 +12,7 @@ import exception.general.ArgumentNullException;
 import exception.general.InvalidArgumentException;
 import ui.data.GridPosition;
 import ui.interfaces.IGridPositionable;
+import uilogic.UIHandler;
 
 public class GridButton extends JButton implements IGridPositionable{
     
@@ -33,6 +34,7 @@ public class GridButton extends JButton implements IGridPositionable{
         setOpaque(false);
         setContentAreaFilled(false);
         setBorderPainted(true);
+        setRolloverEnabled(false);
         setBorder(BorderFactory.createLineBorder(borderColor));
     }
 
@@ -42,18 +44,15 @@ public class GridButton extends JButton implements IGridPositionable{
     }
 
     public void hightlightButton(boolean highlight){
-
-        throw new UnsupportedOperationException();
-/* 
         setOpaque(highlight);
         setContentAreaFilled(highlight);
 
         if(highlight){
-            setBackground(new Color(198, 204, 201, 150));
+            setBackground(new Color(198, 204, 201, 100));
         }
         else{
             setBackground(new Color(255, 255, 255, 0));
-        } */
+        }
     }
 
     @Override
