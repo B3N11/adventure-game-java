@@ -49,6 +49,7 @@ public class PlayFrame extends JFrame{
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
         panel = new JPanel(new GridBagLayout());
+        setTitle("Adventure Game");
         setContentPane(panel);
     }
 

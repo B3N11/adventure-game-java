@@ -61,15 +61,6 @@ public class Main {
         String dataFileName = "default-map-001.txt";
         fileIO.writeObjectToFile("G:\\uni\\sub\\3\\prog\\hf\\adventure-game-java\\project\\resources\\gamedata\\mapdata\\" + dataFileName, data);
 
-        var config = new GameConfigSave();
-        config.defaultMapID = "default-map-001";
-        config.enemyFolder = "enemy";
-        config.itemFolder = "item";
-        config.mapdataFolder = "mapdata";
-
-        String configFileName = "game-config.txt";
-        fileIO.writeObjectToFile("G:\\uni\\sub\\3\\prog\\hf\\adventure-game-java\\project\\resources\\gamedata\\" + configFileName, config);
-
         var armor = (Armor)new Armor(15, 1).setName("Chaim Mail").setDescription("Simple but durable.").setID("chaim-mail-001");
         var weapon = (Shotgun)new Shotgun("shotgun-001", "Tech Shotgun", 0.5).setDamageDice(6).setDiceCount(3).setAttackModifier(4).setDamageModifier(2).setRange(3).setDescription("Good shit.");
         
@@ -102,9 +93,20 @@ public class Main {
         playerSave.playerWeaponID = weapon.getID();
         playerSave.inventory.add(armor.getID());
         playerSave.inventory.add(weapon.getID());
+        playerSave.currentIconFile = "resources/img/characters/5.png";
 
-        String playerFileName = "save-001.txt";
+        String playerFileName = "default-save.txt";
         fileIO.writeObjectToFile("G:\\uni\\sub\\3\\prog\\hf\\adventure-game-java\\project\\resources\\gamedata\\" + playerFileName, playerSave);
+
+        var config = new GameConfigSave();
+        config.defaultMapID = "default-map-001";
+        config.enemyFolder = "enemy";
+        config.itemFolder = "item";
+        config.mapdataFolder = "mapdata";
+        config.defaultPlayerSaveFile = "default-save.txt";
+
+        String configFileName = "game-config.txt";
+        fileIO.writeObjectToFile("G:\\uni\\sub\\3\\prog\\hf\\adventure-game-java\\project\\resources\\gamedata\\" + configFileName, config);
     }
 
     private static void test() throws Exception{
@@ -125,12 +127,14 @@ public class Main {
         enemyController.addEventListeners(new IEventListener() {
             public void run(EventArgument argument, Event trigger){
                 String arg = argument.getArgument().toString();
-                UIHandler.getInstance().addToCombatLog(arg);
+                try{ UIHandler.getInstance().getCombatLogger().addSystemLog(arg); }
+                catch(ArgumentNullException e){}
             }
         }, new IEventListener() {
             public void run(EventArgument argument, Event trigger){
                 String arg = argument.getArgument().toString();
-                UIHandler.getInstance().addToCombatLog(arg);
+                try{ UIHandler.getInstance().getCombatLogger().addSystemLog(arg); }
+                catch(ArgumentNullException e){}
             }
         });
 

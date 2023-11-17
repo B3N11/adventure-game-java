@@ -6,10 +6,12 @@ import exception.entity.ItemNotInInventoryException;
 import exception.entity.NoWeaponEquippedException;
 import exception.general.ArgumentNullException;
 import exception.general.InvalidArgumentException;
+import game.enums.EntityType;
 
 public abstract class Entity implements Serializable{
         
     protected String name;
+    protected EntityType entityType;
     protected int health;
     protected double movement;    
     protected int level;
@@ -28,6 +30,7 @@ public abstract class Entity implements Serializable{
     public String getName(){ return name; }
     public Weapon getWeapon(){ return weapon; }
     public Armor getArmor(){ return armor; }
+    public EntityType getEntityType() { return entityType; }
     
     public Entity setName(String name) throws ArgumentNullException{
         if(name == null)

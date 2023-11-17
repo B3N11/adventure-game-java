@@ -1,8 +1,10 @@
 package uilogic;
 
 import java.io.IOException;
+import java.util.HashMap;
 
 import exception.general.ArgumentNullException;
+import exception.general.ElementNotFoundException;
 import exception.general.InvalidArgumentException;
 import exception.ui.ComponentAlreadyAtPositionException;
 import game.behaviour.interfaces.IInteractiveEntity;
@@ -18,9 +20,13 @@ public class PlayFieldHandler {
     private GridButtonHandler gridButtonHandler;
 
     private GridPosition selectedTile;
+    private MapLayoutData currentMapLayoutData;
+
+    private HashMap<String, IInteractiveEntity> currentEntitiesOnMap;
 
     public PlayFieldHandler(PlayfieldPanel playField){
         this.playField = playField;
+        currentEntitiesOnMap = new HashMap<String, IInteractiveEntity>();
 
         try{
             gridButtonHandler = new GridButtonHandler(new GenericDelegate() {
@@ -31,6 +37,8 @@ public class PlayFieldHandler {
 
     public PlayfieldPanel getPlayField() { return playField; }
     public GridButtonHandler getGridButtonHandler() { return gridButtonHandler; }
+    public MapLayoutData getCurrentMapLayoutData() { return currentMapLayoutData; }
+    public GridPosition getSelectedTile() { return selectedTile; }
 
     public void setPlayField(PlayfieldPanel playField) throws ArgumentNullException{
         if(playField == null)
@@ -39,14 +47,24 @@ public class PlayFieldHandler {
     }
 
     public void selectTile(Object o){            
-        var gridPosition = (GridPosition)o;
+        selectedTile = (GridPosition)o;
 
-        selectedTile = gridPosition;
-        System.out.println(selectedTile.getX() + " ; " + selectedTile.getY());
+        String entityType = "EMPTY";
+        try{ 
+            var entity = getEntityByPosition(selectedTile);
+            entityType = entity.getEntity().getEntityType().toString();
+        }catch(ElementNotFoundException e){}
+
+        String message = "Tile selected: {" + selectedTile.getX() + ";" + selectedTile.getY() + "}\n" +
+                         "Tile type: " + entityType;
+
+        try{ UIHandler.getInstance().getCombatLogger().addSystemLog(message); }
+        catch(ArgumentNullException e){}
     }
 
     public void setCurrentMapLayout(MapLayoutData data) throws Exception{
         playField.setMapLayout(data, gridButtonHandler, true);
+        currentMapLayoutData = data;
     }
 
     public void placeEntity(IInteractiveEntity entity, String imagePath) throws ArgumentNullException, InvalidArgumentException, ComponentAlreadyAtPositionException, IOException{
@@ -54,9 +72,16 @@ public class PlayFieldHandler {
             playField.getComponentSize().getHorizontal(),
             playField.getComponentSize().getVertical(),
             entity.getPosition());
-
         component.setImage(imagePath);
 
         playField.addEntity(component);
+        currentEntitiesOnMap.put(entity.getInstanceID(), entity);
+    }
+
+    private IInteractiveEntity getEntityByPosition(GridPosition position) throws ElementNotFoundException{
+        for(var entity : currentEntitiesOnMap.entrySet())
+            if(entity.getValue().getPosition().equals(position))
+                return entity.getValue();
+        throw new ElementNotFoundException();
     }
 }

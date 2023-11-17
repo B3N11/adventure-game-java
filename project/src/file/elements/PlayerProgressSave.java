@@ -9,6 +9,7 @@ public class PlayerProgressSave implements Serializable{
     
     public String modifiedEnemyFilePath;
     public String currentMapID;
+    public String currentIconFile;
     
     public Player player;
     public String playerArmorID;

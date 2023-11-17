@@ -1,15 +1,12 @@
 package uilogic;
 
 import java.io.File;
-
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
-import exception.general.ArgumentNullException;
 import exception.ui.UIHandlerAlreadyStartedException;
 import game.global.GameHandler;
-import game.utility.dataclass.MapLayoutData;
 import ui.elements.PlayFrame;
 
 public class UIHandler {
@@ -17,6 +14,7 @@ public class UIHandler {
     private static UIHandler instance;
 
     private PlayFieldHandler playFieldHandler;
+    private CombatLogger logger;
 
     //Button Handler
     private PlayFrameMenuBarHandler playFrameMenuBarHandler;
@@ -40,6 +38,7 @@ public class UIHandler {
     }
 
     public PlayFieldHandler getPlayFieldHandler() { return playFieldHandler; }
+    public CombatLogger getCombatLogger() { return logger; }
 
     public void start() throws Exception{
         if(started)
@@ -47,6 +46,7 @@ public class UIHandler {
 
         createPlayFrame();
         playFrame.displayFrame();
+        logger = new CombatLogger(playFrame);
         started = true;
     }
 
@@ -72,10 +72,6 @@ public class UIHandler {
                 showMessage("Please select a valid file!", JOptionPane.ERROR_MESSAGE);
             };
         }
-    }
-
-    public void addToCombatLog(String text){
-        playFrame.addToCombatLog(text);
     }
 
     public void showMessage(String message, int messageType){

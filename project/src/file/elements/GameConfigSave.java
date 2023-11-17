@@ -9,4 +9,5 @@ public class GameConfigSave implements Serializable{
     public String mapdataFolder;
 
     public String defaultMapID;
+    public String defaultPlayerSaveFile;
 }

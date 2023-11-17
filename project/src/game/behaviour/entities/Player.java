@@ -12,6 +12,7 @@ import game.behaviour.abstracts.Equipment;
 import game.behaviour.abstracts.Weapon;
 import game.behaviour.interfaces.IInteractiveEntity;
 import game.enums.EntityCondition;
+import game.enums.EntityType;
 import game.enums.ModifierType;
 import ui.data.GridPosition;
 
@@ -36,6 +37,7 @@ public class Player extends Entity implements IInteractiveEntity{
         super(health, movement, level);
 
         inventory = new Inventory(false);
+        entityType = EntityType.PLAYER;
     }
 
     public String getInstanceID() { return playerID; }

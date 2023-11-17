@@ -55,7 +55,7 @@ public class FileHandler {
         return instance;
     }
 
-    public void loadConfigFile(String filePath) throws ArgumentNullException, FileNotFoundException, ClassNotFoundException, IOException{
+    public void loadConfigFile(String filePath) throws Exception{
         if(filePath == null)
             throw new ArgumentNullException();
 
@@ -69,6 +69,7 @@ public class FileHandler {
         if(!itemFolderFilePath.exists() || !enemyTypeFolderFilePath.exists() || !mapLayoutFolderFilePath.exists())
             throw new FileNotFoundException();
 
+        loadPlayerProgressSave(new File(folderPath, config.defaultPlayerSaveFile).getAbsolutePath());
         UIHandler.getInstance().showMessage("Config successfully loaded!", JOptionPane.INFORMATION_MESSAGE);
     }
 
@@ -78,6 +79,7 @@ public class FileHandler {
 
         var playerProgress = (PlayerProgressSave)fileIOUtil.readObjectFromFile(filePath);
         var player = playerProgress.player;
+        GameHandler.getInstance().setSessionPlayer(player);
 
         for(var item : playerProgress.inventory){
             var itemObject = loadItem(item);
@@ -96,10 +98,11 @@ public class FileHandler {
         var weapon = (Weapon)loadItem(playerProgress.playerWeaponID);
         player.equip(armor);
         player.equip(weapon);
-        GameHandler.getInstance().setSessionPlayer(player);
+        
         loadCurrentMap(playerProgress.currentMapID);
-
-        //TODO: Place player GridEntity here
+        
+        player.setPosition(UIHandler.getInstance().getPlayFieldHandler().getCurrentMapLayoutData().getPlayerPosition());
+        UIHandler.getInstance().getPlayFieldHandler().placeEntity(player, playerProgress.currentIconFile);
 
         //TODO: Implement enemy placement
     }

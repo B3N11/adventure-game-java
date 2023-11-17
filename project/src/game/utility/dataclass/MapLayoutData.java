@@ -21,6 +21,7 @@ public class MapLayoutData extends Identity{
         this.vertical = vertical;
         backgroundFilePath = file;
         enemies = new ArrayList<EnemyMapData>();
+        this.playerStartPosition = playerPosition;
     }
 
     public int getHorizontal() { return horizontal; }
