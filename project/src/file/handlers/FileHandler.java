@@ -92,13 +92,14 @@ public class FileHandler {
 
         //TODO: Implement file format exception
 
-        //TODO: Implement modified enemy load
-
         var armor = (Armor)loadItem(playerProgress.playerArmorID);
         var weapon = (Weapon)loadItem(playerProgress.playerWeaponID);
         player.equip(armor);
         player.equip(weapon);
+        player.applyStats();
         
+        //TODO: Implement modified enemy load
+
         loadCurrentMap(playerProgress.currentMapID);
         
         player.setPosition(UIHandler.getInstance().getPlayFieldHandler().getCurrentMapLayoutData().getPlayerPosition());
@@ -121,6 +122,7 @@ public class FileHandler {
 
             var enemyType = loadEnemyType(enemyData.getAssetID());
             var enemy = new Enemy(enemyData.getInstanceID(), enemyType).setPosition(enemyData.getPosition());
+            enemy.applyStats();
 
             if(!ModifiedEnemyStorage.getInstance().contains(enemyData.getInstanceID())){
                 ActiveEnemyStorage.getInstance().add(enemy.getID(), enemy);

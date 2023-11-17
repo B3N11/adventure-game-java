@@ -17,7 +17,7 @@ public class EnemyEntity extends Entity{
         super(health, movement, level);
 
         inventory = new Inventory(true);
-        entityType = EntityType.ENEMY;
+        setEntityType(EntityType.ENEMY);
     }
 
     public void addToInventory(Equipment equipment) throws ArgumentNullException{
