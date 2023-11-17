@@ -22,7 +22,7 @@ public class GameHandler {
     //Game Config
     private String gameTitle;
     private String gameCreator;
-    private HashMap<String, String> maps;
+    private HashMap<String, String> maps;   //TODO: read all maps <ID, NAME>
 
     private GameHandler(){
         saveHandler = new SaveHandler();

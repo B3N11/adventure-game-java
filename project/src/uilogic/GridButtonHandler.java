@@ -20,6 +20,9 @@ public class GridButtonHandler implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
+        var button = (GridButton)e.getSource();
+        button.hightlightButton(true);
+
         var buttonPosition = ((GridButton)e.getSource()).getGridPosition();
         delegate.run(buttonPosition);
     }    

@@ -22,14 +22,20 @@ public class GameActionController {
         var player = GameHandler.getInstance().getPlayer();
         var selectedTile = UIHandler.getInstance().getPlayFieldHandler().getSelectedTile();
 
+        if(selectedTile == null)
+            return;
+
         try{
-            var entityOnTile = UIHandler.getInstance().getPlayFieldHandler().getEntityByPosition(selectedTile);
-            String message = "FAIL! There is another entity on the tile!";
             UIHandler.getInstance().getCombatLogger().addEntityLog(player.getName(), "Attempted to move...");
+            
+            UIHandler.getInstance().getPlayFieldHandler().getEntityByPosition(selectedTile);
+
+            String message = "FAIL! There is another entity on the tile!";
+            UIHandler.getInstance().getCombatLogger().addEntityLog(player.getName(), message);
             return;
         }
         catch(ArgumentNullException e){ /*Wont happen*/ }
-        catch(ElementNotFoundException e){ /*Player can safely move there*/}
+        catch(ElementNotFoundException e){ /*Player can safely move there*/ }
         
         double distance = UIHandler.getInstance().getPlayFieldHandler().getSelectedTileDistance();
 
@@ -59,6 +65,10 @@ public class GameActionController {
     }
 
     public void playerAttackAction(){
+
+    }
+
+    public void playerEndTurnAction(){
 
     }
 }

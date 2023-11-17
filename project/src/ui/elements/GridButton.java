@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.event.ActionListener;
 
+import javax.swing.Action;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 
@@ -11,18 +12,17 @@ import exception.general.ArgumentNullException;
 import exception.general.InvalidArgumentException;
 import ui.data.GridPosition;
 import ui.interfaces.IGridPositionable;
-import uilogic.GridButtonHandler;
 
 public class GridButton extends JButton implements IGridPositionable{
     
     private GridPosition gridPosition;
 
-    public GridButton(int width, int height, Color borderColor, GridPosition position, GridButtonHandler handler){
+    public GridButton(int width, int height, Color borderColor, GridPosition position, ActionListener handler){
         initVisuals(width, height, borderColor);
         initData(position, handler);
     }
 
-    public GridButton(int width, int height, int x, int y, Color borderColor, GridButtonHandler handler) throws InvalidArgumentException{
+    public GridButton(int width, int height, int x, int y, Color borderColor, ActionListener handler) throws InvalidArgumentException{
         initVisuals(width, height, borderColor);
         initData(new GridPosition(x, y), handler);
     }
@@ -40,7 +40,21 @@ public class GridButton extends JButton implements IGridPositionable{
         gridPosition = position;
         addActionListener(listener);
     }
-    //#endregion
+
+    public void hightlightButton(boolean highlight){
+
+        throw new UnsupportedOperationException();
+/* 
+        setOpaque(highlight);
+        setContentAreaFilled(highlight);
+
+        if(highlight){
+            setBackground(new Color(198, 204, 201, 150));
+        }
+        else{
+            setBackground(new Color(255, 255, 255, 0));
+        } */
+    }
 
     @Override
     public GridPosition getGridPosition(){
