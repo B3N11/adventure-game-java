@@ -2,34 +2,17 @@ package game.behaviour.entities.enemy;
 
 import exception.general.ArgumentNullException;
 import exception.general.InvalidArgumentException;
-import game.behaviour.Inventory;
-import game.behaviour.abstracts.Consumable;
-import game.behaviour.abstracts.Entity;
-import game.behaviour.abstracts.Equipment;
+import game.behaviour.entities.InventoryEntity;
 import game.enums.EntityType;
 
-public class EnemyEntity extends Entity{
+public class EnemyEntity extends InventoryEntity{
     
     private int rewardXP;
-    transient private Inventory inventory;
 
     public EnemyEntity(int health, int movement, int level) throws InvalidArgumentException, ArgumentNullException{
-        super(health, movement, level);
+        super(health, movement, level, true);
 
-        inventory = new Inventory(true);
-        setEntityType(EntityType.ENEMY);
-    }
-
-    public void addToInventory(Equipment equipment) throws ArgumentNullException{
-        if(inventory == null)
-            inventory = new Inventory(false);
-        inventory.add(equipment);
-    }
-
-    public void addToInventory(Consumable consumable) throws ArgumentNullException{
-        if(inventory == null)
-            inventory = new Inventory(false);
-        inventory.add(consumable);
+        entityType = EntityType.ENEMY;
     }
 
     public EnemyEntity setRewardXP(int xp) throws InvalidArgumentException{
@@ -41,5 +24,4 @@ public class EnemyEntity extends Entity{
     }
 
     public int getRewardXP() { return rewardXP; }
-    public Inventory getInventory() { return inventory; }
 }

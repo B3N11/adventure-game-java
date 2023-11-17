@@ -31,11 +31,6 @@ public abstract class Entity implements Serializable{
     public Weapon getWeapon(){ return weapon; }
     public Armor getArmor(){ return armor; }
     public EntityType getEntityType() { return entityType; }
-
-    public Entity setEntityType(EntityType type){
-        this.entityType = type;
-        return this;
-    }
     
     public Entity setName(String name) throws ArgumentNullException{
         if(name == null)

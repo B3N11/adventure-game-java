@@ -17,6 +17,7 @@ import file.handlers.FileHandler;
 import game.behaviour.abstracts.Armor;
 import game.behaviour.abstracts.EnemyBehaviourController;
 import game.behaviour.entities.Player;
+import game.behaviour.entities.PlayerEntity;
 import game.behaviour.entities.enemy.Enemy;
 import game.behaviour.entities.enemy.EnemyEntity;
 import game.behaviour.entities.enemy.EnemyType;
@@ -84,7 +85,8 @@ public class Main {
         String enemyFileName = "shotgun-thug.txt";
         fileIO.writeObjectToFile("G:\\uni\\sub\\3\\prog\\hf\\adventure-game-java\\project\\resources\\gamedata\\enemy\\" + enemyFileName, enemyData);
 
-        var player = new Player(30, 5, 1);
+        var playerEntity = new PlayerEntity(30, 5, 1);
+        var player = new Player("player", playerEntity);
         var playerSave = new PlayerProgressSave();
         playerSave.player = player;
         playerSave.currentMapID = "default-map-001";
@@ -140,7 +142,8 @@ public class Main {
 
         UIHandler.getInstance().getPlayFieldHandler().placeEntity(enemy, enemyType.getIconFilePath());
 
-        var player = new Player(100, 5, 2);
+        var playerEntity = new PlayerEntity(100, 5, 2);
+        var player = new Player("player", playerEntity);
         player.addToInventory(enemyArmor);
         player.equip(enemyArmor);
 

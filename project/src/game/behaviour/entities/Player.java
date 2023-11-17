@@ -4,21 +4,20 @@ import exception.entity.ItemNotInInventoryException;
 import exception.entity.NoWeaponEquippedException;
 import exception.general.ArgumentNullException;
 import exception.general.InvalidArgumentException;
-import game.behaviour.Inventory;
 import game.behaviour.abstracts.Armor;
 import game.behaviour.abstracts.Consumable;
-import game.behaviour.abstracts.Entity;
 import game.behaviour.abstracts.Equipment;
 import game.behaviour.abstracts.Weapon;
 import game.behaviour.interfaces.IInteractiveEntity;
 import game.enums.EntityCondition;
-import game.enums.EntityType;
 import game.enums.ModifierType;
+import game.utility.general.Identity;
 import ui.data.GridPosition;
 
-public class Player extends Entity implements IInteractiveEntity{
+public class Player extends Identity implements IInteractiveEntity{
     
-    //TODO: Player is only used via the IInteractiveEntity interface, so it should only use Entity as a property and extend Identity
+    private PlayerEntity entity;
+    
     //Progression
     private int xp;
     private int requiredXP;
@@ -29,29 +28,26 @@ public class Player extends Entity implements IInteractiveEntity{
 
     private GridPosition position;
 
-    private static String playerID = "Player";
-
-    transient private Inventory inventory;
-
-    public Player(int health, int movement, int level) throws InvalidArgumentException, ArgumentNullException{
-        super(health, movement, level);
-
-        inventory = new Inventory(false);
-        entityType = EntityType.PLAYER;
+    public Player(String id, PlayerEntity entity) throws ArgumentNullException{
+        if(id == null || entity == null)
+            throw new ArgumentNullException();
+        
+        setID(id);
+        this.entity = entity;
     }
 
-    public String getInstanceID() { return playerID; }
+    public String getInstanceID() { return getID(); }
     public int getXP(){ return xp; }
     public int getRequiredXP(){ return requiredXP; }
     public GridPosition getPosition(){ return position; }
-    public Entity getEntity() { return this; }
+    public PlayerEntity getEntity() { return entity; }
     public int getCurrentHealth() { return currentHealth; }
     public double getCurrentMovement() { return currentMovement; }
 
     @Override
     public IInteractiveEntity applyStats() {
-        currentHealth = getHealth();
-        currentMovement = getMovement();
+        currentHealth = entity.getHealth();
+        currentMovement = entity.getMovement();
         return this;
     }
 
@@ -69,7 +65,7 @@ public class Player extends Entity implements IInteractiveEntity{
         else
             xp += newXP;
 
-        return level;
+        return entity.getLevel();
     }
 
     private void levelUp(int leftoverXP){
@@ -78,76 +74,73 @@ public class Player extends Entity implements IInteractiveEntity{
     }
 
     public void levelUp(){
-        level++;
-        requiredXP = level * 150;
+        try{
+            entity.setLevel(entity.getLevel() + 1);
+        }
+        catch(Exception e){}
+
+        requiredXP = entity.getLevel() * 150;
     }
 
     public void addToInventory(Equipment equipment) throws ArgumentNullException{
-        if(inventory == null)
-            inventory = new Inventory(false);
-        inventory.add(equipment);
+        if(entity.getInventory() == null)
+            entity.createInventory(false);
+        entity.getInventory().add(equipment);
     }
 
     public void addToInventory(Consumable consumable) throws ArgumentNullException{
-        if(inventory == null)
-            inventory = new Inventory(false);
-        inventory.add(consumable);
+        if(entity.getInventory() == null)
+            entity.createInventory(false);
+        entity.addToInventory(consumable);
     }
 
-    public Inventory getInventory(){ return inventory; }
-
-    @Override
     public boolean attack(int targetAC, double distance) throws Exception{
-        if(weapon == null)
+        if(entity.getWeapon() == null)
             throw new NoWeaponEquippedException();
 
-        int finalTargetAC = targetAC - (int)inventory.calculateModifiers(ModifierType.ATTACK);
-        return weapon.attack(finalTargetAC, distance);
+        int finalTargetAC = targetAC - (int)entity.getInventory().calculateModifiers(ModifierType.ATTACK);
+        return entity.attack(finalTargetAC, distance);
     }
 
-    @Override
     public int damage(double distance) throws Exception{
-        if(weapon == null)
+        if(entity.getWeapon() == null)
             throw new NoWeaponEquippedException();
 
-        return weapon.damage(distance) + level + (int)inventory.calculateModifiers(ModifierType.DAMAGE);
+        return entity.damage(distance) + (int)entity.getInventory().calculateModifiers(ModifierType.DAMAGE);
+    }
+
+    public int getArmorClass() throws Exception{
+        int result = entity.getArmor() == null ? (entity.getLevel() + 5) : entity.getArmor().getArmorClass() + entity.getLevel();
+        result += (int)entity.getInventory().calculateModifiers(ModifierType.ARMOR_CLASS);
+        return result;
+    }
+
+    public void equip(Weapon weapon) throws ItemNotInInventoryException, ArgumentNullException{
+        if(!entity.getInventory().contains(weapon.getID()))
+            throw new ItemNotInInventoryException();
+
+        //Unequip current
+        if(entity.getWeapon() != null)
+            entity.getWeapon().equip(false);
+
+        entity.equip(weapon);
+        entity.getWeapon().equip(true);
+    }
+
+    public void equip(Armor armor) throws ItemNotInInventoryException, ArgumentNullException{
+        if(!entity.getInventory().contains(armor.getID()))
+            throw new ItemNotInInventoryException();
+        
+        if(entity.getArmor() != null)
+            entity.getArmor().equip(false);
+
+        entity.equip(armor);
+        entity.getArmor().equip(true);
     }
 
     @Override
     public void resetMovement() throws Exception{
-        currentMovement = movement + armor.getMovementBonus() + inventory.calculateModifiers(ModifierType.MOVEMENT);
-    }
-
-    @Override
-    public int getArmorClass() throws Exception{
-        int result = armor == null ? (level + 5) : armor.getArmorClass() + level;
-        result += (int)inventory.calculateModifiers(ModifierType.ARMOR_CLASS);
-        return result;
-    }
-
-    @Override
-    public void equip(Weapon weapon) throws ItemNotInInventoryException, ArgumentNullException{
-        if(!inventory.contains(weapon.getID()))
-            throw new ItemNotInInventoryException();
-
-        //Unequip current
-        if(this.weapon != null)
-            this.weapon.equip(false);
-
-        this.weapon = weapon;
-        this.weapon.equip(true);
-    }
-
-    @Override
-    public void equip(Armor armor) throws ItemNotInInventoryException, ArgumentNullException{
-        if(!inventory.contains(armor.getID()))
-            throw new ItemNotInInventoryException();
-        
-        if(this.armor != null)
-            this.armor.equip(false);
-
-        this.armor = armor;
-        this.armor.equip(true);
+        currentMovement = entity.getMovement() + entity.getArmor().getMovementBonus() + entity.getInventory().calculateModifiers(ModifierType.MOVEMENT);
     }
 
     @Override
@@ -165,7 +158,7 @@ public class Player extends Entity implements IInteractiveEntity{
             throw new InvalidArgumentException();
 
         currentHealth -= damage;
-        Math.clamp(currentHealth, 0, health);
+        Math.clamp(currentHealth, 0, entity.getHealth());
 
         //If health is 0, set condition to DEAD
         if(currentHealth == 0){
@@ -182,7 +175,7 @@ public class Player extends Entity implements IInteractiveEntity{
             throw new InvalidArgumentException();
 
         currentHealth += amount;
-        Math.clamp(currentHealth, 0, health);
+        Math.clamp(currentHealth, 0, entity.getHealth());
 
         //If is dead, then resurrect
         if(condition == EntityCondition.DEAD){
