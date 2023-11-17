@@ -26,4 +26,10 @@ public class CombatLogger {
         String result = "[" + entityName + "]: " + message + "\n";
         frame.addToCombatLog(result);
     }
+
+    public void addPlainText(String message) throws ArgumentNullException{
+        if(message == null)
+            throw new ArgumentNullException();
+        frame.addToCombatLog(message);
+    }
 }

@@ -45,7 +45,12 @@ import uilogic.UIHandler;
 public class Main {
 
     public static void main(String[] args) throws Exception{
+        DiceRoller.getInstance().setDefault(20);
+        DiceRoller.getInstance().setDelegate(new GenericDelegate() {
+            public void run(Object o){ UIHandler.getInstance().displayDiceRollResult((Integer)o); }
+        });
         GameHandler.getInstance().start();
+        
         //FileHandler.getInstance().loadCurrentMap("default-map-001");
         //createTestData();
     }
@@ -70,7 +75,7 @@ public class Main {
         fileIO.writeObjectToFile("G:\\uni\\sub\\3\\prog\\hf\\adventure-game-java\\project\\resources\\gamedata\\item\\" + armorFileName, armor);        
         fileIO.writeObjectToFile("G:\\uni\\sub\\3\\prog\\hf\\adventure-game-java\\project\\resources\\gamedata\\item\\" + weaponFileName, weapon);
 
-        var enemyEntity = new EnemyEntity(20, 5, 1).setRewardXP(20);
+        var enemyEntity = (EnemyEntity)new EnemyEntity(20, 5, 1).setRewardXP(20).setName("Techno Punk");
         enemyEntity.equip(armor);
         enemyEntity.equip(weapon);
 

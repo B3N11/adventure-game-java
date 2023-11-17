@@ -4,6 +4,7 @@ import java.util.HashMap;
 
 import exception.general.ArgumentNullException;
 import exception.general.ElementNotFoundException;
+import ui.data.GridPosition;
 import ui.elements.GridEntityComponent;
 
 public class GridEntityComponentHandler {
@@ -38,6 +39,16 @@ public class GridEntityComponentHandler {
         if(result != null)
             return result;
 
+        throw new ElementNotFoundException();
+    }
+
+    public GridEntityComponent getByPosition(GridPosition position) throws ArgumentNullException, ElementNotFoundException{
+        if(position == null)
+            throw new ArgumentNullException();
+        
+        for(var entity : entities.entrySet())
+            if(entity.getValue().getGridPosition().equals(position))
+                return entity.getValue();
         throw new ElementNotFoundException();
     }
 

@@ -25,11 +25,8 @@ public class PlayFieldHandler {
 
     private MapLayoutData currentMapLayoutData;
 
-    private HashMap<String, IInteractiveEntity> currentEntitiesOnMap;
-
     public PlayFieldHandler(PlayfieldPanel playField){
         this.playField = playField;
-        currentEntitiesOnMap = new HashMap<String, IInteractiveEntity>();
 
         try{
             gridButtonHandler = new GridButtonHandler(new GenericDelegate() {
@@ -70,20 +67,16 @@ public class PlayFieldHandler {
         component.setImage(imagePath);
 
         playField.addEntity(component);
-        currentEntitiesOnMap.put(entity.getInstanceID(), entity);
     }
 
     public void replaceEntity(String id, GridPosition newPosition) throws ArgumentNullException, ElementNotFoundException, InvalidArgumentException, ComponentAlreadyAtPositionException{
         playField.replaceEntity(id, newPosition);
     }
 
-    public IInteractiveEntity getEntityByPosition(GridPosition position) throws ElementNotFoundException, ArgumentNullException{
+    public String getEntityByPosition(GridPosition position) throws ElementNotFoundException, ArgumentNullException{
         if(position == null)
             throw new ArgumentNullException();
             
-        for(var entity : currentEntitiesOnMap.entrySet())
-            if(entity.getValue().getPosition().equals(position))
-                return entity.getValue();
-        throw new ElementNotFoundException();
+        return playField.getEntityByPosition(position);
     }
 }

@@ -5,6 +5,7 @@ import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
+import exception.general.ArgumentNullException;
 import exception.ui.UIHandlerAlreadyStartedException;
 import game.global.GameHandler;
 import ui.elements.PlayFrame;
@@ -90,5 +91,12 @@ public class UIHandler {
 
     public void togglePlayerControlls(boolean on){
         //Turn on or off the player controlls while enemies are doing their turns
+    }
+
+    public void displayDiceRollResult(Integer roll){
+        String message = "Rolled: " + roll;
+
+        try{ logger.addPlainText(message); }
+        catch(ArgumentNullException e){ /*Wont happen*/}
     }
 }

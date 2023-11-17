@@ -9,8 +9,6 @@ import javax.swing.JOptionPane;
 import exception.entity.ItemNotInInventoryException;
 import exception.general.ArgumentNullException;
 import exception.general.ElementAlreadyInCollectionException;
-import exception.general.InvalidArgumentException;
-import exception.ui.ComponentAlreadyAtPositionException;
 import file.FileIOUtil;
 import file.elements.EnemyTypeSave;
 import file.elements.GameConfigSave;
@@ -33,8 +31,6 @@ import game.utility.dataclass.MapLayoutData;
 import uilogic.UIHandler;
 
 public class FileHandler {
-    
-    private boolean started;
 
     private FileIOUtil fileIOUtil;
 
@@ -45,7 +41,6 @@ public class FileHandler {
     private static FileHandler instance;
 
     private FileHandler(){
-        started = false;
         fileIOUtil = new FileIOUtil();
     }
 

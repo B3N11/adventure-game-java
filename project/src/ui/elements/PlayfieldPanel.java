@@ -194,4 +194,12 @@ public class PlayfieldPanel extends JPanel{
 
         return entity;
     }
+
+    public String getEntityByPosition(GridPosition position) throws ArgumentNullException, ElementNotFoundException{
+        if(position == null)
+            throw new ArgumentNullException();
+
+        var entity = entityHandler.getByPosition(position);
+        return entity.getID();
+    }
 }

@@ -3,8 +3,6 @@ package ui.elements;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.event.ActionListener;
-
-import javax.swing.Action;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 
@@ -12,7 +10,6 @@ import exception.general.ArgumentNullException;
 import exception.general.InvalidArgumentException;
 import ui.data.GridPosition;
 import ui.interfaces.IGridPositionable;
-import uilogic.UIHandler;
 
 public class GridButton extends JButton implements IGridPositionable{
     

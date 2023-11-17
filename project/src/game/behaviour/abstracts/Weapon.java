@@ -95,7 +95,7 @@ public abstract class Weapon extends Equipment{
         var roller = DiceRoller.getInstance();
 
         //Check if the rolled value succeeds armorClass
-        boolean hit = (roller.rollDefault() + attackModifier) >= targetAC;
+        boolean hit = roller.rollDefault(attackModifier) >= targetAC;
         boolean inRange = checkRange(distance);
         return inRange && hit;
     }
