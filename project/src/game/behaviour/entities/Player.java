@@ -48,6 +48,13 @@ public class Player extends Entity implements IInteractiveEntity{
     public int getCurrentHealth() { return currentHealth; }
     public double getCurrentMovement() { return currentMovement; }
 
+    @Override
+    public IInteractiveEntity applyStats() {
+        currentHealth = getHealth();
+        currentMovement = getMovement();
+        return this;
+    }
+
     public void setPosition(GridPosition position) throws ArgumentNullException{
         if(position == null)
             throw new ArgumentNullException();

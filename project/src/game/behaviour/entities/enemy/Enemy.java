@@ -34,6 +34,13 @@ public class Enemy extends Identifiable implements IInteractiveEntity{
     public int getCurrentHealth() { return currentHealth; }
     public double getCurrentMovement() { return currentMovement; }
 
+    @Override
+    public IInteractiveEntity applyStats() {
+        currentHealth = enemyType.getEntity().getHealth();
+        currentMovement = enemyType.getEntity().getMovement();
+        return this;
+    }
+
     public Enemy setCurrentHealth(int health) throws InvalidArgumentException{
         if(health < 0)
             throw new InvalidArgumentException();

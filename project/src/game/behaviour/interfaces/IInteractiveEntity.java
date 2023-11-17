@@ -6,6 +6,9 @@ import ui.data.GridPosition;
 
 public interface IInteractiveEntity {
 
+    //Sets current stat values to the max
+    public IInteractiveEntity applyStats();
+
     public String getInstanceID();
 
     public int getCurrentHealth();
