@@ -27,9 +27,8 @@ public class ScrollableTextPanel extends JPanel{
     }
 
     private void setupTextArea(int width, int height){
-        textArea = new JTextArea(1,1);
+        textArea = new JTextArea();
         textArea.setEditable(false);
-        textArea.setPreferredSize(new Dimension(width, height));
 
         var scroll = new JScrollPane(textArea);
         scroll.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
