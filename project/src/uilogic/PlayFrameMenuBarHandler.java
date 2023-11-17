@@ -1,43 +1,28 @@
 package uilogic;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.util.HashMap;
-
 import game.global.GameHandler;
+import game.utility.delegates.GenericDelegate;
 
-public class PlayFrameMenuBarHandler implements ActionListener{
-
-    private HashMap<String, Runnable> menuActions;
+public class PlayFrameMenuBarHandler extends MultipleButtonHandler{
 
     public PlayFrameMenuBarHandler(){
-        initMenuActions();
-    }
-
-    private void initMenuActions(){
-        menuActions = new HashMap<String, Runnable>();
-
-        var saveHandler = GameHandler.getInstance().getSaveHandler();
-
-        menuActions.put("QUICK_SAVE_GAME", new Runnable() {
-           public void run(){ saveHandler.quickSave(); } 
-        });
-
-        menuActions.put("LOAD_CONFIGFILE", new Runnable(){
-            public void run(){ UIHandler.getInstance().openFileDialog(FileChooserType.CONFIG); }
-        });
-
-        menuActions.put("LOAD_GAME", new Runnable() {
-            public void run(){ UIHandler.getInstance().openFileDialog(FileChooserType.PLAYERPROGRESS); }
-        });
+        initActions();
     }
 
     @Override
-    public void actionPerformed(ActionEvent e) {
-        var action = menuActions.get(e.getActionCommand());
+    protected final void initActions(){
+        var saveHandler = GameHandler.getInstance().getSaveHandler();
 
-        if(action == null)
-            return;
-        action.run();
+        actions.put("QUICK_SAVE_GAME", new GenericDelegate() {
+           public void run(Object o){ saveHandler.quickSave(); } 
+        });
+
+        actions.put("LOAD_CONFIGFILE", new GenericDelegate(){
+            public void run(Object o){ UIHandler.getInstance().openFileDialog(FileChooserType.CONFIG); }
+        });
+
+        actions.put("LOAD_GAME", new GenericDelegate() {
+            public void run(Object o){ UIHandler.getInstance().openFileDialog(FileChooserType.PLAYERPROGRESS); }
+        });
     }
 }

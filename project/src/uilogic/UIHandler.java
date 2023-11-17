@@ -53,7 +53,12 @@ public class UIHandler {
     private void initUIHandlers(){
         playFrameMenuBarHandler = new PlayFrameMenuBarHandler();
         utilityButtonHandler = new UtilityButtonHandler();
+        interactButtonHandler = new InteractButtonHandler();
         playFieldHandler = new PlayFieldHandler(null);
+    }
+
+    public void refreshUI(){
+        playFrame.refresh();
     }
 
     public void openFileDialog(FileChooserType type){

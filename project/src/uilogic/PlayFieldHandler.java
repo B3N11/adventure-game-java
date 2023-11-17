@@ -8,6 +8,7 @@ import exception.general.ElementNotFoundException;
 import exception.general.InvalidArgumentException;
 import exception.ui.ComponentAlreadyAtPositionException;
 import game.behaviour.interfaces.IInteractiveEntity;
+import game.global.GameHandler;
 import game.utility.dataclass.MapLayoutData;
 import game.utility.delegates.GenericDelegate;
 import ui.data.GridPosition;
@@ -20,6 +21,8 @@ public class PlayFieldHandler {
     private GridButtonHandler gridButtonHandler;
 
     private GridPosition selectedTile;
+    private double selectedTileDistance;
+
     private MapLayoutData currentMapLayoutData;
 
     private HashMap<String, IInteractiveEntity> currentEntitiesOnMap;
@@ -39,6 +42,7 @@ public class PlayFieldHandler {
     public GridButtonHandler getGridButtonHandler() { return gridButtonHandler; }
     public MapLayoutData getCurrentMapLayoutData() { return currentMapLayoutData; }
     public GridPosition getSelectedTile() { return selectedTile; }
+    public double getSelectedTileDistance() { return selectedTileDistance; }
 
     public void setPlayField(PlayfieldPanel playField) throws ArgumentNullException{
         if(playField == null)
@@ -53,9 +57,13 @@ public class PlayFieldHandler {
         try{ 
             var entity = getEntityByPosition(selectedTile);
             entityType = entity.getEntity().getEntityType().toString();
-        }catch(ElementNotFoundException e){}
+        }catch(ElementNotFoundException e){
+        }catch(ArgumentNullException e){}
 
-        String message = "Tile selected: {" + selectedTile.getX() + ";" + selectedTile.getY() + "}\n" +
+        try{ selectedTileDistance = GridPosition.calculateAbsoluteDistance(GameHandler.getInstance().getPlayer().getPosition(), selectedTile); }
+        catch(ArgumentNullException e){}
+
+        String message = "Tile selected: {distance=" + selectedTileDistance + "}\n" +
                          "Tile type: " + entityType;
 
         try{ UIHandler.getInstance().getCombatLogger().addSystemLog(message); }
@@ -78,7 +86,14 @@ public class PlayFieldHandler {
         currentEntitiesOnMap.put(entity.getInstanceID(), entity);
     }
 
-    private IInteractiveEntity getEntityByPosition(GridPosition position) throws ElementNotFoundException{
+    public void replaceEntity(String id, GridPosition newPosition) throws ArgumentNullException, ElementNotFoundException, InvalidArgumentException, ComponentAlreadyAtPositionException{
+        playField.replaceEntity(id, newPosition);
+    }
+
+    public IInteractiveEntity getEntityByPosition(GridPosition position) throws ElementNotFoundException, ArgumentNullException{
+        if(position == null)
+            throw new ArgumentNullException();
+            
         for(var entity : currentEntitiesOnMap.entrySet())
             if(entity.getValue().getPosition().equals(position))
                 return entity.getValue();

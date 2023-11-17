@@ -18,4 +18,12 @@ public class CombatLogger {
         String result = "[SYSTEM]: " + message + "\n";
         frame.addToCombatLog(result);
     }
+
+    public void addEntityLog(String entityName, String message) throws ArgumentNullException{
+        if(entityName == null || message == null)
+            throw new ArgumentNullException();
+
+        String result = "[" + entityName + "]: " + message + "\n";
+        frame.addToCombatLog(result);
+    }
 }

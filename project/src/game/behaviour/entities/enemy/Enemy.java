@@ -30,10 +30,12 @@ public class Enemy extends Identifiable implements IInteractiveEntity{
     public String getInstanceID() { return getID(); }
     public EnemyType getEnemyType() { return enemyType; }
     public GridPosition getPosition() { return position; }
-    public Entity getEntity() { return enemyType.getEntity(); }
     public int getCurrentHealth() { return currentHealth; }
     public double getCurrentMovement() { return currentMovement; }
-
+    
+    @Override
+    public Entity getEntity() { return enemyType.getEntity(); }
+    
     @Override
     public IInteractiveEntity applyStats() {
         currentHealth = enemyType.getEntity().getHealth();

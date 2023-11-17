@@ -86,7 +86,7 @@ public class Main {
         fileIO.writeObjectToFile("G:\\uni\\sub\\3\\prog\\hf\\adventure-game-java\\project\\resources\\gamedata\\enemy\\" + enemyFileName, enemyData);
 
         var playerEntity = new PlayerEntity(30, 5, 1);
-        var player = new Player("player", playerEntity);
+        var player = (Player)new Player("player", playerEntity).setName("Player");
         var playerSave = new PlayerProgressSave();
         playerSave.player = player;
         playerSave.currentMapID = "default-map-001";

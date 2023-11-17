@@ -40,10 +40,12 @@ public class Player extends Identity implements IInteractiveEntity{
     public int getXP(){ return xp; }
     public int getRequiredXP(){ return requiredXP; }
     public GridPosition getPosition(){ return position; }
-    public PlayerEntity getEntity() { return entity; }
     public int getCurrentHealth() { return currentHealth; }
     public double getCurrentMovement() { return currentMovement; }
-
+    
+    @Override
+    public PlayerEntity getEntity() { return entity; }
+    
     @Override
     public IInteractiveEntity applyStats() {
         currentHealth = entity.getHealth();

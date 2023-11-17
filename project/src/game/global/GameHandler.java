@@ -15,6 +15,7 @@ public class GameHandler {
     
     private static GameHandler instance;
 
+    private GameActionController actionController;
     private SaveHandler saveHandler;
     private Player player;
 
@@ -25,6 +26,7 @@ public class GameHandler {
 
     private GameHandler(){
         saveHandler = new SaveHandler();
+        actionController = new GameActionController();
         maps = new HashMap<String, String>();
     }
 
@@ -34,6 +36,7 @@ public class GameHandler {
         return instance;
     }
 
+    public GameActionController getActionController() { return actionController; }
     public SaveHandler getSaveHandler() { return saveHandler; }
     public Player getPlayer() { return player; }
 
