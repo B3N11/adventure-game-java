@@ -6,14 +6,22 @@ import java.awt.GridLayout;
 import javax.swing.BorderFactory;
 import javax.swing.JPanel;
 
+import exception.general.ArgumentNullException;
+
 public class EquipmentPanel extends JPanel{
     
-    public static int PANEL_WIDTH = 400;
-    public static int PANEL_HEIGHT = 800;
+    public static int PANEL_WIDTH = 300;
+    public static int PANEL_HEIGHT = 500;
 
-    public EquipmentPanel(){
+    private EquipmentItemPanel topPanel;
+    private EquipmentItemPanel botPanel;
+
+    public EquipmentPanel(String topText, String botText) throws ArgumentNullException{
+        if(topText == null || botText == null)
+            throw new ArgumentNullException();
+
         initPanel();
-        setUpContent();
+        setUpContent(topText, botText);
     }
 
     private void initPanel(){
@@ -24,7 +32,16 @@ public class EquipmentPanel extends JPanel{
         setLayout(new GridLayout(2,1));
     }
 
-    private void setUpContent(){
-        
+    private void setUpContent(String topText, String botText){            
+        try{
+            topPanel = new EquipmentItemPanel(topText);
+            botPanel = new EquipmentItemPanel(botText);
+
+            add(topPanel);
+            add(botPanel);
+        }catch(ArgumentNullException e){}
     }
+
+    public EquipmentItemPanel getTopPanel() { return topPanel; }
+    public EquipmentItemPanel getBotPanel() { return botPanel; }
 }

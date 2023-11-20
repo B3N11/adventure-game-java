@@ -35,6 +35,7 @@ import game.utility.dataclass.MapLayoutData;
 import game.utility.delegates.GenericDelegate;
 import game.utility.dice.DiceRoller;
 import ui.data.GridPosition;
+import ui.elements.CharacterFrame;
 import ui.elements.CombatFrame;
 import ui.elements.GridEntityComponent;
 import ui.elements.PlayFrame;
@@ -57,8 +58,17 @@ public class Main {
         //createTestData();
     }
 
-    static void testEquipmentPanel(){
+    static void testEquipmentPanel() throws ArgumentNullException, IOException, InvalidArgumentException, InvalidDiceSideCountException{
+        var armor = (Armor)new Armor(15, 1).setName("Kevlar").setDescription("Simple but durable.").setID("kevlar-001");
+        String path = "G:\\uni\\sub\\3\\prog\\hf\\adventure-game-java\\project\\resources\\gamedata\\img\\items\\kevlar.jpg";
 
+        var weapon = (Shotgun)new Shotgun("shotgun-001", "Tech Shotgun", 0.5).setDamageDice(6).setDiceCount(3).setAttackModifier(4).setDamageModifier(2).setRange(3).setDescription("Good shit.");
+        String path2 = "G:\\uni\\sub\\3\\prog\\hf\\adventure-game-java\\project\\resources\\gamedata\\img\\items\\tech-shotgun.png";
+
+        CharacterFrame frame = new CharacterFrame();
+        frame.getEquipmentPanel().getTopPanel().setUpContent(armor, path, 10);
+        frame.getEquipmentPanel().getBotPanel().setUpContent(weapon, path2, 10);
+        frame.setVisible(true);
     }
 
     static void createTestData() throws ArgumentNullException, InvalidArgumentException, FileNotFoundException, IOException, InvalidDiceSideCountException, ItemNotInInventoryException{
@@ -79,7 +89,7 @@ public class Main {
         
         var armorSave = new ItemSave();
         armorSave.item = armor;
-        armorSave.iconFilePath = "items/kevlar.png";
+        armorSave.iconFilePath = "items/kevlar.jpg";
 
         var weaponSave = new ItemSave();
         weaponSave.item = weapon;

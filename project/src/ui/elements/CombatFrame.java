@@ -52,7 +52,7 @@ public class CombatFrame extends JFrame{
         gbc.gridx = 0;
         gbc.gridy = 1;
         gbc.gridheight = 1;
-        var playerLabel = new LabelPanel(LABEL_WIDTH, LABEL_HEIGHT).setLabelText("Player");
+        var playerLabel = new LabelPanel(false).setLabelText("Player");
         add(playerLabel, gbc);
 
         gbc.gridx = 1;
@@ -79,7 +79,7 @@ public class CombatFrame extends JFrame{
         gbc.gridx = 2;
         gbc.gridy = 1;
         gbc.gridheight = 1;
-        var enemyLabel = new LabelPanel(LABEL_WIDTH, LABEL_HEIGHT).setLabelText(enemyData);
+        var enemyLabel = new LabelPanel(false).setLabelText(enemyData);
         add(enemyLabel, gbc);
     }
 
