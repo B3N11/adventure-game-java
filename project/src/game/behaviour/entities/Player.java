@@ -15,7 +15,6 @@ import game.logic.event.Event;
 import game.logic.event.EventArgument;
 import game.logic.event.IEventListener;
 import game.utility.general.Identity;
-import ui.data.GridPosition;
 
 public class Player extends Identity implements IInteractiveEntity{
     

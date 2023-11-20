@@ -42,13 +42,6 @@ public class Storage<T> {
         return storage.containsKey(id);
     }
 
-    public boolean contains(T value) throws ArgumentNullException{
-        if(value == null)
-            throw new ArgumentNullException();
-
-        return storage.containsValue(value);
-    }
-
     public Set<Entry<String, T>> entrySet(){
         return storage.entrySet();
     }

@@ -26,6 +26,7 @@ import game.enums.ItemType;
 import game.global.GameHandler;
 import game.global.storage.ActiveEnemyStorage;
 import game.global.storage.EnemyTypeStorage;
+import game.global.storage.IconFilePathStorage;
 import game.global.storage.ItemStorage;
 import game.global.storage.ModifiedEnemyStorage;
 import game.logic.event.Event;
@@ -81,6 +82,8 @@ public class FileHandler {
         var player = playerProgress.player;
         GameHandler.getInstance().setSessionPlayer(player);
 
+        IconFilePathStorage.getInstance().add(player.getInstanceID(), playerProgress.currentIconFile);
+
         for(var item : playerProgress.inventory){
             var itemObject = loadItem(item);
 
@@ -89,8 +92,6 @@ public class FileHandler {
             if(itemObject.getItemType() == ItemType.CONSUMABLE)
                 player.addToInventory((Consumable)itemObject);
         }
-
-        //TODO: Implement file format exception
 
         var armor = (Armor)loadItem(playerProgress.playerArmorID);
         var weapon = (Weapon)loadItem(playerProgress.playerWeaponID);
@@ -104,16 +105,22 @@ public class FileHandler {
             public void run(EventArgument arg, Event e) { GameHandler.getInstance().handlePlayerLevelUp(); }
         });
         
-        loadModifiedEnemies(playerProgress.modifiedEnemies);
+        try{ loadModifiedEnemies(playerProgress.modifiedEnemies); }
+        catch(ArgumentNullException e){}
 
+        //Loads map and places player on grid
         loadCurrentMap(playerProgress.currentMapID);
         
-        UIHandler.getInstance().getPlayFieldHandler().placeEntity(player.getInstanceID(), playerProgress.playerPosition, playerProgress.currentIconFile);
+        //replaces player to saved position
+        UIHandler.getInstance().getPlayFieldHandler().replaceEntity(player.getInstanceID(), playerProgress.playerPosition);
 
         //TODO: Implement enemy placement
     }
 
-    private void loadModifiedEnemies(List<ModifiedEnemyData> data){
+    private void loadModifiedEnemies(List<ModifiedEnemyData> data) throws ArgumentNullException{
+        if(data == null)
+            throw new ArgumentNullException();
+            
         for(var enemy : data){
             try{ ModifiedEnemyStorage.getInstance().add(enemy.getID(), enemy); }
             catch(ArgumentNullException e){}
@@ -132,9 +139,11 @@ public class FileHandler {
             var enemy = new Enemy(enemyData.getInstanceID(), enemyType);
             enemy.applyStats();
 
+            String enemyIconPath = IconFilePathStorage.getInstance().get(enemy.getEnemyType().getID());
+
             if(!ModifiedEnemyStorage.getInstance().contains(enemyData.getInstanceID())){
                 ActiveEnemyStorage.getInstance().add(enemy.getID(), enemy);
-                UIHandler.getInstance().getPlayFieldHandler().placeEntity(enemy.getInstanceID(), enemyData.getPosition(), enemyType.getIconFilePath());
+                UIHandler.getInstance().getPlayFieldHandler().placeEntity(enemy.getInstanceID(), enemyData.getPosition(), enemyIconPath);
                 continue;
             }
             
@@ -146,8 +155,11 @@ public class FileHandler {
                 continue;
             
             ActiveEnemyStorage.getInstance().add(enemy.getID(), enemy);
-            UIHandler.getInstance().getPlayFieldHandler().placeEntity(enemy.getInstanceID(), modifiedPosition, enemyType.getIconFilePath());
+            UIHandler.getInstance().getPlayFieldHandler().placeEntity(enemy.getInstanceID(), modifiedPosition, enemyIconPath);
         }
+
+        String playerIconPath = IconFilePathStorage.getInstance().get(GameHandler.getInstance().getPlayer().getInstanceID());
+        UIHandler.getInstance().getPlayFieldHandler().placeEntity(GameHandler.getInstance().getPlayer().getInstanceID(), mapData.getPlayerPosition(), playerIconPath);
     }
 
     private EnemyType loadEnemyType(String id) throws ArgumentNullException, FileNotFoundException, ClassNotFoundException, IOException, ItemNotInInventoryException, ElementAlreadyInCollectionException{
@@ -193,7 +205,8 @@ public class FileHandler {
             }
         });
 
-        result = new EnemyType(save.enemyTypeID, controller, save.iconFilePath);
+        IconFilePathStorage.getInstance().add(id, save.iconFilePath);
+        result = new EnemyType(save.enemyTypeID, controller);
         EnemyTypeStorage.getInstance().add(result.getID(), result);
 
         return result;

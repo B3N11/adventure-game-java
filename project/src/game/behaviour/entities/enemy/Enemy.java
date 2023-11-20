@@ -6,7 +6,6 @@ import game.behaviour.abstracts.Entity;
 import game.behaviour.interfaces.IInteractiveEntity;
 import game.enums.EntityCondition;
 import game.utility.general.Identifiable;
-import ui.data.GridPosition;
 
 public class Enemy extends Identifiable implements IInteractiveEntity{
     

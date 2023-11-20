@@ -52,7 +52,6 @@ public class Main {
         });
         GameHandler.getInstance().start();
         
-        //FileHandler.getInstance().loadCurrentMap("default-map-001");
         //createTestData();
     }
 
@@ -60,6 +59,7 @@ public class Main {
         var fileIO = new FileIOUtil();
 
         var data = new MapLayoutData("default-map-001", 20, 11, "resources/img/maps/2.jpg", new GridPosition(11,8));
+        data.setName("Defaul Map").setDescription("This is where player first spawns.");
         var enemyMapData = new EnemyMapData("shotgun-thug", "shotgun-thug-I-001").setPosition(new GridPosition(10, 5));
         var enemyMapData1 = new EnemyMapData("shotgun-thug", "shotgun-thug-I-002").setPosition(new GridPosition(12, 5));
         data.addEnemy(enemyMapData);
@@ -96,7 +96,6 @@ public class Main {
         var playerSave = new PlayerProgressSave();
         playerSave.player = player;
         playerSave.currentMapID = "default-map-001";
-        playerSave.modifiedEnemyFilePath = "";
         playerSave.playerArmorID = armor.getID();
         playerSave.playerWeaponID = weapon.getID();
         playerSave.inventory.add(armor.getID());
@@ -129,8 +128,8 @@ public class Main {
         enemyEntity.equip(enemyWeapon);
 
         var enemyController = new BerserkerEnemyController(enemyEntity);
-        var enemyType = new EnemyType("shotgun-thug", enemyController, "resources/img/characters/7.png");
-        var enemy = new Enemy("shotgun-thug-I-001", enemyType);
+        //var enemyType = new EnemyType("shotgun-thug", enemyController, "resources/img/characters/7.png");
+        //var enemy = new Enemy("shotgun-thug-I-001", enemyType);
         //enemy.setPosition(new GridPosition(1,3));
 
         enemyController.addEventListeners(new IEventListener() {
