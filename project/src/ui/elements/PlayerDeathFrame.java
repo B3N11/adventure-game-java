@@ -20,6 +20,7 @@ public class PlayerDeathFrame extends JFrame implements ActionListener{
         initFrame(relativeLocation);
         try{ setupPanel(listener); }
         catch(ArgumentNullException e){}
+        pack();
     }
 
     private void initFrame(Component relativeLocation){
@@ -48,9 +49,6 @@ public class PlayerDeathFrame extends JFrame implements ActionListener{
         panel.add(quitGameButton);
 
         add(panel);
-        revalidate();
-        repaint();
-        pack();
     }
 
     @Override

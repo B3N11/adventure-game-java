@@ -20,4 +20,15 @@ public class Armor extends Equipment{
     public void setMovementBonus(int movementBonus){
         this.movementBonus = movementBonus;
     }
+
+    @Override
+    public String getDisplayInfo() {
+        return getDescription();
+    }
+
+    @Override
+    public String getStatistics(int bearerLevel) {
+        String result = "Armor Class: " + armorClass + " + " + bearerLevel + "\n" + "Movement Bonus: " + movementBonus;
+        return result;
+    }
 }

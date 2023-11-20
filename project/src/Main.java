@@ -12,6 +12,7 @@ import file.FileIOUtil;
 import file.elements.EnemyMapData;
 import file.elements.EnemyTypeSave;
 import file.elements.GameConfigSave;
+import file.elements.ItemSave;
 import file.elements.PlayerProgressSave;
 import file.handlers.FileHandler;
 import game.behaviour.abstracts.Armor;
@@ -50,9 +51,14 @@ public class Main {
         DiceRoller.getInstance().setDelegate(new GenericDelegate() {
             public void run(Object o){ UIHandler.getInstance().displayDiceRollResult((Integer)o); }
         });
-        GameHandler.getInstance().start();
+        //GameHandler.getInstance().start();
         
+        testEquipmentPanel();
         //createTestData();
+    }
+
+    static void testEquipmentPanel(){
+
     }
 
     static void createTestData() throws ArgumentNullException, InvalidArgumentException, FileNotFoundException, IOException, InvalidDiceSideCountException, ItemNotInInventoryException{
@@ -68,13 +74,21 @@ public class Main {
         String dataFileName = "default-map-001.txt";
         fileIO.writeObjectToFile("G:\\uni\\sub\\3\\prog\\hf\\adventure-game-java\\project\\resources\\gamedata\\mapdata\\" + dataFileName, data);
 
-        var armor = (Armor)new Armor(15, 1).setName("Chaim Mail").setDescription("Simple but durable.").setID("chaim-mail-001");
+        var armor = (Armor)new Armor(15, 1).setName("Kevlar").setDescription("Simple but durable.").setID("kevlar-001");
         var weapon = (Shotgun)new Shotgun("shotgun-001", "Tech Shotgun", 0.5).setDamageDice(6).setDiceCount(3).setAttackModifier(4).setDamageModifier(2).setRange(3).setDescription("Good shit.");
         
-        String armorFileName = "chaim-mail-001.txt";
+        var armorSave = new ItemSave();
+        armorSave.item = armor;
+        armorSave.iconFilePath = "items/kevlar.png";
+
+        var weaponSave = new ItemSave();
+        weaponSave.item = weapon;
+        weaponSave.iconFilePath = "items/tech-shotgun.png";
+
+        String armorFileName = "kevlar-001.txt";
         String weaponFileName = "shotgun-001.txt";
-        fileIO.writeObjectToFile("G:\\uni\\sub\\3\\prog\\hf\\adventure-game-java\\project\\resources\\gamedata\\item\\" + armorFileName, armor);        
-        fileIO.writeObjectToFile("G:\\uni\\sub\\3\\prog\\hf\\adventure-game-java\\project\\resources\\gamedata\\item\\" + weaponFileName, weapon);
+        fileIO.writeObjectToFile("G:\\uni\\sub\\3\\prog\\hf\\adventure-game-java\\project\\resources\\gamedata\\item\\" + armorFileName, armorSave);        
+        fileIO.writeObjectToFile("G:\\uni\\sub\\3\\prog\\hf\\adventure-game-java\\project\\resources\\gamedata\\item\\" + weaponFileName, weaponSave);
 
         var enemyEntity = (EnemyEntity)new EnemyEntity(20, 5, 1).setRewardXP(20).setName("Techno Punk");
         enemyEntity.equip(armor);

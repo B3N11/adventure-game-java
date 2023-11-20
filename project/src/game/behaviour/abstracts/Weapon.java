@@ -85,6 +85,19 @@ public abstract class Weapon extends Equipment{
     public WeaponType getWeaponType() { return weaponType; }
     //#endregion
 
+    @Override
+    public String getDisplayInfo(){
+        return getDescription();
+    }
+
+    @Override
+    public String getStatistics(int bearerLevel){
+        String result = "Hit DC: " + DiceRoller.getInstance().getDefault() + " + " + attackModifier +
+                        "\nAttack DC: " + diceCount + "d" + damageDice + " + " + (damageModifier + bearerLevel) +
+                        "\nRange: " + range;
+        return result;
+    }
+
     //Checks if the weapon can attack to that distance
     public boolean checkRange(double distance){
         return range >= distance;

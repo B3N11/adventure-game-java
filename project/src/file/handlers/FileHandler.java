@@ -16,6 +16,7 @@ import file.FileIOUtil;
 import file.elements.EnemyTypeSave;
 import file.elements.GameConfigSave;
 import file.elements.IconData;
+import file.elements.ItemSave;
 import file.elements.PlayerProgressSave;
 import game.behaviour.abstracts.Armor;
 import game.behaviour.abstracts.Consumable;
@@ -241,7 +242,11 @@ public class FileHandler {
             return result;
 
         String fileName = id + ".txt";
-        result = (Item)fileIOUtil.readObjectFromFile(new File(itemFolderFilePath, fileName));
+        var itemSave = (ItemSave)fileIOUtil.readObjectFromFile(new File(itemFolderFilePath, fileName));
+        result = itemSave.item;
+
+        var iconData = new IconData(itemSave.iconFilePath, new File(imageAssetFolderFilePath, itemSave.iconFilePath).getAbsolutePath());
+        IconDataStorage.getInstance().add(result.getID(), iconData);
 
         //Add to storage for later use
         ItemStorage.getInstance().add(result.getID(), result);
