@@ -27,6 +27,9 @@ import game.global.storage.ActiveEnemyStorage;
 import game.global.storage.EnemyTypeStorage;
 import game.global.storage.ItemStorage;
 import game.global.storage.ModifiedEnemyStorage;
+import game.logic.event.Event;
+import game.logic.event.EventArgument;
+import game.logic.event.IEventListener;
 import game.utility.dataclass.MapLayoutData;
 import uilogic.UIHandler;
 
@@ -164,6 +167,24 @@ public class FileHandler {
         }
 
         var controller = EnemyBehaviourController.getTypeInstance(save.controllerType, entity);
+
+        //Add event listeners (logger)
+        controller.addEventListeners(new IEventListener() {
+            public void run(EventArgument argument, Event trigger){
+                String[] arg = argument.getArgument().toString().split(":");
+                String message = "Attacked the target: " + arg[1];
+                try{ UIHandler.getInstance().getCombatLogger().addEntityLog(arg[0], message); }
+                catch(ArgumentNullException e){}
+            }
+        }, new IEventListener() {
+            public void run(EventArgument argument, Event trigger){
+                String[] arg = argument.getArgument().toString().split(":");
+                String message = "Damaged the target: " + arg[1];
+                try{ UIHandler.getInstance().getCombatLogger().addEntityLog(arg[0], message);; }
+                catch(ArgumentNullException e){}
+            }
+        });
+
         result = new EnemyType(save.enemyTypeID, controller, save.iconFilePath);
         EnemyTypeStorage.getInstance().add(result.getID(), result);
 

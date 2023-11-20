@@ -4,6 +4,8 @@ import java.awt.Component;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+
 import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
@@ -30,23 +32,24 @@ public class PlayFrame extends JFrame{
     public static int COMBATLOGPANEL_WIDTH = 300;
     public static int COMBATLOGPANEL_HEIGHT = 844;
 
-    public PlayFrame(ActionListener menuBarListener, ActionListener utilityButtonListener, ActionListener interactButtonListener) throws Exception{
-        initPlayFrame(menuBarListener, utilityButtonListener, interactButtonListener);
+    public PlayFrame(ActionListener menuBarListener, ActionListener utilityButtonListener, ActionListener interactButtonListener, WindowAdapter closeOperation) throws Exception{
+        initPlayFrame(menuBarListener, utilityButtonListener, interactButtonListener, closeOperation);
     }
 
     public PlayfieldPanel getPlayField() { return playfieldPanel; }
 
-    private void initPlayFrame(ActionListener menuBarListener, ActionListener utilityButtonListener, ActionListener interactButtonListener) throws Exception{
-        initFrame();
+    private void initPlayFrame(ActionListener menuBarListener, ActionListener utilityButtonListener, ActionListener interactButtonListener, WindowAdapter closeOperation) throws Exception{
+        initFrame(closeOperation);
         setupMenuBar(menuBarListener);
         setupGridBagLayout(utilityButtonListener, interactButtonListener);
         displayFrame();
         pack();
     }
 
-    private void initFrame(){
+    private void initFrame(WindowAdapter closeOperation){
         setResizable(false);
-        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+        addWindowListener(closeOperation);
 
         panel = new JPanel(new GridBagLayout());
         setTitle("Adventure Game");

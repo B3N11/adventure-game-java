@@ -76,7 +76,7 @@ public class Enemy extends Identifiable implements IInteractiveEntity{
             throw new InvalidArgumentException();
 
         currentHealth -= damage;
-        Math.clamp(currentHealth, 0, enemyType.getEntity().getHealth());
+        currentHealth = Math.clamp(currentHealth, 0, enemyType.getEntity().getHealth());
 
         //If health is 0, set condition to DEAD
         if(currentHealth == 0){
@@ -92,7 +92,7 @@ public class Enemy extends Identifiable implements IInteractiveEntity{
             throw new InvalidArgumentException();
 
         currentHealth += amount;
-        Math.clamp(currentHealth, 0, enemyType.getEntity().getHealth());
+        currentHealth = Math.clamp(currentHealth, 0, enemyType.getEntity().getHealth());
 
         //If is dead, then resurrect
         if(condition == EntityCondition.DEAD){
@@ -101,6 +101,10 @@ public class Enemy extends Identifiable implements IInteractiveEntity{
         }
 
         return false;
+    }
+
+    public boolean isDead(){
+        return currentHealth == 0;
     }
 
     public void die(){

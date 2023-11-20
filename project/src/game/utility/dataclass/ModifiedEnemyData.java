@@ -10,17 +10,20 @@ public class ModifiedEnemyData extends Identifiable{
     private GridPosition position;
     private int currentHealth;
     private boolean looted;
+    private boolean dead;
 
-    public ModifiedEnemyData(String id, GridPosition position, int health, boolean looted) throws ArgumentNullException{
+    public ModifiedEnemyData(String id, GridPosition position, int health, boolean looted, boolean dead) throws ArgumentNullException, InvalidArgumentException{
         setID(id);
-        this.position = position;
-        currentHealth = health;
-        this.looted = looted;
+        setPosition(position);
+        setHealth(health);
+        setLooted(looted);
+        setDead(dead);
     }
 
     public GridPosition getPosition() { return position; }
     public int getHealth() { return currentHealth; }
     public boolean isLooted() { return looted; }
+    public boolean isDead() { return dead; }
 
     public void setPosition(GridPosition position) throws ArgumentNullException{
         if(position == null)
@@ -36,5 +39,9 @@ public class ModifiedEnemyData extends Identifiable{
 
     public void setLooted(boolean looted){
         this.looted = looted;
+    }
+
+    public void setDead(boolean dead){
+        this.dead = dead;
     }
 }

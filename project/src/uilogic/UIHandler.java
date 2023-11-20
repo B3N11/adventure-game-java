@@ -1,5 +1,7 @@
 package uilogic;
 
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.io.File;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
@@ -9,6 +11,7 @@ import exception.general.ArgumentNullException;
 import exception.ui.UIHandlerAlreadyStartedException;
 import game.global.GameHandler;
 import ui.elements.PlayFrame;
+import ui.elements.PlayerDeathFrame;
 
 public class UIHandler {
 
@@ -21,6 +24,7 @@ public class UIHandler {
     private PlayFrameMenuBarHandler playFrameMenuBarHandler;
     private UtilityButtonHandler utilityButtonHandler;
     private InteractButtonHandler interactButtonHandler;
+    private PlayerDeathFrameHandler playerDeathFrameHandler;
 
     private PlayFrame playFrame;
 
@@ -55,6 +59,7 @@ public class UIHandler {
         playFrameMenuBarHandler = new PlayFrameMenuBarHandler();
         utilityButtonHandler = new UtilityButtonHandler();
         interactButtonHandler = new InteractButtonHandler();
+        playerDeathFrameHandler = new PlayerDeathFrameHandler();
         playFieldHandler = new PlayFieldHandler(null);
     }
 
@@ -85,7 +90,9 @@ public class UIHandler {
     }
 
     private void createPlayFrame() throws Exception{
-        playFrame = new PlayFrame(playFrameMenuBarHandler, utilityButtonHandler, interactButtonHandler);
+        playFrame = new PlayFrame(playFrameMenuBarHandler, utilityButtonHandler, interactButtonHandler, new WindowAdapter() {
+            public void windowClosing(WindowEvent e){ GameHandler.getInstance().quitGame(false); }
+        });
         playFieldHandler.setPlayField(playFrame.getPlayField());
     }
 
@@ -98,5 +105,10 @@ public class UIHandler {
 
         try{ logger.addPlainText(message); }
         catch(ArgumentNullException e){ /*Wont happen*/}
+    }
+
+    public void displayPlayerDeath(){
+        var deathFrame = new PlayerDeathFrame(playerDeathFrameHandler);
+        deathFrame.setVisible(true);
     }
 }

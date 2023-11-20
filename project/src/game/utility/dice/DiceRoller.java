@@ -59,7 +59,7 @@ public class DiceRoller {
     }
 
     private void callDelegateWithRollResult(int roll){
-        if(delegateOnRoll != null)
-            delegateOnRoll.run(roll);
+        //if(delegateOnRoll != null)
+            //delegateOnRoll.run(roll);     //TODO: Replace this system with something else
     }
 }

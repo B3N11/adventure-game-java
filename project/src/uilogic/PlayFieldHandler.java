@@ -1,7 +1,6 @@
 package uilogic;
 
 import java.io.IOException;
-import java.util.HashMap;
 
 import exception.general.ArgumentNullException;
 import exception.general.ElementNotFoundException;
@@ -69,6 +68,13 @@ public class PlayFieldHandler {
         playField.addEntity(component);
     }
 
+    public void removeEntity(String id) throws ArgumentNullException, ElementNotFoundException, InvalidArgumentException, ComponentAlreadyAtPositionException{
+        if(id == null)
+            throw new ArgumentNullException();
+        
+        playField.removeEntity(id, true);
+    }
+
     public void replaceEntity(String id, GridPosition newPosition) throws ArgumentNullException, ElementNotFoundException, InvalidArgumentException, ComponentAlreadyAtPositionException{
         playField.replaceEntity(id, newPosition);
     }
@@ -78,5 +84,15 @@ public class PlayFieldHandler {
             throw new ArgumentNullException();
             
         return playField.getEntityByPosition(position);
+    }
+
+    public double getDistanceBetweenEntities(String srcID, String dstID) throws ArgumentNullException, ElementNotFoundException{
+        if(srcID == null || dstID == null)
+            throw new ArgumentNullException();
+
+        var srcEntity = playField.getEntity(srcID);
+        var dstEntity = playField.getEntity(dstID);
+        double result = GridPosition.calculateAbsoluteDistance(srcEntity.getGridPosition(), dstEntity.getGridPosition());
+        return result;
     }
 }

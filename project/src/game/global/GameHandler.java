@@ -6,8 +6,16 @@ import java.util.HashMap;
 import javax.swing.JOptionPane;
 
 import exception.general.ArgumentNullException;
+import exception.general.ElementNotFoundException;
+import exception.general.InvalidArgumentException;
+import exception.ui.ComponentAlreadyAtPositionException;
 import file.handlers.FileHandler;
 import game.behaviour.entities.Player;
+import game.behaviour.entities.enemy.Enemy;
+import game.global.storage.ActiveEnemyStorage;
+import game.global.storage.ModifiedEnemyStorage;
+import game.logic.GameActionController;
+import game.utility.dataclass.ModifiedEnemyData;
 import uilogic.FileChooserType;
 import uilogic.UIHandler;
 
@@ -68,5 +76,39 @@ public class GameHandler {
         }catch(ClassNotFoundException e) { UIHandler.getInstance().showMessage("Given file is not in required format!", JOptionPane.ERROR_MESSAGE);
         }catch(FileNotFoundException e) { UIHandler.getInstance().showMessage("Given file(s) don't exist.", JOptionPane.ERROR_MESSAGE);
         }catch(Exception e){ UIHandler.getInstance().showMessage("Error reading the file!", JOptionPane.ERROR_MESSAGE);}
+    }
+
+    public void handleEnemyDeath(Enemy enemy) throws ArgumentNullException, ElementNotFoundException, InvalidArgumentException, ComponentAlreadyAtPositionException{
+        try{ ActiveEnemyStorage.getInstance().remove(enemy.getInstanceID()); }
+        catch(ArgumentNullException e){}
+
+        UIHandler.getInstance().getPlayFieldHandler().removeEntity(enemy.getInstanceID());
+        UIHandler.getInstance().refreshUI();
+
+        String message ="Enemy died.";
+        UIHandler.getInstance().getCombatLogger().addEntityLog(enemy.getEntity().getName(), message);
+
+        var modifiedData = ModifiedEnemyStorage.getInstance().get(enemy.getInstanceID());
+
+        if(modifiedData == null){
+            modifiedData = new ModifiedEnemyData(enemy.getInstanceID(), enemy.getPosition(), enemy.getCurrentHealth(), false, true);
+            ModifiedEnemyStorage.getInstance().add(enemy.getInstanceID(), modifiedData);
+        }
+        else{
+            modifiedData.setDead(true);
+            modifiedData.setHealth(enemy.getCurrentHealth());
+            modifiedData.setPosition(enemy.getPosition());
+        }
+    }
+
+    public void quitGame(boolean instant){
+        if(instant)
+            System.exit(0);
+
+        int result = JOptionPane.showConfirmDialog(null,"Are you sure you want to quit the game?\nYour unsaved progress will be lost!", "Exit", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+        
+        if(result == JOptionPane.YES_OPTION)
+            System.exit(0);
+        return;
     }
 }

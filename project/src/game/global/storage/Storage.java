@@ -1,9 +1,10 @@
 package game.global.storage;
 
 import java.util.HashMap;
+import java.util.Set;
+import java.util.Map.Entry;
 
 import exception.general.ArgumentNullException;
-import exception.general.ElementAlreadyInCollectionException;
 
 public class Storage<T> {
     
@@ -13,14 +14,18 @@ public class Storage<T> {
         storage = new HashMap<String, T>();
     }
 
-    public void add(String id, T item) throws ElementAlreadyInCollectionException, ArgumentNullException{
+    public void add(String id, T item) throws ArgumentNullException{
         if(id == null || item == null)
             throw new ArgumentNullException();
 
-        if(storage.containsKey(id) || storage.containsValue(item))
-            throw new ElementAlreadyInCollectionException();
-
         storage.put(id, item);
+    }
+
+    public void remove(String id) throws ArgumentNullException{
+        if(id == null)
+            throw new ArgumentNullException();
+
+        storage.remove(id);
     }
 
     public T get(String id) throws ArgumentNullException{
@@ -42,5 +47,9 @@ public class Storage<T> {
             throw new ArgumentNullException();
 
         return storage.containsValue(value);
+    }
+
+    public Set<Entry<String, T>> entrySet(){
+        return storage.entrySet();
     }
 }

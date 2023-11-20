@@ -153,6 +153,10 @@ public class PlayfieldPanel extends JPanel{
         return entityHandler.add(entity);
     }
 
+    public GridEntityComponent getEntity(String id) throws ArgumentNullException, ElementNotFoundException{
+        return entityHandler.getByID(id);
+    }
+
     public GridEntityComponent removeEntity(String id, boolean removeFromList) throws ArgumentNullException, ElementNotFoundException, InvalidArgumentException, ComponentAlreadyAtPositionException{
         if(id == null)
             throw new ArgumentNullException();

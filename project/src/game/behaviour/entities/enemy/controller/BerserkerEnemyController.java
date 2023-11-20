@@ -18,8 +18,8 @@ public class BerserkerEnemyController extends EnemyBehaviourController {
     @Override
     public void runEnemy(IInteractiveEntity target, double distance) throws Exception{
 
-        String hitAttempt = enemyEntity.getName() + " attacked " + target.getEntity().getName() + " from distance of " + distance + ".\nResult: ";
-        String damageNumber = enemyEntity.getName() + " damaged " + target.getEntity().getName() + " for ";
+        String hitAttempt = enemyEntity.getName() + ":";
+        String damageNumber = enemyEntity.getName() + ":";
         try{
             boolean attackEnemy = enemyEntity.attack(target.getEntity().getArmorClass(), distance);
 
@@ -37,7 +37,7 @@ public class BerserkerEnemyController extends EnemyBehaviourController {
             int damage = enemyEntity.damage(distance);
             target.takeDamage(damage);
 
-            damageNumber += damage + " point.";
+            damageNumber += damage;
             damageEvent.getArgument().setArgument(damageNumber);
             damageEvent.triggerEvent();
         }
