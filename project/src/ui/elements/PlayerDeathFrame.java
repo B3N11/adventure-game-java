@@ -5,6 +5,7 @@ import java.awt.event.ActionListener;
 
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JPanel;
 
 public class PlayerDeathFrame extends JFrame{
     
@@ -14,21 +15,27 @@ public class PlayerDeathFrame extends JFrame{
     }
 
     private void initFrame(){
-        setLayout(new GridLayout(1,3));
         setAlwaysOnTop(true);
         setAutoRequestFocus(true);
+        setResizable(false);
     }
 
     private void setupPanel(ActionListener listener){
+        var panel = new JPanel(new GridLayout(1,3));
+
         var title = new JLabel("YOU DIED!");
-        add(title);
+        panel.add(title);
 
         var loadSaveButton = new CustomButton(300, 100);
         loadSaveButton.addActionListener(listener);
         loadSaveButton.setActionCommand("LOAD");
-        add(loadSaveButton);
+        panel.add(loadSaveButton);
 
         var quitGameButton = new CustomButton(300, 100);
-        add(quitGameButton);
+        panel.add(quitGameButton);
+
+        add(panel);
+        revalidate();
+        repaint();
     }
 }

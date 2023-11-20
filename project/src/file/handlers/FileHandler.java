@@ -95,6 +95,12 @@ public class FileHandler {
         player.equip(armor);
         player.equip(weapon);
         player.applyStats();
+
+        player.addEventListeners(new IEventListener() {
+            public void run(EventArgument arg, Event e) { GameHandler.getInstance().handlePlayerDeath(); }
+        }, new IEventListener() {
+            public void run(EventArgument arg, Event e) { GameHandler.getInstance().handlePlayerLevelUp(); }
+        });
         
         //TODO: Implement modified enemy load
 

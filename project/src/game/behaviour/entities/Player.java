@@ -11,6 +11,9 @@ import game.behaviour.abstracts.Weapon;
 import game.behaviour.interfaces.IInteractiveEntity;
 import game.enums.EntityCondition;
 import game.enums.ModifierType;
+import game.logic.event.Event;
+import game.logic.event.EventArgument;
+import game.logic.event.IEventListener;
 import game.utility.general.Identity;
 import ui.data.GridPosition;
 
@@ -25,6 +28,9 @@ public class Player extends Identity implements IInteractiveEntity{
     private int currentHealth;
     private EntityCondition condition;
     private double currentMovement;
+
+    transient private Event onPlayerDied;
+    transient private Event onPlayerLeveledUp;
 
     private GridPosition position;
 
@@ -42,6 +48,16 @@ public class Player extends Identity implements IInteractiveEntity{
     public GridPosition getPosition(){ return position; }
     public int getCurrentHealth() { return currentHealth; }
     public double getCurrentMovement() { return currentMovement; }
+
+    public void addEventListeners(IEventListener playerDied, IEventListener playerLeveledUp) throws ArgumentNullException{
+        if(playerDied == null || playerLeveledUp == null)
+            throw new ArgumentNullException();
+
+        onPlayerDied = new Event(new EventArgument<Player>().setArgument(this));
+        onPlayerDied.addEventListener(playerDied);
+        onPlayerLeveledUp = new Event(new EventArgument<Player>().setArgument(this));
+        onPlayerLeveledUp.addEventListener(playerLeveledUp);
+    }
     
     @Override
     public PlayerEntity getEntity() { return entity; }
@@ -57,6 +73,12 @@ public class Player extends Identity implements IInteractiveEntity{
         if(position == null)
             throw new ArgumentNullException();
         this.position = position;
+    }
+
+    public void setRequiredXP(int amount) throws InvalidArgumentException{
+        if(amount < 0)
+            throw new InvalidArgumentException();
+        requiredXP = amount;
     }
 
     public int addXP(int newXP){
@@ -76,12 +98,14 @@ public class Player extends Identity implements IInteractiveEntity{
     }
 
     public void levelUp(){
-        try{
-            entity.setLevel(entity.getLevel() + 1);
-        }
+        try{ entity.setLevel(entity.getLevel() + 1); }
         catch(Exception e){}
 
-        requiredXP = entity.getLevel() * 150;
+        try{ setRequiredXP(entity.getLevel() * 150); }
+        catch(InvalidArgumentException e) {/* Wont happen */}
+
+        try{ onPlayerLeveledUp.triggerEvent(); }
+        catch(Exception e){}
     }
 
     public void addToInventory(Equipment equipment) throws ArgumentNullException{
@@ -160,7 +184,7 @@ public class Player extends Identity implements IInteractiveEntity{
             throw new InvalidArgumentException();
 
         currentHealth -= damage;
-        Math.clamp(currentHealth, 0, entity.getHealth());
+        currentHealth = Math.clamp(currentHealth, 0, entity.getHealth());
 
         //If health is 0, set condition to DEAD
         if(currentHealth == 0){
@@ -177,7 +201,7 @@ public class Player extends Identity implements IInteractiveEntity{
             throw new InvalidArgumentException();
 
         currentHealth += amount;
-        Math.clamp(currentHealth, 0, entity.getHealth());
+        currentHealth = Math.clamp(currentHealth, 0, entity.getHealth());
 
         //If is dead, then resurrect
         if(condition == EntityCondition.DEAD){
@@ -191,6 +215,9 @@ public class Player extends Identity implements IInteractiveEntity{
     @Override
     public void die() {
         condition = EntityCondition.DEAD;
+
+        try{ onPlayerDied.triggerEvent(); }
+        catch(Exception e){}
     }
 
     @Override

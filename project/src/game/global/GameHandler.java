@@ -12,6 +12,7 @@ import exception.ui.ComponentAlreadyAtPositionException;
 import file.handlers.FileHandler;
 import game.behaviour.entities.Player;
 import game.behaviour.entities.enemy.Enemy;
+import game.behaviour.entities.enemy.EnemyEntity;
 import game.global.storage.ActiveEnemyStorage;
 import game.global.storage.ModifiedEnemyStorage;
 import game.logic.GameActionController;
@@ -99,6 +100,19 @@ public class GameHandler {
             modifiedData.setHealth(enemy.getCurrentHealth());
             modifiedData.setPosition(enemy.getPosition());
         }
+
+        //Add XP for player
+        int rewardXP = ((EnemyEntity)enemy.getEntity()).getRewardXP();
+        player.addXP(rewardXP);
+    }
+
+    public void handlePlayerDeath(){
+        UIHandler.getInstance().togglePlayerControlls(false);
+        UIHandler.getInstance().displayPlayerDeath();
+    }
+
+    public void handlePlayerLevelUp(){
+        UIHandler.getInstance().showMessage("YOU LEVELED UP!\nYour new level: " + GameHandler.getInstance().getPlayer().getEntity().getLevel(), JOptionPane.INFORMATION_MESSAGE);
     }
 
     public void quitGame(boolean instant){
@@ -106,7 +120,7 @@ public class GameHandler {
             System.exit(0);
 
         int result = JOptionPane.showConfirmDialog(null,"Are you sure you want to quit the game?\nYour unsaved progress will be lost!", "Exit", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
-        
+
         if(result == JOptionPane.YES_OPTION)
             System.exit(0);
         return;
