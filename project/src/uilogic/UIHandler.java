@@ -109,7 +109,7 @@ public class UIHandler {
 
     public void displayPlayerDeath(){
         try{
-            var deathFrame = new PlayerDeathFrame(playerDeathFrameHandler);
+            var deathFrame = new PlayerDeathFrame(playFrame, playerDeathFrameHandler);
             deathFrame.setVisible(true);
         }catch(ArgumentNullException e){}
     }

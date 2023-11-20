@@ -18,6 +18,8 @@ public interface IInteractiveEntity {
 
     public Entity getEntity();
 
+    public IInteractiveEntity setCurrentHealth(int amount) throws InvalidArgumentException;
+
     public boolean move(double distance);
 
     public void resetMovement() throws Exception;
@@ -25,6 +27,8 @@ public interface IInteractiveEntity {
     public boolean takeDamage(int damage) throws InvalidArgumentException;
 
     public boolean heal(int amount) throws InvalidArgumentException;
+
+    public boolean isDead();
 
     public void die();
 

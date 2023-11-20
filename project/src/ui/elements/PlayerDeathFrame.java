@@ -1,29 +1,30 @@
 package ui.elements;
 
+import java.awt.Component;
 import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import javax.swing.Action;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import exception.general.ArgumentNullException;
 
-public class PlayerDeathFrame extends JFrame{
+public class PlayerDeathFrame extends JFrame implements ActionListener{
     
-    public PlayerDeathFrame(ActionListener listener) throws ArgumentNullException{
+    public PlayerDeathFrame(Component relativeLocation, ActionListener listener) throws ArgumentNullException{
         if(listener == null)
             throw new ArgumentNullException();
 
-        initFrame();
+        initFrame(relativeLocation);
         try{ setupPanel(listener); }
         catch(ArgumentNullException e){}
     }
 
-    private void initFrame(){
+    private void initFrame(Component relativeLocation){
         setTitle("Player Died");
-        //setUndecorated(true);
+        setLocationRelativeTo(relativeLocation);
         setAlwaysOnTop(true);
         setAutoRequestFocus(true);
         setResizable(false);
@@ -37,6 +38,7 @@ public class PlayerDeathFrame extends JFrame{
 
         var loadSaveButton = new CustomButton(300, 100, "Load Save");
         loadSaveButton.addActionListener(listener);
+        loadSaveButton.addActionListener(this);
         loadSaveButton.setActionCommand("LOAD_SAVE");
         panel.add(loadSaveButton);
 
@@ -49,5 +51,10 @@ public class PlayerDeathFrame extends JFrame{
         revalidate();
         repaint();
         pack();
+    }
+
+    @Override
+    public void actionPerformed(ActionEvent event){
+        dispose();
     }
 }

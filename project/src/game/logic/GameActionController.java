@@ -23,6 +23,9 @@ public class GameActionController {
         for(var enemy : entrySet){
             var player = GameHandler.getInstance().getPlayer();
 
+            if(player.isDead())
+                break;
+
             try{
                 double distance = UIHandler.getInstance().getPlayFieldHandler().getDistanceBetweenEntities(player.getInstanceID(), enemy.getValue().getInstanceID());
                 enemy.getValue().getEnemyType().getController().runEnemy(player, distance);
@@ -33,6 +36,9 @@ public class GameActionController {
     }
 
     public void playerMoveAction(){
+        if(GameHandler.getInstance().checkPlayerConditionForAction())
+            return;
+
         var player = GameHandler.getInstance().getPlayer();
         var selectedTile = UIHandler.getInstance().getPlayFieldHandler().getSelectedTile();
 
@@ -77,6 +83,9 @@ public class GameActionController {
     }
 
     public void playerAttackAction(){
+        if(GameHandler.getInstance().checkPlayerConditionForAction())
+            return;
+
         if(playerAttackedThisTurn){
             try{ UIHandler.getInstance().getCombatLogger().addSystemLog("Player already attacked this turn."); }
             catch(ArgumentNullException e){}
@@ -161,6 +170,9 @@ public class GameActionController {
     }
 
     public void playerEndTurnAction(){
+        if(GameHandler.getInstance().checkPlayerConditionForAction())
+            return;
+
         playerAttackedThisTurn = false;
         try{ GameHandler.getInstance().getPlayer().resetMovement(); }
         catch(Exception e){}

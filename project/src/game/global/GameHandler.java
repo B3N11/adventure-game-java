@@ -77,6 +77,8 @@ public class GameHandler {
         }catch(ClassNotFoundException e) { UIHandler.getInstance().showMessage("Given file is not in required format!", JOptionPane.ERROR_MESSAGE);
         }catch(FileNotFoundException e) { UIHandler.getInstance().showMessage("Given file(s) don't exist.", JOptionPane.ERROR_MESSAGE);
         }catch(Exception e){ UIHandler.getInstance().showMessage("Error reading the file!", JOptionPane.ERROR_MESSAGE);}
+
+        UIHandler.getInstance().togglePlayerControlls(true);
     }
 
     public void handleEnemyDeath(Enemy enemy) throws ArgumentNullException, ElementNotFoundException, InvalidArgumentException, ComponentAlreadyAtPositionException{
@@ -134,5 +136,15 @@ public class GameHandler {
         if(result == JOptionPane.YES_OPTION)
             System.exit(0);
         return;
+    }
+
+    public boolean checkPlayerConditionForAction(){
+        if(!player.isDead())
+            return false;
+
+        try{ UIHandler.getInstance().getCombatLogger().addSystemLog("Action cannot be executed, player is dead."); }
+        catch(ArgumentNullException e){}
+
+        return true;
     }
 }

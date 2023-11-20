@@ -170,6 +170,7 @@ public class Player extends Identity implements IInteractiveEntity{
             return false;
 
         currentMovement -= distance;
+        currentMovement = Double.parseDouble(String.format("%.2f", currentMovement));
         return true;
     }
 
@@ -218,5 +219,19 @@ public class Player extends Identity implements IInteractiveEntity{
     @Override
     public void resurrect() {
         condition = EntityCondition.NORMAL;
+    }
+
+    @Override
+    public IInteractiveEntity setCurrentHealth(int amount) throws InvalidArgumentException {
+        if(amount < 0)
+            throw new InvalidArgumentException();
+        
+        currentHealth = amount;
+        return this;
+    }
+
+    @Override
+    public boolean isDead() {
+        return currentHealth == 0;
     }
 }

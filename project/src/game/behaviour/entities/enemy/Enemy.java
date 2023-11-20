@@ -44,26 +44,30 @@ public class Enemy extends Identifiable implements IInteractiveEntity{
         return this;
     }
 
+    @Override
     public Enemy setCurrentHealth(int health) throws InvalidArgumentException{
         if(health < 0)
             throw new InvalidArgumentException();
-        int damage = currentHealth - health;
-        takeDamage(damage);
+        currentHealth = health;
         return this;
     }
 
+    @Override
     public boolean move(double distance){
         if(distance > currentMovement)
             return false;
 
         currentMovement -= distance;
+        currentMovement = Double.parseDouble(String.format("%.2f", currentMovement));
         return true;
     }
 
+    @Override
     public void resetMovement() throws Exception{
         currentMovement = enemyType.getEntity().getMovement();
     }
 
+    @Override
     public boolean takeDamage(int damage) throws InvalidArgumentException{
         if(damage < 0)
             throw new InvalidArgumentException();
@@ -80,6 +84,7 @@ public class Enemy extends Identifiable implements IInteractiveEntity{
         return false;
     }
 
+    @Override
     public boolean heal(int amount) throws InvalidArgumentException{
         if(amount < 0)
             throw new InvalidArgumentException();
@@ -96,14 +101,17 @@ public class Enemy extends Identifiable implements IInteractiveEntity{
         return false;
     }
 
+    @Override
     public boolean isDead(){
         return currentHealth == 0;
     }
 
+    @Override
     public void die(){
         condition = EntityCondition.DEAD;
     }
 
+    @Override
     public void resurrect(){
         condition = EntityCondition.NORMAL;
     }
