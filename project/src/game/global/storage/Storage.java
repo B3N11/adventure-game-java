@@ -42,6 +42,10 @@ public class Storage<T> {
         return storage.containsKey(id);
     }
 
+    public void clear(){
+        storage.clear();
+    }
+
     public Set<Entry<String, T>> entrySet(){
         return storage.entrySet();
     }

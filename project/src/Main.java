@@ -93,6 +93,7 @@ public class Main {
 
         var playerEntity = new PlayerEntity(30, 5, 1);
         var player = (Player)new Player("player", playerEntity).setName("Player");
+        player.applyStats();
         var playerSave = new PlayerProgressSave();
         playerSave.player = player;
         playerSave.currentMapID = "default-map-001";
@@ -102,6 +103,7 @@ public class Main {
         playerSave.inventory.add(weapon.getID());
         playerSave.currentIconFile = "characters/5.png";
         playerSave.playerPosition = data.getPlayerPosition();
+        playerSave.modifiable = false;
 
         String playerFileName = "default-save.txt";
         fileIO.writeObjectToFile("G:\\uni\\sub\\3\\prog\\hf\\adventure-game-java\\project\\resources\\gamedata\\" + playerFileName, playerSave);

@@ -1,5 +1,8 @@
 package uilogic;
 
+import javax.swing.JOptionPane;
+
+import exception.save.CurrentSaveUnmodifiableException;
 import game.global.GameHandler;
 import game.utility.delegates.GenericDelegate;
 
@@ -14,7 +17,18 @@ public class PlayFrameMenuBarHandler extends MultipleButtonHandler{
         var saveHandler = GameHandler.getInstance().getSaveHandler();
 
         actions.put("QUICK_SAVE_GAME", new GenericDelegate() {
-           public void run(Object o){ saveHandler.quickSave(); } 
+           public void run(Object o){
+            try{ saveHandler.quickSave(); }
+            catch(CurrentSaveUnmodifiableException e){
+                UIHandler.getInstance().showMessage(e.getMessage(), JOptionPane.ERROR_MESSAGE);
+            }
+        } 
+        });
+
+        actions.put("NEW_SAVE_GAME", new GenericDelegate() {
+            public void run(Object o){
+                UIHandler.getInstance().openFileDialog(FileChooserType.NEWSAVE);
+            }
         });
 
         actions.put("LOAD_CONFIGFILE", new GenericDelegate(){

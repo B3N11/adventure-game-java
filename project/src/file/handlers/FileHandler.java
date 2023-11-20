@@ -3,6 +3,7 @@ package file.handlers;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.JOptionPane;
@@ -10,9 +11,11 @@ import javax.swing.JOptionPane;
 import exception.entity.ItemNotInInventoryException;
 import exception.general.ArgumentNullException;
 import exception.general.ElementAlreadyInCollectionException;
+import exception.general.ElementNotFoundException;
 import file.FileIOUtil;
 import file.elements.EnemyTypeSave;
 import file.elements.GameConfigSave;
+import file.elements.IconData;
 import file.elements.PlayerProgressSave;
 import game.behaviour.abstracts.Armor;
 import game.behaviour.abstracts.Consumable;
@@ -26,7 +29,7 @@ import game.enums.ItemType;
 import game.global.GameHandler;
 import game.global.storage.ActiveEnemyStorage;
 import game.global.storage.EnemyTypeStorage;
-import game.global.storage.IconFilePathStorage;
+import game.global.storage.IconDataStorage;
 import game.global.storage.ItemStorage;
 import game.global.storage.ModifiedEnemyStorage;
 import game.logic.event.Event;
@@ -84,7 +87,15 @@ public class FileHandler {
         var player = playerProgress.player;
         GameHandler.getInstance().setSessionPlayer(player);
 
-        IconFilePathStorage.getInstance().add(player.getInstanceID(), new File(imageAssetFolderFilePath, playerProgress.currentIconFile).getAbsolutePath());
+        IconDataStorage.getInstance().clear();
+        ModifiedEnemyStorage.getInstance().clear();
+        ActiveEnemyStorage.getInstance().clear();
+        ItemStorage.getInstance().clear();
+        EnemyTypeStorage.getInstance().clear();
+
+        var iconData = new IconData(playerProgress.currentIconFile, new File(imageAssetFolderFilePath, playerProgress.currentIconFile).getAbsolutePath());
+        iconData.setID(player.getID());
+        IconDataStorage.getInstance().add(player.getInstanceID(), iconData);
 
         for(var item : playerProgress.inventory){
             var itemObject = loadItem(item);
@@ -99,7 +110,7 @@ public class FileHandler {
         var weapon = (Weapon)loadItem(playerProgress.playerWeaponID);
         player.equip(armor);
         player.equip(weapon);
-        player.applyStats();
+        
 
         player.addEventListeners(new IEventListener() {
             public void run(EventArgument arg, Event e) { GameHandler.getInstance().handlePlayerDeath(); }
@@ -116,7 +127,8 @@ public class FileHandler {
         //replaces player to saved position
         UIHandler.getInstance().getPlayFieldHandler().replaceEntity(player.getInstanceID(), playerProgress.playerPosition);
 
-        //TODO: Implement enemy placement
+        GameHandler.getInstance().getSaveHandler().setCurrentSavePath(filePath);
+        GameHandler.getInstance().getSaveHandler().setModifiable(playerProgress.modifiable);
     }
 
     private void loadModifiedEnemies(List<ModifiedEnemyData> data) throws ArgumentNullException{
@@ -136,6 +148,8 @@ public class FileHandler {
         //Modify file path to full path
         mapData.setBackgroundFilePath(new File(imageAssetFolderFilePath, mapData.getBackgroundFilePath()).getAbsolutePath());
 
+        ActiveEnemyStorage.getInstance().clear();
+
         UIHandler.getInstance().getPlayFieldHandler().setCurrentMapLayout(mapData);
 
         for(var enemyData : mapData.getEnemies()){
@@ -144,7 +158,7 @@ public class FileHandler {
             var enemy = new Enemy(enemyData.getInstanceID(), enemyType);
             enemy.applyStats();
 
-            String enemyIconPath = IconFilePathStorage.getInstance().get(enemy.getEnemyType().getID());
+            String enemyIconPath = IconDataStorage.getInstance().get(enemy.getEnemyType().getID()).getAbsolutPath();
 
             if(!ModifiedEnemyStorage.getInstance().contains(enemyData.getInstanceID())){
                 ActiveEnemyStorage.getInstance().add(enemy.getID(), enemy);
@@ -156,14 +170,14 @@ public class FileHandler {
             var modifiedPosition = modifiedData.getPosition();
             enemy.setCurrentHealth(modifiedData.getHealth());
 
-            if(enemy.getCurrentHealth() == 0)
+            if(enemy.isDead())
                 continue;
             
             ActiveEnemyStorage.getInstance().add(enemy.getID(), enemy);
             UIHandler.getInstance().getPlayFieldHandler().placeEntity(enemy.getInstanceID(), modifiedPosition, enemyIconPath);
         }
 
-        String playerIconPath = IconFilePathStorage.getInstance().get(GameHandler.getInstance().getPlayer().getInstanceID());
+        String playerIconPath = IconDataStorage.getInstance().get(GameHandler.getInstance().getPlayer().getInstanceID()).getAbsolutPath();
         UIHandler.getInstance().getPlayFieldHandler().placeEntity(GameHandler.getInstance().getPlayer().getInstanceID(), mapData.getPlayerPosition(), playerIconPath);
     }
 
@@ -210,7 +224,8 @@ public class FileHandler {
             }
         });
 
-        IconFilePathStorage.getInstance().add(id, new File(imageAssetFolderFilePath,save.iconFilePath).getAbsolutePath());
+        var iconData = new IconData(save.iconFilePath, new File(imageAssetFolderFilePath,save.iconFilePath).getAbsolutePath());
+        IconDataStorage.getInstance().add(id, iconData);
         result = new EnemyType(save.enemyTypeID, controller);
         EnemyTypeStorage.getInstance().add(result.getID(), result);
 
@@ -232,5 +247,41 @@ public class FileHandler {
         ItemStorage.getInstance().add(result.getID(), result);
 
         return result;
+    }
+
+    public void saveProgress(String filePath, boolean appendFileExtension) throws ArgumentNullException{
+        if(filePath == null)
+            throw new ArgumentNullException();
+
+        var player = GameHandler.getInstance().getPlayer();
+
+        var progress = new PlayerProgressSave();
+        progress.currentIconFile = IconDataStorage.getInstance().get(player.getID()).getNormalPath();
+        progress.player = player;
+        progress.currentMapID = UIHandler.getInstance().getPlayFieldHandler().getCurrentMapLayoutData().getID();
+        progress.modifiable = true;
+        try{ progress.playerPosition = UIHandler.getInstance().getPlayFieldHandler().getEntityPositionByID(player.getID()); }
+        catch(ElementNotFoundException e){}
+        progress.playerArmorID = player.getEntity().getArmor().getID();
+        progress.playerWeaponID = player.getEntity().getWeapon().getID();
+
+        progress.inventory = new ArrayList<>();
+        progress.modifiedEnemies = new ArrayList<>();
+        
+        for(var enemy : ModifiedEnemyStorage.getInstance().entrySet())
+            progress.modifiedEnemies.add(enemy.getValue());
+
+        for(var item : player.getEntity().getInventory().getConsumables())
+            progress.inventory.add(item.getID());
+
+        for(var item : player.getEntity().getInventory().getEquipments())
+            progress.inventory.add(item.getID());
+
+        String file = filePath;
+        if(appendFileExtension)
+            file += ".txt";
+
+        try{ fileIOUtil.writeObjectToFile(file, progress); }
+        catch(Exception e){}
     }
 }

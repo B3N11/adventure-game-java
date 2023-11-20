@@ -73,6 +73,11 @@ public class GameHandler {
                 case PLAYERPROGRESS:
                     FileHandler.getInstance().loadPlayerProgressSave(filePath);
                     break;
+
+                case NEWSAVE:
+                    saveHandler.save(filePath, true);
+                    break;
+
             }
         }catch(ClassNotFoundException e) { UIHandler.getInstance().showMessage("Given file is not in required format!", JOptionPane.ERROR_MESSAGE);
         }catch(FileNotFoundException e) { UIHandler.getInstance().showMessage("Given file(s) don't exist.", JOptionPane.ERROR_MESSAGE);
@@ -85,13 +90,13 @@ public class GameHandler {
         try{ ActiveEnemyStorage.getInstance().remove(enemy.getInstanceID()); }
         catch(ArgumentNullException e){}
 
+        modifyEnemy(enemy, true);
+
         UIHandler.getInstance().getPlayFieldHandler().removeEntity(enemy.getInstanceID());
         UIHandler.getInstance().refreshUI();
 
         String message ="Enemy died.";
         UIHandler.getInstance().getCombatLogger().addEntityLog(enemy.getEntity().getName(), message);
-
-        modifyEnemy(enemy, true);
 
         //Add XP for player
         int rewardXP = ((EnemyEntity)enemy.getEntity()).getRewardXP();

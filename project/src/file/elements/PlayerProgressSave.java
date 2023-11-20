@@ -8,6 +8,8 @@ import game.utility.dataclass.ModifiedEnemyData;
 import ui.data.GridPosition;
 
 public class PlayerProgressSave implements Serializable{
+
+    public boolean modifiable;
     
     public String currentMapID;
     public String currentIconFile;
