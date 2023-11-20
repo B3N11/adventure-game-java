@@ -24,11 +24,16 @@ public class Enemy extends Identifiable implements IInteractiveEntity{
         condition = EntityCondition.NORMAL;
     }
 
-    public String getInstanceID() { return getID(); }
     public EnemyType getEnemyType() { return enemyType; }
     public int getCurrentHealth() { return currentHealth; }
     public double getCurrentMovement() { return currentMovement; }
     
+    @Override
+    public String getInstanceID() { return getID(); }
+
+    @Override
+    public String getAssetID() { return enemyType.getID(); }
+
     @Override
     public Entity getEntity() { return enemyType.getEntity(); }
     

@@ -108,7 +108,9 @@ public class UIHandler {
     }
 
     public void displayPlayerDeath(){
-        var deathFrame = new PlayerDeathFrame(playerDeathFrameHandler);
-        deathFrame.setVisible(true);
+        try{
+            var deathFrame = new PlayerDeathFrame(playerDeathFrameHandler);
+            deathFrame.setVisible(true);
+        }catch(ArgumentNullException e){}
     }
 }

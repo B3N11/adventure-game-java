@@ -58,7 +58,7 @@ public class Main {
     static void createTestData() throws ArgumentNullException, InvalidArgumentException, FileNotFoundException, IOException, InvalidDiceSideCountException, ItemNotInInventoryException{
         var fileIO = new FileIOUtil();
 
-        var data = new MapLayoutData("default-map-001", 20, 11, "resources/img/maps/2.jpg", new GridPosition(11,8));
+        var data = new MapLayoutData("default-map-001", 20, 11, "maps/2.jpg", new GridPosition(11,8));
         data.setName("Defaul Map").setDescription("This is where player first spawns.");
         var enemyMapData = new EnemyMapData("shotgun-thug", "shotgun-thug-I-001").setPosition(new GridPosition(10, 5));
         var enemyMapData1 = new EnemyMapData("shotgun-thug", "shotgun-thug-I-002").setPosition(new GridPosition(12, 5));
@@ -84,7 +84,7 @@ public class Main {
         enemyData.enemyTypeID = "shotgun-thug";
         enemyData.controllerType = EnemyBehaviourControllerType.BERSERK;
         enemyData.entity = enemyEntity;
-        enemyData.iconFilePath = "resources/img/characters/7.png";
+        enemyData.iconFilePath = "characters/7.png";
         enemyData.enemyArmorID = armor.getID();
         enemyData.enemyWeaponID = weapon.getID();
 
@@ -100,7 +100,7 @@ public class Main {
         playerSave.playerWeaponID = weapon.getID();
         playerSave.inventory.add(armor.getID());
         playerSave.inventory.add(weapon.getID());
-        playerSave.currentIconFile = "resources/img/characters/5.png";
+        playerSave.currentIconFile = "characters/5.png";
         playerSave.playerPosition = data.getPlayerPosition();
 
         String playerFileName = "default-save.txt";
@@ -111,6 +111,7 @@ public class Main {
         config.enemyFolder = "enemy";
         config.itemFolder = "item";
         config.mapdataFolder = "mapdata";
+        config.imageAssetFolder = "img";
         config.defaultPlayerSaveFile = "default-save.txt";
 
         String configFileName = "game-config.txt";

@@ -7,6 +7,7 @@ public class GameConfigSave implements Serializable{
     public String itemFolder;
     public String enemyFolder;
     public String mapdataFolder;
+    public String imageAssetFolder;
 
     public String defaultMapID;
     public String defaultPlayerSaveFile;

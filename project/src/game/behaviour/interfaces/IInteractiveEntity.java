@@ -10,6 +10,8 @@ public interface IInteractiveEntity {
 
     public String getInstanceID();
 
+    public String getAssetID();
+
     public int getCurrentHealth();
     
     public double getCurrentMovement();

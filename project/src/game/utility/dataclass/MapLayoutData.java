@@ -30,6 +30,12 @@ public class MapLayoutData extends Identity{
     public ArrayList<EnemyMapData> getEnemies() { return enemies; }
     public GridPosition getPlayerPosition() { return playerStartPosition; }    
 
+    public void setBackgroundFilePath(String path) throws ArgumentNullException{
+        if(path == null)
+            throw new ArgumentNullException();
+        backgroundFilePath = path;
+    }
+
     public void addEnemy(EnemyMapData enemy) throws ArgumentNullException{
         if(enemy == null)
             throw new ArgumentNullException();

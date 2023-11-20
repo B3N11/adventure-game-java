@@ -43,6 +43,7 @@ public class FileHandler {
     private File itemFolderFilePath;
     private File enemyTypeFolderFilePath;
     private File mapLayoutFolderFilePath;
+    private File imageAssetFolderFilePath;
 
     private static FileHandler instance;
 
@@ -66,8 +67,9 @@ public class FileHandler {
         itemFolderFilePath = new File(folderPath, config.itemFolder);
         enemyTypeFolderFilePath = new File(folderPath, config.enemyFolder);
         mapLayoutFolderFilePath = new File(folderPath, config.mapdataFolder);
+        imageAssetFolderFilePath = new File(folderPath, config.imageAssetFolder);
 
-        if(!itemFolderFilePath.exists() || !enemyTypeFolderFilePath.exists() || !mapLayoutFolderFilePath.exists())
+        if(!itemFolderFilePath.exists() || !enemyTypeFolderFilePath.exists() || !mapLayoutFolderFilePath.exists() || !imageAssetFolderFilePath.exists())
             throw new FileNotFoundException();
 
         loadPlayerProgressSave(new File(folderPath, config.defaultPlayerSaveFile).getAbsolutePath());
@@ -82,7 +84,7 @@ public class FileHandler {
         var player = playerProgress.player;
         GameHandler.getInstance().setSessionPlayer(player);
 
-        IconFilePathStorage.getInstance().add(player.getInstanceID(), playerProgress.currentIconFile);
+        IconFilePathStorage.getInstance().add(player.getInstanceID(), new File(imageAssetFolderFilePath, playerProgress.currentIconFile).getAbsolutePath());
 
         for(var item : playerProgress.inventory){
             var itemObject = loadItem(item);
@@ -130,6 +132,9 @@ public class FileHandler {
     public void loadCurrentMap(String id) throws Exception{
         String fileName = id + ".txt";
         var mapData = (MapLayoutData)fileIOUtil.readObjectFromFile(new File(mapLayoutFolderFilePath, fileName));
+
+        //Modify file path to full path
+        mapData.setBackgroundFilePath(new File(imageAssetFolderFilePath, mapData.getBackgroundFilePath()).getAbsolutePath());
 
         UIHandler.getInstance().getPlayFieldHandler().setCurrentMapLayout(mapData);
 
@@ -205,7 +210,7 @@ public class FileHandler {
             }
         });
 
-        IconFilePathStorage.getInstance().add(id, save.iconFilePath);
+        IconFilePathStorage.getInstance().add(id, new File(imageAssetFolderFilePath,save.iconFilePath).getAbsolutePath());
         result = new EnemyType(save.enemyTypeID, controller);
         EnemyTypeStorage.getInstance().add(result.getID(), result);
 

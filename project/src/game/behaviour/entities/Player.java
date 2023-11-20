@@ -39,7 +39,6 @@ public class Player extends Identity implements IInteractiveEntity{
         this.entity = entity;
     }
 
-    public String getInstanceID() { return getID(); }
     public int getXP(){ return xp; }
     public int getRequiredXP(){ return requiredXP; }
     public int getCurrentHealth() { return currentHealth; }
@@ -54,6 +53,12 @@ public class Player extends Identity implements IInteractiveEntity{
         onPlayerLeveledUp = new Event(new EventArgument<Player>().setArgument(this));
         onPlayerLeveledUp.addEventListener(playerLeveledUp);
     }
+
+    @Override
+    public String getInstanceID() { return getID(); }
+
+    @Override
+    public String getAssetID() { return getID(); }
     
     @Override
     public PlayerEntity getEntity() { return entity; }
