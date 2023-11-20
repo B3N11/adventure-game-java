@@ -15,7 +15,7 @@ public class InteractButtonPanel extends JPanel{
     }
 
     private void initPanel(int width, int height){
-        setLayout(new GridLayout(1,3));
+        setLayout(new GridLayout(1,4));
         setBorder(BorderFactory.createEmptyBorder(20,20,20,20));
         setPreferredSize(new Dimension(width, height));
         setBounds(0, 0, width, height);
@@ -24,15 +24,23 @@ public class InteractButtonPanel extends JPanel{
     private void initButtons(ActionListener listener){
         var moveButton = new JButton("Move");
         moveButton.addActionListener(listener);
+        moveButton.setActionCommand("INTERACT_MOVE");
 
         var attackButton = new JButton("Attack");
         attackButton.addActionListener(listener);
+        attackButton.setActionCommand("INTERACT_ATTACK");
 
         var pickupButton = new JButton("Pick Up");
         pickupButton.addActionListener(listener);
+        pickupButton.setActionCommand("INTERACT_PICKUP");
+
+        var endTurnButton = new JButton("END TURN");
+        endTurnButton.addActionListener(listener);
+        endTurnButton.setActionCommand("INTERACT_ENDTURN");
 
         add(moveButton);
         add(attackButton);
         add(pickupButton);
+        add(endTurnButton);
     }
 }

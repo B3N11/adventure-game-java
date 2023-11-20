@@ -3,15 +3,44 @@ package uilogic;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import exception.general.ArgumentNullException;
+import game.utility.delegates.GenericDelegate;
 import ui.elements.GridButton;
 
 public class GridButtonHandler implements ActionListener {
 
+    private GenericDelegate delegate;
+    private GridButton lastSelected;
+
+    public GridButtonHandler(GenericDelegate delegate) throws ArgumentNullException{
+        if(delegate == null)
+            throw new ArgumentNullException();
+
+        this.delegate = delegate;
+    }
+
+    public void clearSelected(){
+        if(lastSelected == null)
+            return;
+
+        lastSelected.hightlightButton(false);
+        lastSelected.getParent().revalidate();
+        lastSelected.getParent().repaint();
+        lastSelected = null;
+    }
+
     @Override
     public void actionPerformed(ActionEvent e) {
+        clearSelected();
 
-        //Get position
+        var button = (GridButton)e.getSource();
+        lastSelected = button;
+
+        button.hightlightButton(true);
+        button.getParent().revalidate();
+        button.getParent().repaint();
+
         var buttonPosition = ((GridButton)e.getSource()).getGridPosition();
-        System.out.println(buttonPosition.getX() + ";" + buttonPosition.getY());
+        delegate.run(buttonPosition);
     }    
 }

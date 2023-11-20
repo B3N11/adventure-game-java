@@ -1,14 +1,22 @@
 package uilogic;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import game.global.GameHandler;
+import game.utility.delegates.GenericDelegate;
 
-public class InteractButtonHandler implements ActionListener{
+public class InteractButtonHandler extends MultipleButtonHandler{
 
     @Override
-    public void actionPerformed(ActionEvent e) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'actionPerformed'");
-    }
-    
+    protected void initActions() {
+        actions.put("INTERACT_MOVE", new GenericDelegate() {
+            public void run(Object o) { GameHandler.getInstance().getActionController().playerMoveAction(); }           
+        });
+
+        actions.put("INTERACT_ENDTURN", new GenericDelegate() {
+            public void run(Object o) { GameHandler.getInstance().getActionController().playerEndTurnAction(); }           
+        });
+
+        actions.put("INTERACT_ATTACK", new GenericDelegate() {
+            public void run(Object o) { GameHandler.getInstance().getActionController().playerAttackAction(); }           
+        });
+    }   
 }

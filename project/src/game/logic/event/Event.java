@@ -1,20 +1,26 @@
-package game.behaviour.abstracts;
+package game.logic.event;
 
 import java.util.ArrayList;
 
 import exception.general.ArgumentNullException;
-import game.behaviour.interfaces.IEventListener;
 
 public class Event{
  
-    private Object object;
+    private EventArgument eventArgument;
     private ArrayList<IEventListener> eventListeners;
     private boolean removeOnRun;
 
-    public Event(Object object){
+    public Event(EventArgument object){
         eventListeners = new ArrayList<IEventListener>();
         removeOnRun = false;
-        this.object = object;
+        this.eventArgument = object;
+    }
+
+    public EventArgument getArgument() { return eventArgument; }
+
+    public Event setArgument(EventArgument argument){
+        eventArgument = argument;
+        return this;
     }
 
     public final boolean isRemovingOnRun(){ return removeOnRun; }
@@ -37,7 +43,7 @@ public class Event{
     public final void triggerEvent() throws Exception{
         var iterator = eventListeners.iterator();
         while (iterator.hasNext()) {
-            iterator.next().run(object, this);
+            iterator.next().run(eventArgument, this);
 
             if(removeOnRun)
                 iterator.remove();

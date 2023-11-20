@@ -4,6 +4,8 @@ import java.awt.Component;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+
 import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
@@ -11,8 +13,8 @@ import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 
 import exception.general.ArgumentNullException;
+import game.utility.dataclass.MapLayoutData;
 import uilogic.GridButtonHandler;
-import uilogic.MapLayoutData;
 
 public class PlayFrame extends JFrame{
 
@@ -30,25 +32,27 @@ public class PlayFrame extends JFrame{
     public static int COMBATLOGPANEL_WIDTH = 300;
     public static int COMBATLOGPANEL_HEIGHT = 844;
 
-    public PlayFrame(ActionListener menuBarListener, ActionListener utilityButtonListener, ActionListener interactButtonListener) throws Exception{
-        initPlayFrame(menuBarListener, utilityButtonListener, interactButtonListener);
+    public PlayFrame(ActionListener menuBarListener, ActionListener utilityButtonListener, ActionListener interactButtonListener, WindowAdapter closeOperation) throws Exception{
+        initPlayFrame(menuBarListener, utilityButtonListener, interactButtonListener, closeOperation);
     }
 
     public PlayfieldPanel getPlayField() { return playfieldPanel; }
 
-    private void initPlayFrame(ActionListener menuBarListener, ActionListener utilityButtonListener, ActionListener interactButtonListener) throws Exception{
-        initFrame();
+    private void initPlayFrame(ActionListener menuBarListener, ActionListener utilityButtonListener, ActionListener interactButtonListener, WindowAdapter closeOperation) throws Exception{
+        initFrame(closeOperation);
         setupMenuBar(menuBarListener);
         setupGridBagLayout(utilityButtonListener, interactButtonListener);
         displayFrame();
         pack();
     }
 
-    private void initFrame(){
+    private void initFrame(WindowAdapter closeOperation){
         setResizable(false);
-        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+        addWindowListener(closeOperation);
 
         panel = new JPanel(new GridBagLayout());
+        setTitle("Adventure Game");
         setContentPane(panel);
     }
 
@@ -64,13 +68,20 @@ public class PlayFrame extends JFrame{
         menuBar.add(gameMenu);
         menuBar.add(creatorMenu);
 
+        var fileSubMenu = new JMenu("File");
+        var loadBaseInfoMenuItem = new JMenuItem("Load Config File");
+        loadBaseInfoMenuItem.setActionCommand("LOAD_CONFIGFILE");
+        loadBaseInfoMenuItem.addActionListener(menuBarListener);
+        gameMenu.add(fileSubMenu);
+        
         var saveSubMenu = new JMenu("Save Game");
         var loadMenuItem = new JMenuItem("Load Game");
         loadMenuItem.setActionCommand("LOAD_GAME");
         loadMenuItem.addActionListener(menuBarListener);
-        gameMenu.add(saveSubMenu);
-        gameMenu.add(loadMenuItem);
-
+        fileSubMenu.add(saveSubMenu);
+        fileSubMenu.add(loadMenuItem);
+        fileSubMenu.add(loadBaseInfoMenuItem);
+        
         var saveQuickMenuItem = new JMenuItem("Quick Save");
         saveQuickMenuItem.setActionCommand("QUICK_SAVE_GAME");
         saveQuickMenuItem.addActionListener(menuBarListener);

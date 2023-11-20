@@ -11,9 +11,9 @@ import exception.general.ElementNotFoundException;
 import exception.general.InvalidArgumentException;
 import exception.ui.ComponentAlreadyAtPositionException;
 import exception.ui.PlayfieldNotEmptyException;
+import game.utility.dataclass.MapLayoutData;
 import uilogic.GridButtonHandler;
 import uilogic.GridEntityComponentHandler;
-import uilogic.MapLayoutData;
 import ui.data.GridDimension;
 import ui.data.GridPosition;
 
@@ -131,6 +131,8 @@ public class PlayfieldPanel extends JPanel{
         if(!entityHandler.isEmpty() && !force)
             throw new PlayfieldNotEmptyException();
 
+        entityHandler.clear();
+
         setComponentSize(data.getHorizontal(), data.getVertical());
         
         initEntityPanel(data.getHorizontal(), data.getVertical());
@@ -149,6 +151,10 @@ public class PlayfieldPanel extends JPanel{
         entityPanel.refresh();
 
         return entityHandler.add(entity);
+    }
+
+    public GridEntityComponent getEntity(String id) throws ArgumentNullException, ElementNotFoundException{
+        return entityHandler.getByID(id);
     }
 
     public GridEntityComponent removeEntity(String id, boolean removeFromList) throws ArgumentNullException, ElementNotFoundException, InvalidArgumentException, ComponentAlreadyAtPositionException{
@@ -191,5 +197,13 @@ public class PlayfieldPanel extends JPanel{
         entityPanel.add(entity, entity.getGridPosition(), true, false);
 
         return entity;
+    }
+
+    public String getEntityByPosition(GridPosition position) throws ArgumentNullException, ElementNotFoundException{
+        if(position == null)
+            throw new ArgumentNullException();
+
+        var entity = entityHandler.getByPosition(position);
+        return entity.getID();
     }
 }

@@ -1,35 +1,42 @@
 package uilogic;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.util.HashMap;
+import javax.swing.JOptionPane;
 
+import exception.save.CurrentSaveUnmodifiableException;
 import game.global.GameHandler;
+import game.utility.delegates.GenericDelegate;
 
-public class PlayFrameMenuBarHandler implements ActionListener{
-
-    private HashMap<String, Runnable> menuActions;
+public class PlayFrameMenuBarHandler extends MultipleButtonHandler{
 
     public PlayFrameMenuBarHandler(){
-        initMenuActions();
-    }
-
-    private void initMenuActions(){
-        menuActions = new HashMap<String, Runnable>();
-
-        var saveHandler = GameHandler.getInstance().getSaveHandler();
-
-        menuActions.put("QUICK_SAVE_GAME", new Runnable() {
-           public void run(){ saveHandler.quickSave(); } 
-        });
+        initActions();
     }
 
     @Override
-    public void actionPerformed(ActionEvent e) {
-        var action = menuActions.get(e.getActionCommand());
+    protected final void initActions(){
+        var saveHandler = GameHandler.getInstance().getSaveHandler();
 
-        if(action == null)
-            return;
-        action.run();
+        actions.put("QUICK_SAVE_GAME", new GenericDelegate() {
+           public void run(Object o){
+            try{ saveHandler.quickSave(); }
+            catch(CurrentSaveUnmodifiableException e){
+                UIHandler.getInstance().showMessage(e.getMessage(), JOptionPane.ERROR_MESSAGE);
+            }
+        } 
+        });
+
+        actions.put("NEW_SAVE_GAME", new GenericDelegate() {
+            public void run(Object o){
+                UIHandler.getInstance().openFileDialog(FileChooserType.NEWSAVE);
+            }
+        });
+
+        actions.put("LOAD_CONFIGFILE", new GenericDelegate(){
+            public void run(Object o){ UIHandler.getInstance().openFileDialog(FileChooserType.CONFIG); }
+        });
+
+        actions.put("LOAD_GAME", new GenericDelegate() {
+            public void run(Object o){ UIHandler.getInstance().openFileDialog(FileChooserType.PLAYERPROGRESS); }
+        });
     }
 }

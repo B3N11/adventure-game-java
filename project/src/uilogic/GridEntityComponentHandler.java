@@ -1,26 +1,31 @@
 package uilogic;
 
-import java.util.ArrayList;
+import java.util.HashMap;
 
 import exception.general.ArgumentNullException;
 import exception.general.ElementNotFoundException;
+import ui.data.GridPosition;
 import ui.elements.GridEntityComponent;
 
 public class GridEntityComponentHandler {
     
-    private ArrayList<GridEntityComponent> entities;
+    private HashMap<String, GridEntityComponent> entities;
 
     public GridEntityComponentHandler(){
-        entities = new ArrayList<GridEntityComponent>();
+        entities = new HashMap<String, GridEntityComponent>();
     }
 
     public boolean isEmpty(){ return entities.isEmpty(); }
+
+    public void clear(){
+        entities.clear();
+    }
 
     public GridEntityComponent add(GridEntityComponent entity) throws ArgumentNullException{
         if(entity == null)
             throw new ArgumentNullException();
 
-        entities.add(entity);
+        entities.put(entity.getID(), entity);
 
         return entity;
     }
@@ -29,9 +34,21 @@ public class GridEntityComponentHandler {
         if(id == null)
             throw new ArgumentNullException();
 
-        for(var entity : entities)
-            if(entity.getID().equals(id))
-                return entity;
+        var result = entities.get(id);
+
+        if(result != null)
+            return result;
+
+        throw new ElementNotFoundException();
+    }
+
+    public GridEntityComponent getByPosition(GridPosition position) throws ArgumentNullException, ElementNotFoundException{
+        if(position == null)
+            throw new ArgumentNullException();
+        
+        for(var entity : entities.entrySet())
+            if(entity.getValue().getGridPosition().equals(position))
+                return entity.getValue();
         throw new ElementNotFoundException();
     }
 
@@ -47,7 +64,7 @@ public class GridEntityComponentHandler {
         if(entity == null)
             throw new ArgumentNullException();
         
-        entities.remove(entity);        
+        entities.remove(entity.getID());        
         return entity;
     }
 }

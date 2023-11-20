@@ -21,7 +21,7 @@ public class EnemyMapData implements Serializable{
 
     public String getAssetID() { return assetID; }
     public String getInstanceID() { return instanceID; }
-    public GridPosition gerPosition() { return position; }
+    public GridPosition getPosition() { return position; }
 
     public EnemyMapData setPosition(GridPosition position) throws ArgumentNullException{
         if(position == null)

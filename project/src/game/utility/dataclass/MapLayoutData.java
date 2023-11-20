@@ -1,14 +1,13 @@
-package uilogic;
+package game.utility.dataclass;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 
 import exception.general.ArgumentNullException;
 import file.elements.EnemyMapData;
-import game.utility.general.Identifiable;
+import game.utility.general.Identity;
 import ui.data.GridPosition;
 
-public class MapLayoutData extends Identifiable implements Serializable{
+public class MapLayoutData extends Identity{
     
     private int horizontal;
     private int vertical;
@@ -22,6 +21,7 @@ public class MapLayoutData extends Identifiable implements Serializable{
         this.vertical = vertical;
         backgroundFilePath = file;
         enemies = new ArrayList<EnemyMapData>();
+        this.playerStartPosition = playerPosition;
     }
 
     public int getHorizontal() { return horizontal; }
@@ -29,6 +29,12 @@ public class MapLayoutData extends Identifiable implements Serializable{
     public String getBackgroundFilePath() { return backgroundFilePath; }
     public ArrayList<EnemyMapData> getEnemies() { return enemies; }
     public GridPosition getPlayerPosition() { return playerStartPosition; }    
+
+    public void setBackgroundFilePath(String path) throws ArgumentNullException{
+        if(path == null)
+            throw new ArgumentNullException();
+        backgroundFilePath = path;
+    }
 
     public void addEnemy(EnemyMapData enemy) throws ArgumentNullException{
         if(enemy == null)
