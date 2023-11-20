@@ -45,7 +45,7 @@ import uilogic.UIHandler;
 public class Main {
 
     public static void main(String[] args) throws Exception{
-        UIHandler.getInstance().displayPlayerDeath();
+        //UIHandler.getInstance().displayPlayerDeath();
         DiceRoller.getInstance().setDefault(20);
         DiceRoller.getInstance().setDelegate(new GenericDelegate() {
             public void run(Object o){ UIHandler.getInstance().displayDiceRollResult((Integer)o); }
@@ -102,6 +102,7 @@ public class Main {
         playerSave.inventory.add(armor.getID());
         playerSave.inventory.add(weapon.getID());
         playerSave.currentIconFile = "resources/img/characters/5.png";
+        playerSave.playerPosition = data.getPlayerPosition();
 
         String playerFileName = "default-save.txt";
         fileIO.writeObjectToFile("G:\\uni\\sub\\3\\prog\\hf\\adventure-game-java\\project\\resources\\gamedata\\" + playerFileName, playerSave);
@@ -130,7 +131,7 @@ public class Main {
         var enemyController = new BerserkerEnemyController(enemyEntity);
         var enemyType = new EnemyType("shotgun-thug", enemyController, "resources/img/characters/7.png");
         var enemy = new Enemy("shotgun-thug-I-001", enemyType);
-        enemy.setPosition(new GridPosition(1,3));
+        //enemy.setPosition(new GridPosition(1,3));
 
         enemyController.addEventListeners(new IEventListener() {
             public void run(EventArgument argument, Event trigger){
@@ -146,7 +147,7 @@ public class Main {
             }
         });
 
-        UIHandler.getInstance().getPlayFieldHandler().placeEntity(enemy, enemyType.getIconFilePath());
+        //UIHandler.getInstance().getPlayFieldHandler().placeEntity(enemy, enemyType.getIconFilePath());
 
         var playerEntity = new PlayerEntity(100, 5, 2);
         var player = new Player("player", playerEntity);

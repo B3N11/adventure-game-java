@@ -32,8 +32,6 @@ public class Player extends Identity implements IInteractiveEntity{
     transient private Event onPlayerDied;
     transient private Event onPlayerLeveledUp;
 
-    private GridPosition position;
-
     public Player(String id, PlayerEntity entity) throws ArgumentNullException{
         if(id == null || entity == null)
             throw new ArgumentNullException();
@@ -45,7 +43,6 @@ public class Player extends Identity implements IInteractiveEntity{
     public String getInstanceID() { return getID(); }
     public int getXP(){ return xp; }
     public int getRequiredXP(){ return requiredXP; }
-    public GridPosition getPosition(){ return position; }
     public int getCurrentHealth() { return currentHealth; }
     public double getCurrentMovement() { return currentMovement; }
 
@@ -67,12 +64,6 @@ public class Player extends Identity implements IInteractiveEntity{
         currentHealth = entity.getHealth();
         currentMovement = entity.getMovement();
         return this;
-    }
-
-    public void setPosition(GridPosition position) throws ArgumentNullException{
-        if(position == null)
-            throw new ArgumentNullException();
-        this.position = position;
     }
 
     public void setRequiredXP(int amount) throws InvalidArgumentException{

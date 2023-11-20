@@ -16,8 +16,6 @@ public class Enemy extends Identifiable implements IInteractiveEntity{
     private EntityCondition condition;
     private double currentMovement;
 
-    private GridPosition position;
-
     public Enemy(String id, EnemyType enemyType) throws ArgumentNullException{
         if(enemyType == null)
             throw new ArgumentNullException();
@@ -29,7 +27,6 @@ public class Enemy extends Identifiable implements IInteractiveEntity{
 
     public String getInstanceID() { return getID(); }
     public EnemyType getEnemyType() { return enemyType; }
-    public GridPosition getPosition() { return position; }
     public int getCurrentHealth() { return currentHealth; }
     public double getCurrentMovement() { return currentMovement; }
     
@@ -48,14 +45,6 @@ public class Enemy extends Identifiable implements IInteractiveEntity{
             throw new InvalidArgumentException();
         int damage = currentHealth - health;
         takeDamage(damage);
-        return this;
-    }
-
-    public Enemy setPosition(GridPosition position) throws ArgumentNullException{
-        if(position == null)
-            throw new ArgumentNullException();
-
-        this.position = position;
         return this;
     }
 

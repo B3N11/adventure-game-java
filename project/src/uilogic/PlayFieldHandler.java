@@ -49,8 +49,12 @@ public class PlayFieldHandler {
     public void selectTile(Object o){            
         selectedTile = (GridPosition)o;
 
-        try{ selectedTileDistance = GridPosition.calculateAbsoluteDistance(GameHandler.getInstance().getPlayer().getPosition(), selectedTile); }
+        try{
+            var playerPosition = playField.getEntity(GameHandler.getInstance().getPlayer().getInstanceID()).getGridPosition();
+            selectedTileDistance = GridPosition.calculateAbsoluteDistance(playerPosition, selectedTile);
+        }
         catch(ArgumentNullException e){}
+        catch(ElementNotFoundException e){}
     }
 
     public void setCurrentMapLayout(MapLayoutData data) throws Exception{
@@ -58,11 +62,11 @@ public class PlayFieldHandler {
         currentMapLayoutData = data;
     }
 
-    public void placeEntity(IInteractiveEntity entity, String imagePath) throws ArgumentNullException, InvalidArgumentException, ComponentAlreadyAtPositionException, IOException{
-        var component = new GridEntityComponent(entity.getInstanceID(),
+    public void placeEntity(String id, GridPosition position, String imagePath) throws ArgumentNullException, InvalidArgumentException, ComponentAlreadyAtPositionException, IOException{
+        var component = new GridEntityComponent(id,
             playField.getComponentSize().getHorizontal(),
             playField.getComponentSize().getVertical(),
-            entity.getPosition());
+            position);
         component.setImage(imagePath);
 
         playField.addEntity(component);
@@ -79,7 +83,13 @@ public class PlayFieldHandler {
         playField.replaceEntity(id, newPosition);
     }
 
-    public String getEntityByPosition(GridPosition position) throws ElementNotFoundException, ArgumentNullException{
+    public GridPosition getEntityPositionByID(String id) throws ArgumentNullException, ElementNotFoundException{
+        if(id == null)
+            throw new ArgumentNullException();
+        return playField.getEntity(id).getGridPosition();
+    }
+
+    public String getEntityIDByPosition(GridPosition position) throws ElementNotFoundException, ArgumentNullException{
         if(position == null)
             throw new ArgumentNullException();
             

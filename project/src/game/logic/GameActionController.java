@@ -8,15 +8,9 @@ import exception.general.InvalidArgumentException;
 import game.behaviour.entities.enemy.Enemy;
 import game.global.GameHandler;
 import game.global.storage.ActiveEnemyStorage;
-import game.global.storage.ModifiedEnemyStorage;
-import game.utility.dataclass.ModifiedEnemyData;
 import uilogic.UIHandler;
 
 public class GameActionController {
-    
-    //Use active enemies
-    //Place entities
-    //Control turns
 
     boolean playerAttackedThisTurn;
 
@@ -48,7 +42,7 @@ public class GameActionController {
         try{
             UIHandler.getInstance().getCombatLogger().addEntityLog(player.getName(), "Attempted to move...");
             
-            UIHandler.getInstance().getPlayFieldHandler().getEntityByPosition(selectedTile);
+            UIHandler.getInstance().getPlayFieldHandler().getEntityIDByPosition(selectedTile);
 
             String message = "FAIL! There is another entity on the tile!";
             UIHandler.getInstance().getCombatLogger().addEntityLog(player.getName(), message);
@@ -75,10 +69,8 @@ public class GameActionController {
         try{ UIHandler.getInstance().getCombatLogger().addEntityLog(player.getName(), message); }
         catch(ArgumentNullException e){}
 
-        try{ player.setPosition(selectedTile); }
-        catch(ArgumentNullException e){}
         try{
-            UIHandler.getInstance().getPlayFieldHandler().replaceEntity(player.getID(), player.getPosition());
+            UIHandler.getInstance().getPlayFieldHandler().replaceEntity(player.getID(), selectedTile);
             UIHandler.getInstance().refreshUI();
         }
         catch(Exception e){}
@@ -98,7 +90,7 @@ public class GameActionController {
             return;
 
         String enemyID = "";
-        try{ enemyID = UIHandler.getInstance().getPlayFieldHandler().getEntityByPosition(selectedTile); }
+        try{ enemyID = UIHandler.getInstance().getPlayFieldHandler().getEntityIDByPosition(selectedTile); }
         catch(ElementNotFoundException e){ return; }
         catch(ArgumentNullException e){ /*Wont happen*/ }
 
@@ -163,20 +155,7 @@ public class GameActionController {
             catch(Exception e){}
         }
         else{
-            //Add enemy to modified enemy
-            try{
-                var modifiedData = ModifiedEnemyStorage.getInstance().get(enemy.getInstanceID());
-
-                if(modifiedData == null){
-                    modifiedData = new ModifiedEnemyData(enemy.getInstanceID(), enemy.getPosition(), enemy.getCurrentHealth(), false, enemyDied);
-                    ModifiedEnemyStorage.getInstance().add(enemy.getInstanceID(), modifiedData);
-                }
-                else{
-                    modifiedData.setHealth(enemy.getCurrentHealth());
-                    modifiedData.setPosition(enemy.getPosition());
-                    modifiedData.setDead(enemyDied);
-                }
-            }
+            try{ GameHandler.getInstance().modifyEnemy(enemy, false); }
             catch(Exception e){}
         }
     }

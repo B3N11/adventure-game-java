@@ -3,6 +3,7 @@ package file.handlers;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.List;
 
 import javax.swing.JOptionPane;
 
@@ -31,6 +32,7 @@ import game.logic.event.Event;
 import game.logic.event.EventArgument;
 import game.logic.event.IEventListener;
 import game.utility.dataclass.MapLayoutData;
+import game.utility.dataclass.ModifiedEnemyData;
 import uilogic.UIHandler;
 
 public class FileHandler {
@@ -102,18 +104,20 @@ public class FileHandler {
             public void run(EventArgument arg, Event e) { GameHandler.getInstance().handlePlayerLevelUp(); }
         });
         
-        //TODO: Implement modified enemy load
+        loadModifiedEnemies(playerProgress.modifiedEnemies);
 
         loadCurrentMap(playerProgress.currentMapID);
         
-        player.setPosition(UIHandler.getInstance().getPlayFieldHandler().getCurrentMapLayoutData().getPlayerPosition());
-        UIHandler.getInstance().getPlayFieldHandler().placeEntity(player, playerProgress.currentIconFile);
+        UIHandler.getInstance().getPlayFieldHandler().placeEntity(player.getInstanceID(), playerProgress.playerPosition, playerProgress.currentIconFile);
 
         //TODO: Implement enemy placement
     }
 
-    private void loadModifiedEnemies(){
-
+    private void loadModifiedEnemies(List<ModifiedEnemyData> data){
+        for(var enemy : data){
+            try{ ModifiedEnemyStorage.getInstance().add(enemy.getID(), enemy); }
+            catch(ArgumentNullException e){}
+        }
     }
 
     public void loadCurrentMap(String id) throws Exception{
@@ -125,26 +129,24 @@ public class FileHandler {
         for(var enemyData : mapData.getEnemies()){
 
             var enemyType = loadEnemyType(enemyData.getAssetID());
-            var enemy = new Enemy(enemyData.getInstanceID(), enemyType).setPosition(enemyData.getPosition());
+            var enemy = new Enemy(enemyData.getInstanceID(), enemyType);
             enemy.applyStats();
 
             if(!ModifiedEnemyStorage.getInstance().contains(enemyData.getInstanceID())){
                 ActiveEnemyStorage.getInstance().add(enemy.getID(), enemy);
-                UIHandler.getInstance().getPlayFieldHandler().placeEntity(enemy, enemyType.getIconFilePath());
+                UIHandler.getInstance().getPlayFieldHandler().placeEntity(enemy.getInstanceID(), enemyData.getPosition(), enemyType.getIconFilePath());
                 continue;
             }
             
             var modifiedData = ModifiedEnemyStorage.getInstance().get(enemy.getID());
-            enemy.setPosition(modifiedData.getPosition());
+            var modifiedPosition = modifiedData.getPosition();
             enemy.setCurrentHealth(modifiedData.getHealth());
 
             if(enemy.getCurrentHealth() == 0)
                 continue;
             
             ActiveEnemyStorage.getInstance().add(enemy.getID(), enemy);
-            UIHandler.getInstance().getPlayFieldHandler().placeEntity(enemy, enemyType.getIconFilePath());
-
-            //TODO: Implement looted state
+            UIHandler.getInstance().getPlayFieldHandler().placeEntity(enemy.getInstanceID(), modifiedPosition, enemyType.getIconFilePath());
         }
     }
 

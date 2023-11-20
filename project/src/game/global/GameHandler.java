@@ -89,21 +89,31 @@ public class GameHandler {
         String message ="Enemy died.";
         UIHandler.getInstance().getCombatLogger().addEntityLog(enemy.getEntity().getName(), message);
 
-        var modifiedData = ModifiedEnemyStorage.getInstance().get(enemy.getInstanceID());
-
-        if(modifiedData == null){
-            modifiedData = new ModifiedEnemyData(enemy.getInstanceID(), enemy.getPosition(), enemy.getCurrentHealth(), false, true);
-            ModifiedEnemyStorage.getInstance().add(enemy.getInstanceID(), modifiedData);
-        }
-        else{
-            modifiedData.setDead(true);
-            modifiedData.setHealth(enemy.getCurrentHealth());
-            modifiedData.setPosition(enemy.getPosition());
-        }
+        modifyEnemy(enemy, true);
 
         //Add XP for player
         int rewardXP = ((EnemyEntity)enemy.getEntity()).getRewardXP();
         player.addXP(rewardXP);
+    }
+
+    public void modifyEnemy(Enemy enemy, boolean dead) throws ArgumentNullException{
+        if(enemy == null)
+            throw new ArgumentNullException();
+
+        try{
+            var modifiedData = ModifiedEnemyStorage.getInstance().get(enemy.getInstanceID());
+            var enemyPosition = UIHandler.getInstance().getPlayFieldHandler().getEntityPositionByID(enemy.getInstanceID());
+    
+            if(modifiedData == null){
+                modifiedData = new ModifiedEnemyData(enemy.getInstanceID(), enemyPosition, enemy.getCurrentHealth(), false, dead);
+                ModifiedEnemyStorage.getInstance().add(enemy.getInstanceID(), modifiedData);
+            }
+            else{
+                modifiedData.setDead(true);
+                modifiedData.setHealth(enemy.getCurrentHealth());
+                modifiedData.setPosition(enemyPosition);
+            }
+        }catch(Exception e){}
     }
 
     public void handlePlayerDeath(){
