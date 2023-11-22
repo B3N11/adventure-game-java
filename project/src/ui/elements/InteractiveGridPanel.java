@@ -19,7 +19,7 @@ import ui.data.GridDimension;
 import ui.data.GridPosition;
 
 //Manages UI related to the area where the game is displayed
-public class PlayfieldPanel extends JPanel{
+public class InteractiveGridPanel extends JPanel{
     
     //Inner layout
     private JLayeredPane layeredPane;
@@ -37,15 +37,15 @@ public class PlayfieldPanel extends JPanel{
 
     private boolean autoComponentSize;
 
-    public PlayfieldPanel(int width, int height) throws Exception {
-        initPlayfield(width, height);
+    public InteractiveGridPanel(int width, int height) throws Exception {
+        initInteractiveGrid(width, height);
     }
 
     public GridDimension getPreferredSize(){ return preferredSize; }
     public GridDimension getComponentSize(){ return componentSize; }
 
     //#region INITIALIZE
-    private void initPlayfield(int width, int height) throws Exception{
+    private void initInteractiveGrid(int width, int height) throws Exception{
         //Set component size automatically
         autoComponentSize = true;
         
@@ -133,7 +133,7 @@ public class PlayfieldPanel extends JPanel{
     }
     //#endregion
 
-    public PlayfieldPanel setMapLayout(MapLayoutData data, ActionListener buttonHandler, boolean force) throws Exception{
+    public InteractiveGridPanel setMapLayout(MapLayoutData data, ActionListener buttonHandler, boolean force) throws Exception{
         if(data == null || buttonHandler == null)
             throw new ArgumentNullException();
 
@@ -145,7 +145,7 @@ public class PlayfieldPanel extends JPanel{
         return setMapLayout(data, buttonHandler, force, size);
     }
 
-    public PlayfieldPanel setMapLayout(MapLayoutData data, ActionListener buttonHandler, boolean force, GridDimension componentSize) throws Exception{
+    public InteractiveGridPanel setMapLayout(MapLayoutData data, ActionListener buttonHandler, boolean force, GridDimension componentSize) throws Exception{
         if(data == null || buttonHandler == null)
             throw new ArgumentNullException();
 
@@ -174,7 +174,7 @@ public class PlayfieldPanel extends JPanel{
         return entityHandler.add(entity);
     }
 
-    public PlayfieldPanel toggleAutoComponentSize(boolean enable){
+    public InteractiveGridPanel toggleAutoComponentSize(boolean enable){
         autoComponentSize = enable;
         return this;
     }

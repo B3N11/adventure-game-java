@@ -45,7 +45,7 @@ public class CharacterFrame extends JFrame{
 
             //SETUP: data columns fixed, rows depend on inventory size. playfield size horizontally: data.columns * griddimension, vertically: data.rows * griddimension
             var data = new MapLayoutData("asd", 10, 30, null, new GridPosition(0,0));
-            var panel = new PlayfieldPanel(480, 1440).setMapLayout(data, new MultipleButtonHandler() {
+            var panel = new InteractiveGridPanel(480, 1440).setMapLayout(data, new MultipleButtonHandler() {
                 public void initActions(){}
             }, false, new GridDimension(48, 48));
             var scrollbar = new JScrollPane(panel);

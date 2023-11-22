@@ -29,6 +29,10 @@ public class Inventory implements IEventListener{
         consumables = new HashMap<String, InventoryMarker<Consumable>>();
     }
 
+    public int size(){
+        return equipments.size() + consumables.size();
+    }
+
     public void setRemoveOnRanOut(boolean remove){
         removeOnRanOut = remove;
     }

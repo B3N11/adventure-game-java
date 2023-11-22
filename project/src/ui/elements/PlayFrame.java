@@ -19,7 +19,7 @@ import uilogic.GridButtonHandler;
 public class PlayFrame extends JFrame{
 
     private JPanel panel;
-    private PlayfieldPanel playfieldPanel;
+    private InteractiveGridPanel playfieldPanel;
     private ScrollableTextPanel combatLogPanel;
 
     //Sizes
@@ -36,7 +36,7 @@ public class PlayFrame extends JFrame{
         initPlayFrame(menuBarListener, utilityButtonListener, interactButtonListener, closeOperation);
     }
 
-    public PlayfieldPanel getPlayField() { return playfieldPanel; }
+    public InteractiveGridPanel getPlayField() { return playfieldPanel; }
 
     private void initPlayFrame(ActionListener menuBarListener, ActionListener utilityButtonListener, ActionListener interactButtonListener, WindowAdapter closeOperation) throws Exception{
         initFrame(closeOperation);
@@ -104,7 +104,7 @@ public class PlayFrame extends JFrame{
         gbc.gridx = 1;
         gbc.gridy = 0;
         gbc.gridheight = 1;
-        playfieldPanel = new PlayfieldPanel(PLAYFIELD_WIDTH, PLAYFIELD_HEIGHT);
+        playfieldPanel = new InteractiveGridPanel(PLAYFIELD_WIDTH, PLAYFIELD_HEIGHT);
         addToPanel(playfieldPanel, gbc);
         
         gbc.gridx = 1;

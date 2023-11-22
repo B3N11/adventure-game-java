@@ -39,7 +39,7 @@ import ui.elements.CharacterFrame;
 import ui.elements.CombatFrame;
 import ui.elements.GridEntityComponent;
 import ui.elements.PlayFrame;
-import ui.elements.PlayfieldPanel;
+import ui.elements.InteractiveGridPanel;
 import ui.elements.UtilityButtonPanel;
 import uilogic.GridButtonHandler;
 import uilogic.UIHandler;
@@ -191,7 +191,7 @@ public class Main {
 
         var handler = new GridButtonHandler(new GenericDelegate() { public void run(Object o){} });
         var layout = new MapLayoutData("map-01", 20, 11, "resources/img/maps/2.jpg", new GridPosition(0,0));
-        var field = new PlayfieldPanel(1200, 675).setMapLayout(layout, handler, false);
+        var field = new InteractiveGridPanel(1200, 675).setMapLayout(layout, handler, false);
         frame.add(field);
 
         var size = field.getComponentSize();

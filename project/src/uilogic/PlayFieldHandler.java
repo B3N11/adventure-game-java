@@ -11,11 +11,11 @@ import game.utility.dataclass.MapLayoutData;
 import game.utility.delegates.GenericDelegate;
 import ui.data.GridPosition;
 import ui.elements.GridEntityComponent;
-import ui.elements.PlayfieldPanel;
+import ui.elements.InteractiveGridPanel;
 
 public class PlayFieldHandler {
     
-    private PlayfieldPanel playField;
+    private InteractiveGridPanel playField;
     private GridButtonHandler gridButtonHandler;
 
     private GridPosition selectedTile;
@@ -23,7 +23,7 @@ public class PlayFieldHandler {
 
     private MapLayoutData currentMapLayoutData;
 
-    public PlayFieldHandler(PlayfieldPanel playField){
+    public PlayFieldHandler(InteractiveGridPanel playField){
         this.playField = playField;
 
         try{
@@ -33,13 +33,13 @@ public class PlayFieldHandler {
         }catch(ArgumentNullException e){}
     }
 
-    public PlayfieldPanel getPlayField() { return playField; }
+    public InteractiveGridPanel getPlayField() { return playField; }
     public GridButtonHandler getGridButtonHandler() { return gridButtonHandler; }
     public MapLayoutData getCurrentMapLayoutData() { return currentMapLayoutData; }
     public GridPosition getSelectedTile() { return selectedTile; }
     public double getSelectedTileDistance() { return selectedTileDistance; }
 
-    public void setPlayField(PlayfieldPanel playField) throws ArgumentNullException{
+    public void setPlayField(InteractiveGridPanel playField) throws ArgumentNullException{
         if(playField == null)
             throw new ArgumentNullException();
         this.playField = playField;
