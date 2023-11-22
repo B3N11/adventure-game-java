@@ -10,6 +10,7 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 import exception.general.ArgumentNullException;
 import exception.ui.UIHandlerAlreadyStartedException;
 import game.global.GameHandler;
+import ui.elements.CharacterFrame;
 import ui.elements.PlayFrame;
 import ui.elements.PlayerDeathFrame;
 
@@ -25,6 +26,7 @@ public class UIHandler {
     private UtilityButtonHandler utilityButtonHandler;
     private InteractButtonHandler interactButtonHandler;
     private PlayerDeathFrameHandler playerDeathFrameHandler;
+    private CharacterFrameHandler characterFrameHandler;
 
     private PlayFrame playFrame;
 
@@ -60,6 +62,7 @@ public class UIHandler {
         utilityButtonHandler = new UtilityButtonHandler();
         interactButtonHandler = new InteractButtonHandler();
         playerDeathFrameHandler = new PlayerDeathFrameHandler();
+        characterFrameHandler = new CharacterFrameHandler();
         playFieldHandler = new PlayFieldHandler(null);
     }
 
@@ -112,5 +115,14 @@ public class UIHandler {
             var deathFrame = new PlayerDeathFrame(playFrame, playerDeathFrameHandler);
             deathFrame.setVisible(true);
         }catch(ArgumentNullException e){}
+    }
+
+    public void displayCharacterFrame(){
+        int inventoryCount = GameHandler.getInstance().getPlayer().getEntity().getInventory().size();
+        try{
+            var characterFrame = new CharacterFrame(inventoryCount, characterFrameHandler.getGridButtonHandler());
+            characterFrame.setVisible(true);
+        }
+        catch(ArgumentNullException e){}
     }
 }

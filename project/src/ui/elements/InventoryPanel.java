@@ -29,7 +29,7 @@ public class InventoryPanel extends JPanel{
         int horizontalSize = columns * COMPONENT_WIDTH;
         int verticalSize = rows * COMPONENT_HEIGHT;
     
-        var data = new MapLayoutData("", rows, columns, null, new GridPosition(0,0));
+        var data = new MapLayoutData("asd", columns, rows, null, new GridPosition(0,0));
         grid = new InteractiveGridPanel(horizontalSize, verticalSize).setMapLayout(data, buttonHandler, false, new GridDimension(COMPONENT_WIDTH, COMPONENT_HEIGHT));
 
         var scrollbar = new JScrollPane(grid);

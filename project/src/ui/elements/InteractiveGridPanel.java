@@ -3,7 +3,6 @@ package ui.elements;
 import java.awt.Color;
 import java.awt.event.ActionListener;
 
-import javax.swing.Action;
 import javax.swing.JLabel;
 import javax.swing.JLayeredPane;
 import javax.swing.JPanel;
@@ -35,8 +34,6 @@ public class InteractiveGridPanel extends JPanel{
     private GridDimension preferredSize;
     private GridDimension componentSize;
 
-    private boolean autoComponentSize;
-
     public InteractiveGridPanel(int width, int height) throws Exception {
         initInteractiveGrid(width, height);
     }
@@ -45,10 +42,7 @@ public class InteractiveGridPanel extends JPanel{
     public GridDimension getComponentSize(){ return componentSize; }
 
     //#region INITIALIZE
-    private void initInteractiveGrid(int width, int height) throws Exception{
-        //Set component size automatically
-        autoComponentSize = true;
-        
+    private void initInteractiveGrid(int width, int height) throws Exception{        
         //Set panel
         initPanel(width, height);
 
@@ -172,11 +166,6 @@ public class InteractiveGridPanel extends JPanel{
         entityPanel.refresh();
 
         return entityHandler.add(entity);
-    }
-
-    public InteractiveGridPanel toggleAutoComponentSize(boolean enable){
-        autoComponentSize = enable;
-        return this;
     }
 
     public GridEntityComponent getEntity(String id) throws ArgumentNullException, ElementNotFoundException{

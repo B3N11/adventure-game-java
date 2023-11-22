@@ -42,6 +42,7 @@ import ui.elements.PlayFrame;
 import ui.elements.InteractiveGridPanel;
 import ui.elements.UtilityButtonPanel;
 import uilogic.GridButtonHandler;
+import uilogic.MultipleButtonHandler;
 import uilogic.UIHandler;
 
 public class Main {
@@ -65,7 +66,9 @@ public class Main {
         var weapon = (Shotgun)new Shotgun("shotgun-001", "Tech Shotgun", 0.5).setDamageDice(6).setDiceCount(3).setAttackModifier(4).setDamageModifier(2).setRange(3).setDescription("Good shit.");
         String path2 = "G:\\uni\\sub\\3\\prog\\hf\\adventure-game-java\\project\\resources\\gamedata\\img\\items\\tech-shotgun.png";
 
-        CharacterFrame frame = new CharacterFrame();
+        CharacterFrame frame = new CharacterFrame(35,new MultipleButtonHandler() {
+            public void initActions(){}
+        });
         frame.getEquipmentPanel().getTopPanel().setUpContent(armor, path, 10);
         frame.getEquipmentPanel().getBotPanel().setUpContent(weapon, path2, 10);
         frame.setVisible(true);
