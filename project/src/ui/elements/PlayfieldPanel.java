@@ -1,7 +1,9 @@
 package ui.elements;
 
 import java.awt.Color;
+import java.awt.event.ActionListener;
 
+import javax.swing.Action;
 import javax.swing.JLabel;
 import javax.swing.JLayeredPane;
 import javax.swing.JPanel;
@@ -12,7 +14,6 @@ import exception.general.InvalidArgumentException;
 import exception.ui.ComponentAlreadyAtPositionException;
 import exception.ui.PlayfieldNotEmptyException;
 import game.utility.dataclass.MapLayoutData;
-import uilogic.GridButtonHandler;
 import uilogic.GridEntityComponentHandler;
 import ui.data.GridDimension;
 import ui.data.GridPosition;
@@ -31,8 +32,10 @@ public class PlayfieldPanel extends JPanel{
     //Entity Handler
     private GridEntityComponentHandler entityHandler;
 
-    private static GridDimension preferredSize;
+    private GridDimension preferredSize;
     private GridDimension componentSize;
+
+    private boolean autoComponentSize;
 
     public PlayfieldPanel(int width, int height) throws Exception {
         initPlayfield(width, height);
@@ -43,13 +46,16 @@ public class PlayfieldPanel extends JPanel{
 
     //#region INITIALIZE
     private void initPlayfield(int width, int height) throws Exception{
+        //Set component size automatically
+        autoComponentSize = true;
+        
         //Set panel
         initPanel(width, height);
 
         var defaultMapLayout = new MapLayoutData("default-layout-000", 20, 11, null, new GridPosition(0,0));
 
         //Set componet size
-        setComponentSize(defaultMapLayout.getHorizontal(), defaultMapLayout.getVertical());
+        setComponentSize(calculateAutoComponentSize(defaultMapLayout.getHorizontal(), defaultMapLayout.getVertical()));
 
         //Create the 3 layers
         initBackground(preferredSize.getHorizontal(), preferredSize.getVertical(), defaultMapLayout.getBackgroundFilePath());
@@ -93,7 +99,7 @@ public class PlayfieldPanel extends JPanel{
         }
     }
 
-    private void initButtonPanel(int width, int height, GridButtonHandler handler) throws Exception{
+    private void initButtonPanel(int width, int height, ActionListener handler) throws Exception{
         buttonPanel = new GridPanel(preferredSize.getHorizontal(), preferredSize.getVertical(), width, height);
         var color = new Color(255, 0, 0, 50);
 
@@ -113,18 +119,33 @@ public class PlayfieldPanel extends JPanel{
         layeredPane.add(buttonPanel.getJPanel(), Integer.valueOf(2));
     }
 
-    private void setComponentSize(int x, int y){
-        if(componentSize != null)
-            return;
-        
+    private GridDimension calculateAutoComponentSize(int x, int y){        
         int xComponentSize = preferredSize.getHorizontal() / x;
         int yComponentSize = preferredSize.getVertical() / y;
 
-        componentSize = new GridDimension(xComponentSize, yComponentSize);
+        return new GridDimension(xComponentSize, yComponentSize);
+    }
+
+    private void setComponentSize(GridDimension size) throws ArgumentNullException{
+        if(size == null)
+            throw new ArgumentNullException();
+        componentSize = size;
     }
     //#endregion
 
-    public PlayfieldPanel setMapLayout(MapLayoutData data, GridButtonHandler buttonHandler, boolean force) throws Exception{
+    public PlayfieldPanel setMapLayout(MapLayoutData data, ActionListener buttonHandler, boolean force) throws Exception{
+        if(data == null || buttonHandler == null)
+            throw new ArgumentNullException();
+
+        if(!entityHandler.isEmpty() && !force)
+            throw new PlayfieldNotEmptyException();
+
+        var size = calculateAutoComponentSize(data.getHorizontal(), data.getVertical());
+        
+        return setMapLayout(data, buttonHandler, force, size);
+    }
+
+    public PlayfieldPanel setMapLayout(MapLayoutData data, ActionListener buttonHandler, boolean force, GridDimension componentSize) throws Exception{
         if(data == null || buttonHandler == null)
             throw new ArgumentNullException();
 
@@ -133,7 +154,7 @@ public class PlayfieldPanel extends JPanel{
 
         entityHandler.clear();
 
-        setComponentSize(data.getHorizontal(), data.getVertical());
+        setComponentSize(componentSize);
         
         initEntityPanel(data.getHorizontal(), data.getVertical());
         initButtonPanel(data.getHorizontal(), data.getVertical(), buttonHandler);
@@ -151,6 +172,11 @@ public class PlayfieldPanel extends JPanel{
         entityPanel.refresh();
 
         return entityHandler.add(entity);
+    }
+
+    public PlayfieldPanel toggleAutoComponentSize(boolean enable){
+        autoComponentSize = enable;
+        return this;
     }
 
     public GridEntityComponent getEntity(String id) throws ArgumentNullException, ElementNotFoundException{

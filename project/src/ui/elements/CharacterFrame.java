@@ -3,13 +3,19 @@ package ui.elements;
 import javax.swing.BorderFactory;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.swing.JScrollBar;
+import javax.swing.JScrollPane;
+import javax.swing.ScrollPaneConstants;
 
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.GridLayout;
 
 import exception.general.ArgumentNullException;
+import game.utility.dataclass.MapLayoutData;
+import ui.data.GridDimension;
 import ui.data.GridPosition;
-import uilogic.GridButtonHandler;
+import uilogic.MultipleButtonHandler;
 
 public class CharacterFrame extends JFrame{
 
@@ -36,14 +42,18 @@ public class CharacterFrame extends JFrame{
         }catch(ArgumentNullException e){}
 
         try{
-            var panel = new JPanel();
-            panel.setBorder(BorderFactory.createTitledBorder("Inventory"));
-            var grid = new GridPanel(500, 500, 5, 5);
-            for(int i = 0; i < 5; i++)
-                for(int j = 0; j < 5; j++)
-                    grid.add(new GridButton(90, 90, Color.BLACK, new GridPosition(i,j), null), new GridPosition(i,j), false, false);
-            panel.add(grid.getJPanel());
-            add(panel);
+
+            //SETUP: data columns fixed, rows depend on inventory size. playfield size horizontally: data.columns * griddimension, vertically: data.rows * griddimension
+            var data = new MapLayoutData("asd", 10, 30, null, new GridPosition(0,0));
+            var panel = new PlayfieldPanel(480, 1440).setMapLayout(data, new MultipleButtonHandler() {
+                public void initActions(){}
+            }, false, new GridDimension(48, 48));
+            var scrollbar = new JScrollPane(panel);
+            scrollbar.setPreferredSize(new Dimension(500,500));
+            scrollbar.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+            scrollbar.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+            
+            add(scrollbar);
         }catch(Exception e){}
     }
     

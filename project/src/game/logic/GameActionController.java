@@ -59,9 +59,6 @@ public class GameActionController {
         
         double distance = UIHandler.getInstance().getPlayFieldHandler().getSelectedTileDistance();
 
-        try{ UIHandler.getInstance().getCombatLogger().addEntityLog(player.getName(), "Attempted to move..."); }
-        catch(ArgumentNullException e){}
-
         boolean successfullMove = player.move(distance);
 
         if(!successfullMove){
