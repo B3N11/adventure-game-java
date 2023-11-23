@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import exception.general.ArgumentNullException;
 import file.elements.EnemyMapData;
+import file.elements.ItemMapData;
 import game.utility.general.Identity;
 import ui.data.GridPosition;
 
@@ -13,6 +14,7 @@ public class MapLayoutData extends Identity{
     private int vertical;
     private String backgroundFilePath;
     private ArrayList<EnemyMapData> enemies;
+    private ArrayList<ItemMapData> items;
     private GridPosition playerStartPosition;
 
     public MapLayoutData(String id, int horizontal, int vertical, String file, GridPosition playerPosition) throws ArgumentNullException{        
@@ -21,6 +23,7 @@ public class MapLayoutData extends Identity{
         this.vertical = vertical;
         backgroundFilePath = file;
         enemies = new ArrayList<EnemyMapData>();
+        items = new ArrayList<ItemMapData>();
         this.playerStartPosition = playerPosition;
     }
 
@@ -28,6 +31,7 @@ public class MapLayoutData extends Identity{
     public int getVertical() { return vertical; }
     public String getBackgroundFilePath() { return backgroundFilePath; }
     public ArrayList<EnemyMapData> getEnemies() { return enemies; }
+    public ArrayList<ItemMapData> getItems() { return items; }
     public GridPosition getPlayerPosition() { return playerStartPosition; }    
 
     public void setBackgroundFilePath(String path) throws ArgumentNullException{
@@ -39,7 +43,12 @@ public class MapLayoutData extends Identity{
     public void addEnemy(EnemyMapData enemy) throws ArgumentNullException{
         if(enemy == null)
             throw new ArgumentNullException();
-
         enemies.add(enemy);
+    }
+
+    public void addItem(ItemMapData item) throws ArgumentNullException{
+        if(item == null)
+            throw new ArgumentNullException();
+        items.add(item);
     }
 }

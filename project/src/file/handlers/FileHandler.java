@@ -120,7 +120,7 @@ public class FileHandler {
         GameHandler.getInstance().setSessionPlayer(player);
         
         //Loads map and places player on grid
-        loadCurrentMap(playerProgress.currentMapID);
+        loadCurrentMap(playerProgress.currentMapID, player.getEntity().getInventory().getAllItems());
 
         //replaces player to saved position
         UIHandler.getInstance().getPlayFieldHandler().replaceEntity(player.getInstanceID(), playerProgress.playerPosition);
@@ -139,7 +139,7 @@ public class FileHandler {
         }
     }
 
-    public void loadCurrentMap(String id) throws Exception{
+    public void loadCurrentMap(String id, List<Item> playerInventory) throws Exception{
         String fileName = id + ".txt";
         var mapData = (MapLayoutData)fileIOUtil.readObjectFromFile(new File(mapLayoutFolderFilePath, fileName));
 
@@ -173,6 +173,16 @@ public class FileHandler {
             
             ActiveEnemyStorage.getInstance().add(enemy.getID(), enemy);
             UIHandler.getInstance().getPlayFieldHandler().placeEntity(enemy.getInstanceID(), modifiedPosition, enemyIconPath);
+        }
+
+        for(var itemData : mapData.getItems()){
+            var item = loadItem(itemData.itemID);
+            String itemIconPath = IconDataStorage.getInstance().get(item.getID()).getAbsolutPath();
+
+            if(playerInventory.contains(item))
+                continue;
+
+            UIHandler.getInstance().getPlayFieldHandler().placeEntity(item.getID(), itemData.position, itemIconPath);
         }
 
         String playerIconPath = IconDataStorage.getInstance().get(GameHandler.getInstance().getPlayer().getInstanceID()).getAbsolutPath();
