@@ -43,6 +43,7 @@ public class ScrollableTextPanel extends JPanel{
 
     public void addToText(String text){
         textArea.append(text + "\n");
+        textArea.setCaretPosition(textArea.getDocument().getLength());
     }
 
     public void clearText(){

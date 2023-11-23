@@ -145,6 +145,6 @@ public class PlayFrame extends JFrame{
     }
 
     public void clearCombatLog(){
-        
+        combatLogPanel.clearText();
     }
 }

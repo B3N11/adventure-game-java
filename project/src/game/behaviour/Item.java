@@ -7,6 +7,10 @@ import ui.interfaces.IDisplayable;
 public class Item extends Identity implements IDisplayable{
     protected ItemType itemType;
 
+    public Item(){
+        itemType = ItemType.SIMPLE;
+    }
+
     public ItemType getItemType() { return itemType; }
 
     @Override

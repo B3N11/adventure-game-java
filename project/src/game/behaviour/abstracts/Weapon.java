@@ -107,7 +107,7 @@ public abstract class Weapon extends Equipment{
 
     @Override
     public String getStatistics(int bearerLevel){
-        String result = "Hit DC: " + DiceRoller.getInstance().getDefault() + " + " + attackModifier +
+        String result = "Hit DC: 1d" + DiceRoller.getInstance().getDefault() + " + " + attackModifier +
                         "\nAttack DC: " + diceCount + "d" + damageDice + " + " + (damageModifier + bearerLevel) +
                         "\nRange: " + range;
         return result;

@@ -98,31 +98,16 @@ public class CharacterFrameHandler {
     private void fillInventory(){
         var grid = frame.getInventoryPanel().getGrid();
         var inventory = GameHandler.getInstance().getPlayer().getEntity().getInventory();
-        var consumables = inventory.getConsumables();
-        var equipments = inventory.getEquipments();
+        var allItems = inventory.getAllItems();
         int columnCount = frame.getInventoryPanel().getColumnCount();
 
         int horizontal = 0;
         int vertical = 0;
 
         try{
-            for(var equipment : equipments){
-                var imagePath = IconDataStorage.getInstance().get(equipment.getID());
-                var component = new GridEntityComponent(equipment.getID(), grid.getComponentSize().getHorizontal(), grid.getComponentSize().getVertical(), new GridPosition(horizontal, vertical));
-                component.setImage(imagePath.getAbsolutPath());
-                grid.addEntity(component);
-
-                horizontal++;
-                if(horizontal != columnCount)
-                    continue;
-
-                horizontal = 0;
-                vertical++;
-            }
-
-            for(var consumable : consumables){
-                var imagePath = IconDataStorage.getInstance().get(consumable.getID());
-                var component = new GridEntityComponent(consumable.getID(), grid.getComponentSize().getHorizontal(), grid.getComponentSize().getVertical(), new GridPosition(horizontal, vertical));
+            for(var item : allItems){
+                var imagePath = IconDataStorage.getInstance().get(item.getID());
+                var component = new GridEntityComponent(item.getID(), grid.getComponentSize().getHorizontal(), grid.getComponentSize().getVertical(), new GridPosition(horizontal, vertical));
                 component.setImage(imagePath.getAbsolutPath());
                 grid.addEntity(component);
 

@@ -84,7 +84,7 @@ public class GameActionController {
             return;
 
         if(playerAttacksLeft == 0){
-            try{ UIHandler.getInstance().getCombatLogger().addSystemLog("Player already attacked this turn."); }
+            try{ UIHandler.getInstance().getCombatLogger().addSystemLog("Player has no more attacks in this turn."); }
             catch(ArgumentNullException e){}
             return;
         }

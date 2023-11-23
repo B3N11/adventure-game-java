@@ -99,11 +99,7 @@ public class FileHandler {
 
         for(var item : playerProgress.inventory){
             var itemObject = loadItem(item);
-
-            if(itemObject.getItemType() == ItemType.EQUIPMENT)
-                player.addToInventory((Equipment)itemObject);
-            if(itemObject.getItemType() == ItemType.CONSUMABLE)
-                player.addToInventory((Consumable)itemObject);
+            player.addToInventory(itemObject);
         }
 
         var armor = (Armor)loadItem(playerProgress.playerArmorID);
@@ -273,14 +269,13 @@ public class FileHandler {
 
         progress.inventory = new ArrayList<>();
         progress.modifiedEnemies = new ArrayList<>();
+
+        var allItems = player.getEntity().getInventory().getAllItems();
         
         for(var enemy : ModifiedEnemyStorage.getInstance().entrySet())
             progress.modifiedEnemies.add(enemy.getValue());
 
-        for(var item : player.getEntity().getInventory().getConsumables())
-            progress.inventory.add(item.getID());
-
-        for(var item : player.getEntity().getInventory().getEquipments())
+        for(var item : allItems)
             progress.inventory.add(item.getID());
 
         String file = filePath;

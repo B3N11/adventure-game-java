@@ -2,6 +2,7 @@ package game.behaviour;
 
 import exception.general.ArgumentNullException;
 import exception.general.InvalidArgumentException;
+import game.enums.ItemType;
 import game.enums.ModifierType;
 import game.logic.event.Event;
 import game.logic.event.EventArgument;
@@ -22,6 +23,7 @@ public class Consumable extends Item{
         this.type = type;
         charges = amount;
         onOutOfChargesEvent = new Event(new EventArgument<Consumable>().setArgument(this));
+        itemType = ItemType.CONSUMABLE;
     }
 
     public int getCharges() { return charges; }
