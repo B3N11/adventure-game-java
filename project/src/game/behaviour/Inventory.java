@@ -7,9 +7,7 @@ import java.util.List;
 
 import exception.general.ArgumentNullException;
 import exception.general.InvalidArgumentException;
-import game.behaviour.abstracts.Consumable;
 import game.behaviour.abstracts.Equipment;
-import game.behaviour.abstracts.Item;
 import game.enums.ModifierType;
 import game.logic.event.Event;
 import game.logic.event.EventArgument;

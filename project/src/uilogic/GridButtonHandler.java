@@ -11,12 +11,14 @@ public class GridButtonHandler implements ActionListener {
 
     private GenericDelegate delegate;
     private GridButton lastSelected;
+    private boolean highlightButton;
 
-    public GridButtonHandler(GenericDelegate delegate) throws ArgumentNullException{
+    public GridButtonHandler(GenericDelegate delegate, boolean highlightButton) throws ArgumentNullException{
         if(delegate == null)
             throw new ArgumentNullException();
 
         this.delegate = delegate;
+        this.highlightButton = highlightButton;
     }
 
     public void clearSelected(){
@@ -31,14 +33,17 @@ public class GridButtonHandler implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        clearSelected();
+        if(highlightButton)
+            clearSelected();
 
         var button = (GridButton)e.getSource();
         lastSelected = button;
 
-        button.hightlightButton(true);
-        button.getParent().revalidate();
-        button.getParent().repaint();
+        if(highlightButton){
+            button.hightlightButton(true);
+            button.getParent().revalidate();
+            button.getParent().repaint();
+        }
 
         var buttonPosition = ((GridButton)e.getSource()).getGridPosition();
         delegate.run(buttonPosition);

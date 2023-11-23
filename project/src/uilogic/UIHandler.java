@@ -8,6 +8,7 @@ import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 import exception.general.ArgumentNullException;
+import exception.general.ConfigNotLoadedException;
 import exception.ui.UIHandlerAlreadyStartedException;
 import game.global.GameHandler;
 import ui.elements.CharacterFrame;
@@ -96,7 +97,7 @@ public class UIHandler {
         playFrame = new PlayFrame(playFrameMenuBarHandler, utilityButtonHandler, interactButtonHandler, new WindowAdapter() {
             public void windowClosing(WindowEvent e){ GameHandler.getInstance().quitGame(false); }
         });
-        playFieldHandler.setPlayField(playFrame.getPlayField());
+        playFieldHandler.setPanel(playFrame.getPlayField());
     }
 
     public void togglePlayerControlls(boolean on){
@@ -118,11 +119,9 @@ public class UIHandler {
     }
 
     public void displayCharacterFrame(){
-        int inventoryCount = GameHandler.getInstance().getPlayer().getEntity().getInventory().size();
-        try{
-            var characterFrame = new CharacterFrame(inventoryCount, characterFrameHandler.getGridButtonHandler());
-            characterFrame.setVisible(true);
+        try{ characterFrameHandler.start(); }
+        catch(ConfigNotLoadedException e){
+            showMessage("Please load a game configuration file first!", JOptionPane.ERROR_MESSAGE);
         }
-        catch(ArgumentNullException e){}
     }
 }

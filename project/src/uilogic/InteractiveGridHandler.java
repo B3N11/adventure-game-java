@@ -17,15 +17,19 @@ public class InteractiveGridHandler {
 
     protected GridPosition selectedTile;
 
-    public InteractiveGridHandler(InteractiveGridPanel panel){
+    public InteractiveGridHandler(InteractiveGridPanel panel, boolean highlightButton){
         this.panel = panel;
 
         try{
             gridButtonHandler = new GridButtonHandler(new GenericDelegate() {
                 public void run(Object o) { selectTile(o); }
-            });
+            }, highlightButton);
         }catch(ArgumentNullException e){}
     }
+
+    public InteractiveGridPanel getPlayField() { return panel; }
+    public GridButtonHandler getGridButtonHandler() { return gridButtonHandler; }
+    public GridPosition getSelectedTile() { return selectedTile; }
 
     public void setPanel(InteractiveGridPanel panel) throws ArgumentNullException{
         if(panel == null)

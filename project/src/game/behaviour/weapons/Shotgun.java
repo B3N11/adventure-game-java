@@ -1,13 +1,12 @@
 package game.behaviour.weapons;
 
-import java.io.Serializable;
-
 import exception.general.ArgumentNullException;
 import exception.general.InvalidArgumentException;
 import exception.dice.DefaultDiceNotSetException;
 import game.behaviour.abstracts.Weapon;
+import game.enums.WeaponType;
 
-public class Shotgun extends Weapon implements Serializable{
+public class Shotgun extends Weapon{
 
     private double hitRange;
     

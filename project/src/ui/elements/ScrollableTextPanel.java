@@ -2,6 +2,7 @@ package ui.elements;
 
 import java.awt.Dimension;
 import java.awt.GridLayout;
+import java.awt.Insets;
 
 import javax.swing.BorderFactory;
 import javax.swing.JPanel;
@@ -29,6 +30,9 @@ public class ScrollableTextPanel extends JPanel{
     private void setupTextArea(int width, int height){
         textArea = new JTextArea();
         textArea.setEditable(false);
+        textArea.setWrapStyleWord(true);
+        textArea.setLineWrap(true);
+        textArea.setMargin( new Insets(10,5,10,5) );
 
         var scroll = new JScrollPane(textArea);
         scroll.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
@@ -38,6 +42,10 @@ public class ScrollableTextPanel extends JPanel{
     }
 
     public void addToText(String text){
-        textArea.append(" " + text + "\n");
+        textArea.append(text + "\n");
+    }
+
+    public void clearText(){
+        textArea.setText("");
     }
 }

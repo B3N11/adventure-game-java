@@ -10,6 +10,7 @@ public class CharacterFrame extends JFrame{
 
     private EquipmentPanel equipmentPanel;
     private InventoryPanel inventoryPanel;
+    private EquipmentItemPanel itemPanel;
     
     public CharacterFrame(int inventoryCount, ActionListener buttonHandler) throws ArgumentNullException{
         if(buttonHandler == null)
@@ -22,7 +23,6 @@ public class CharacterFrame extends JFrame{
 
     private void initFrame(){
         setTitle("Character");
-        setAlwaysOnTop(true);
         setResizable(false);
         setLayout(new GridLayout(1,3));
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -36,11 +36,23 @@ public class CharacterFrame extends JFrame{
 
         try{
             int rowCount = (inventoryCount / 10) + 1;
-            inventoryPanel = new InventoryPanel(500, 500, rowCount, 10, buttonHandler);
+            int finalCount = Math.max(rowCount, 30);
+            inventoryPanel = new InventoryPanel(finalCount, 6, buttonHandler);
             add(inventoryPanel);
         }catch(Exception e){}
+
+        try{
+            itemPanel = new EquipmentItemPanel(300, 500, 200, 200, "Selected Item");
+            add(itemPanel);
+        }catch(ArgumentNullException e){}
+    }
+
+    public void refresh(){
+        revalidate();
+        repaint();
     }
     
     public EquipmentPanel getEquipmentPanel() { return equipmentPanel; }
     public InventoryPanel getInventoryPanel() { return inventoryPanel; }
+    public EquipmentItemPanel getItemPanel() { return itemPanel; }
 }

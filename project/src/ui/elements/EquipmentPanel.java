@@ -34,8 +34,8 @@ public class EquipmentPanel extends JPanel{
 
     private void setUpContent(String topText, String botText){            
         try{
-            topPanel = new EquipmentItemPanel(topText);
-            botPanel = new EquipmentItemPanel(botText);
+            topPanel = new EquipmentItemPanel(280, 280, 100, 100, topText);
+            botPanel = new EquipmentItemPanel(280, 280, 100, 100, botText);
 
             add(topPanel);
             add(botPanel);

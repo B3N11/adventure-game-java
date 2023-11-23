@@ -1,4 +1,4 @@
-package game.behaviour.abstracts;
+package game.behaviour;
 
 import exception.general.ArgumentNullException;
 import exception.general.InvalidArgumentException;
@@ -7,14 +7,14 @@ import game.logic.event.Event;
 import game.logic.event.EventArgument;
 import game.logic.event.IEventListener;
 
-public abstract class Consumable extends Item{
+public class Consumable extends Item{
     
     private double modifier;
     private int charges;
     private boolean toggled;
     private ModifierType type;
 
-    private Event onOutOfChargesEvent;
+    transient private Event onOutOfChargesEvent;
 
     public Consumable(String id, ModifierType type, int amount) throws ArgumentNullException{
         setID(id);

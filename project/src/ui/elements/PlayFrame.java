@@ -143,4 +143,8 @@ public class PlayFrame extends JFrame{
     public void displayFrame(){
         setVisible(true);
     }
+
+    public void clearCombatLog(){
+        
+    }
 }

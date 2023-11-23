@@ -1,5 +1,7 @@
 package game.behaviour.abstracts;
 
+import game.enums.EquipmentType;
+
 public class Armor extends Equipment{
  
     protected int armorClass;
@@ -8,6 +10,8 @@ public class Armor extends Equipment{
     public Armor(int armorClass, int movementBonus){
         setArmorClass(armorClass);
         setMovementBonus(movementBonus);
+
+        equipmentType = EquipmentType.ARMOR;
     }
 
     public int getArmorClass(){ return armorClass; }

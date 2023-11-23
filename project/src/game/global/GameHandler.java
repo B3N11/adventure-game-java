@@ -16,6 +16,7 @@ import game.behaviour.entities.enemy.EnemyEntity;
 import game.global.storage.ActiveEnemyStorage;
 import game.global.storage.ModifiedEnemyStorage;
 import game.logic.GameActionController;
+import game.utility.dataclass.MapLayoutData;
 import game.utility.dataclass.ModifiedEnemyData;
 import uilogic.FileChooserType;
 import uilogic.UIHandler;
@@ -54,10 +55,19 @@ public class GameHandler {
             throw new ArgumentNullException();
 
         this.player = player;
+        actionController.resetPlayerAttacksLeft();
     }
 
     public void start() throws Exception{
         UIHandler.getInstance().start();
+    }
+
+    public void setCurrentMapLayout(MapLayoutData data) throws Exception{
+        if(data == null)
+            throw new ArgumentNullException();
+        
+        UIHandler.getInstance().getPlayFieldHandler().setCurrentMapLayout(data);
+        UIHandler.getInstance().getCombatLogger().addMapDescription(data.getName(), data.getDescription());
     }
 
     public void handleChosenFile(String filePath, FileChooserType type) throws ArgumentNullException, FileNotFoundException{

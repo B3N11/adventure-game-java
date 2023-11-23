@@ -2,7 +2,7 @@ package file.elements;
 
 import java.io.Serializable;
 
-import game.behaviour.abstracts.Item;
+import game.behaviour.Item;
 
 public class ItemSave implements Serializable{
     public Item item;
