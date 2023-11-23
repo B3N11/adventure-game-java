@@ -12,10 +12,10 @@ import uilogic.UIHandler;
 
 public class GameActionController {
 
-    boolean playerAttackedThisTurn;
+    int playerAttacksLeft;
 
-    public GameActionController(){
-        playerAttackedThisTurn = false;
+    public void resetPlayerAttacksLeft(){
+        playerAttacksLeft = GameHandler.getInstance().getPlayer().getEntity().getWeapon().getAttacksInRound();
     }
 
     public void runEnemyTurns(){  
@@ -59,9 +59,6 @@ public class GameActionController {
         
         double distance = UIHandler.getInstance().getPlayFieldHandler().getSelectedTileDistance();
 
-        try{ UIHandler.getInstance().getCombatLogger().addEntityLog(player.getName(), "Attempted to move..."); }
-        catch(ArgumentNullException e){}
-
         boolean successfullMove = player.move(distance);
 
         if(!successfullMove){
@@ -86,8 +83,8 @@ public class GameActionController {
         if(GameHandler.getInstance().checkPlayerConditionForAction())
             return;
 
-        if(playerAttackedThisTurn){
-            try{ UIHandler.getInstance().getCombatLogger().addSystemLog("Player already attacked this turn."); }
+        if(playerAttacksLeft == 0){
+            try{ UIHandler.getInstance().getCombatLogger().addSystemLog("Player has no more attacks in this turn."); }
             catch(ArgumentNullException e){}
             return;
         }
@@ -125,7 +122,7 @@ public class GameActionController {
         try{ successfullAttack = player.attack(enemy.getEntity().getArmorClass(), distance); }
         catch(Exception e){ UIHandler.getInstance().showMessage(e.getMessage(), JOptionPane.ERROR_MESSAGE);}
 
-        playerAttackedThisTurn = true;
+        playerAttacksLeft--;
 
         String message = "";
         try{ message = "Target AC: " + enemy.getEntity().getArmorClass() + "\n";}
@@ -173,7 +170,7 @@ public class GameActionController {
         if(GameHandler.getInstance().checkPlayerConditionForAction())
             return;
 
-        playerAttackedThisTurn = false;
+        resetPlayerAttacksLeft();
         try{ GameHandler.getInstance().getPlayer().resetMovement(); }
         catch(Exception e){}
         UIHandler.getInstance().togglePlayerControlls(false);

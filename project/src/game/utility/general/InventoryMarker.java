@@ -2,7 +2,7 @@ package game.utility.general;
 
 import exception.general.ArgumentNullException;
 import exception.general.InvalidArgumentException;
-import game.behaviour.abstracts.Consumable;
+import game.behaviour.Consumable;
 import game.behaviour.abstracts.Equipment;
 
 public class InventoryMarker<T>{

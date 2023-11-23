@@ -1,13 +1,13 @@
 package uilogic;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import game.utility.delegates.GenericDelegate;
 
-public class UtilityButtonHandler implements ActionListener{
+public class UtilityButtonHandler extends MultipleButtonHandler{
 
     @Override
-    public void actionPerformed(ActionEvent e) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'actionPerformed'");
-    }    
+    protected void initActions() {
+        actions.put("UTILITY_EQUIPMENT", new GenericDelegate() {
+            public void run(Object o) { UIHandler.getInstance().displayCharacterFrame(); }           
+        });
+    }  
 }

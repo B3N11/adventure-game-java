@@ -8,8 +8,10 @@ import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 import exception.general.ArgumentNullException;
+import exception.general.ConfigNotLoadedException;
 import exception.ui.UIHandlerAlreadyStartedException;
 import game.global.GameHandler;
+import ui.elements.CharacterFrame;
 import ui.elements.PlayFrame;
 import ui.elements.PlayerDeathFrame;
 
@@ -25,6 +27,7 @@ public class UIHandler {
     private UtilityButtonHandler utilityButtonHandler;
     private InteractButtonHandler interactButtonHandler;
     private PlayerDeathFrameHandler playerDeathFrameHandler;
+    private CharacterFrameHandler characterFrameHandler;
 
     private PlayFrame playFrame;
 
@@ -60,6 +63,7 @@ public class UIHandler {
         utilityButtonHandler = new UtilityButtonHandler();
         interactButtonHandler = new InteractButtonHandler();
         playerDeathFrameHandler = new PlayerDeathFrameHandler();
+        characterFrameHandler = new CharacterFrameHandler();
         playFieldHandler = new PlayFieldHandler(null);
     }
 
@@ -93,7 +97,7 @@ public class UIHandler {
         playFrame = new PlayFrame(playFrameMenuBarHandler, utilityButtonHandler, interactButtonHandler, new WindowAdapter() {
             public void windowClosing(WindowEvent e){ GameHandler.getInstance().quitGame(false); }
         });
-        playFieldHandler.setPlayField(playFrame.getPlayField());
+        playFieldHandler.setPanel(playFrame.getPlayField());
     }
 
     public void togglePlayerControlls(boolean on){
@@ -112,5 +116,12 @@ public class UIHandler {
             var deathFrame = new PlayerDeathFrame(playFrame, playerDeathFrameHandler);
             deathFrame.setVisible(true);
         }catch(ArgumentNullException e){}
+    }
+
+    public void displayCharacterFrame(){
+        try{ characterFrameHandler.start(); }
+        catch(ConfigNotLoadedException e){
+            showMessage("Please load a game configuration file first!", JOptionPane.ERROR_MESSAGE);
+        }
     }
 }

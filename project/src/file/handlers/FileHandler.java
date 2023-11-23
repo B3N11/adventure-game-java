@@ -16,12 +16,13 @@ import file.FileIOUtil;
 import file.elements.EnemyTypeSave;
 import file.elements.GameConfigSave;
 import file.elements.IconData;
+import file.elements.ItemSave;
 import file.elements.PlayerProgressSave;
+import game.behaviour.Consumable;
+import game.behaviour.Item;
 import game.behaviour.abstracts.Armor;
-import game.behaviour.abstracts.Consumable;
 import game.behaviour.abstracts.EnemyBehaviourController;
 import game.behaviour.abstracts.Equipment;
-import game.behaviour.abstracts.Item;
 import game.behaviour.abstracts.Weapon;
 import game.behaviour.entities.enemy.Enemy;
 import game.behaviour.entities.enemy.EnemyType;
@@ -85,7 +86,6 @@ public class FileHandler {
 
         var playerProgress = (PlayerProgressSave)fileIOUtil.readObjectFromFile(filePath);
         var player = playerProgress.player;
-        GameHandler.getInstance().setSessionPlayer(player);
 
         IconDataStorage.getInstance().clear();
         ModifiedEnemyStorage.getInstance().clear();
@@ -99,11 +99,7 @@ public class FileHandler {
 
         for(var item : playerProgress.inventory){
             var itemObject = loadItem(item);
-
-            if(itemObject.getItemType() == ItemType.EQUIPMENT)
-                player.addToInventory((Equipment)itemObject);
-            if(itemObject.getItemType() == ItemType.CONSUMABLE)
-                player.addToInventory((Consumable)itemObject);
+            player.addToInventory(itemObject);
         }
 
         var armor = (Armor)loadItem(playerProgress.playerArmorID);
@@ -121,9 +117,11 @@ public class FileHandler {
         try{ loadModifiedEnemies(playerProgress.modifiedEnemies); }
         catch(ArgumentNullException e){}
 
+        GameHandler.getInstance().setSessionPlayer(player);
+        
         //Loads map and places player on grid
         loadCurrentMap(playerProgress.currentMapID);
-        
+
         //replaces player to saved position
         UIHandler.getInstance().getPlayFieldHandler().replaceEntity(player.getInstanceID(), playerProgress.playerPosition);
 
@@ -150,7 +148,7 @@ public class FileHandler {
 
         ActiveEnemyStorage.getInstance().clear();
 
-        UIHandler.getInstance().getPlayFieldHandler().setCurrentMapLayout(mapData);
+        GameHandler.getInstance().setCurrentMapLayout(mapData);
 
         for(var enemyData : mapData.getEnemies()){
 
@@ -241,7 +239,11 @@ public class FileHandler {
             return result;
 
         String fileName = id + ".txt";
-        result = (Item)fileIOUtil.readObjectFromFile(new File(itemFolderFilePath, fileName));
+        var itemSave = (ItemSave)fileIOUtil.readObjectFromFile(new File(itemFolderFilePath, fileName));
+        result = itemSave.item;
+
+        var iconData = new IconData(itemSave.iconFilePath, new File(imageAssetFolderFilePath, itemSave.iconFilePath).getAbsolutePath());
+        IconDataStorage.getInstance().add(result.getID(), iconData);
 
         //Add to storage for later use
         ItemStorage.getInstance().add(result.getID(), result);
@@ -267,14 +269,13 @@ public class FileHandler {
 
         progress.inventory = new ArrayList<>();
         progress.modifiedEnemies = new ArrayList<>();
+
+        var allItems = player.getEntity().getInventory().getAllItems();
         
         for(var enemy : ModifiedEnemyStorage.getInstance().entrySet())
             progress.modifiedEnemies.add(enemy.getValue());
 
-        for(var item : player.getEntity().getInventory().getConsumables())
-            progress.inventory.add(item.getID());
-
-        for(var item : player.getEntity().getInventory().getEquipments())
+        for(var item : allItems)
             progress.inventory.add(item.getID());
 
         String file = filePath;

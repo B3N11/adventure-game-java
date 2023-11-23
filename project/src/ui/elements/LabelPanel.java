@@ -1,7 +1,9 @@
 package ui.elements;
 
-import java.awt.Dimension;
+import java.awt.Color;
+import java.awt.Font;
 
+import javax.swing.BorderFactory;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
@@ -10,25 +12,36 @@ public class LabelPanel extends JPanel{
     
     private JLabel text;
 
-    public LabelPanel(int width, int height){
-        initPanel(width, height);
-        setupLabel(width, height);
+    public LabelPanel(boolean border){
+        initPanel(border);
+        setupLabel();
     }
 
     public LabelPanel setLabelText(String text){
-        this.text.setText(text);
+        this.text.setText(formatText(text));
         return this;
     }
 
-    private void initPanel(int width, int height){
-        setPreferredSize(new Dimension(width, height));
+    public LabelPanel setLabelText(String text, Font font){
+        this.text.setFont(font);
+        this.text.setText(formatText(text));
+        return this;
     }
 
-    private void setupLabel(int width, int height){
+    private void initPanel(boolean border){
+        if(border)
+            setBorder(BorderFactory.createLineBorder(Color.BLACK));
+    }
+
+    private void setupLabel(){
         text = new JLabel();
-        text.setPreferredSize(new Dimension(width, height));
         text.setHorizontalAlignment(SwingConstants.CENTER);
         text.setVerticalAlignment(SwingConstants.CENTER);
         add(text);
+    }
+
+    private String formatText(String input){
+        String result = "<html>" + input + "</html>";
+        return result.replace("\n", "<br/>");
     }
 }

@@ -1,5 +1,7 @@
 package game.behaviour.abstracts;
 
+import game.enums.EquipmentType;
+
 public class Armor extends Equipment{
  
     protected int armorClass;
@@ -8,6 +10,8 @@ public class Armor extends Equipment{
     public Armor(int armorClass, int movementBonus){
         setArmorClass(armorClass);
         setMovementBonus(movementBonus);
+
+        equipmentType = EquipmentType.ARMOR;
     }
 
     public int getArmorClass(){ return armorClass; }
@@ -19,5 +23,16 @@ public class Armor extends Equipment{
 
     public void setMovementBonus(int movementBonus){
         this.movementBonus = movementBonus;
+    }
+
+    @Override
+    public String getDisplayInfo() {
+        return getDescription();
+    }
+
+    @Override
+    public String getStatistics(int bearerLevel) {
+        String result = "Armor Class: " + armorClass + " + " + bearerLevel + "\n" + "Movement Bonus: " + movementBonus;
+        return result;
     }
 }

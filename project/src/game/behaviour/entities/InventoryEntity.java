@@ -2,8 +2,8 @@ package game.behaviour.entities;
 
 import exception.general.ArgumentNullException;
 import exception.general.InvalidArgumentException;
+import game.behaviour.Consumable;
 import game.behaviour.Inventory;
-import game.behaviour.abstracts.Consumable;
 import game.behaviour.abstracts.Entity;
 import game.behaviour.abstracts.Equipment;
 

@@ -4,7 +4,8 @@ import exception.dice.DefaultDiceNotSetException;
 import exception.dice.InvalidDiceSideCountException;
 import exception.general.ArgumentNullException;
 import exception.general.InvalidArgumentException;
-import game.behaviour.weapons.WeaponType;
+import game.enums.EquipmentType;
+import game.enums.WeaponType;
 import game.utility.dice.DiceRoller;
 
 public abstract class Weapon extends Equipment{
@@ -17,10 +18,16 @@ public abstract class Weapon extends Equipment{
     protected double range;                        //The maximum distance the weapon can deal damage in
     protected WeaponType weaponType;               //The type of the weapon, used for type casting
 
+    protected int attacksInRound;
+
     protected Weapon(String id, String weaponName) throws ArgumentNullException{
         setID(id);
         setName(weaponName);
         setDescription("");
+        try{ setAttacksInRound(1); }
+        catch(InvalidArgumentException e){}
+        
+        equipmentType = EquipmentType.WEAPON;
     }
 
     //#region GET/SET methods
@@ -63,6 +70,13 @@ public abstract class Weapon extends Equipment{
         return this;
     }
 
+    public Weapon setAttacksInRound(int amount) throws InvalidArgumentException{
+        if(amount < 0)
+            throw new InvalidArgumentException();
+        attacksInRound = amount;
+        return this;
+    }
+
     @Override
     public Weapon setName(String newName) throws ArgumentNullException{
         super.setName(newName);
@@ -79,11 +93,25 @@ public abstract class Weapon extends Equipment{
     public int getAttackModifier() { return attackModifier; }
     public int getDamageDiceCount() { return diceCount; }
     public int getDamageModifier() { return damageModifier; }
+    public int getAttacksInRound() { return attacksInRound; }
     public double getRange() { return range; }
     public String getName() { return name; }
     public String getDescription() { return description; }
     public WeaponType getWeaponType() { return weaponType; }
     //#endregion
+
+    @Override
+    public String getDisplayInfo(){
+        return getDescription();
+    }
+
+    @Override
+    public String getStatistics(int bearerLevel){
+        String result = "Hit DC: 1d" + DiceRoller.getInstance().getDefault() + " + " + attackModifier +
+                        "\nAttack DC: " + diceCount + "d" + damageDice + " + " + (damageModifier + bearerLevel) +
+                        "\nRange: " + range;
+        return result;
+    }
 
     //Checks if the weapon can attack to that distance
     public boolean checkRange(double distance){

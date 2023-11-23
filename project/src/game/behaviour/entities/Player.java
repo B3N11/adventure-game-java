@@ -4,9 +4,8 @@ import exception.entity.ItemNotInInventoryException;
 import exception.entity.NoWeaponEquippedException;
 import exception.general.ArgumentNullException;
 import exception.general.InvalidArgumentException;
+import game.behaviour.Item;
 import game.behaviour.abstracts.Armor;
-import game.behaviour.abstracts.Consumable;
-import game.behaviour.abstracts.Equipment;
 import game.behaviour.abstracts.Weapon;
 import game.behaviour.interfaces.IInteractiveEntity;
 import game.enums.EntityCondition;
@@ -96,23 +95,20 @@ public class Player extends Identity implements IInteractiveEntity{
         try{ entity.setLevel(entity.getLevel() + 1); }
         catch(Exception e){}
 
-        try{ setRequiredXP(entity.getLevel() * 150); }
+        try{
+            setRequiredXP(entity.getLevel() * 150);
+            entity.setHealth((int)(entity.getHealth() * 1.75));
+        }
         catch(InvalidArgumentException e) {/* Wont happen */}
 
         try{ onPlayerLeveledUp.triggerEvent(); }
         catch(Exception e){}
     }
 
-    public void addToInventory(Equipment equipment) throws ArgumentNullException{
+    public void addToInventory(Item item) throws ArgumentNullException{
         if(entity.getInventory() == null)
             entity.createInventory(false);
-        entity.getInventory().add(equipment);
-    }
-
-    public void addToInventory(Consumable consumable) throws ArgumentNullException{
-        if(entity.getInventory() == null)
-            entity.createInventory(false);
-        entity.addToInventory(consumable);
+        entity.getInventory().add(item);
     }
 
     public boolean attack(int targetAC, double distance) throws Exception{

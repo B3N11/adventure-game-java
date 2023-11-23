@@ -7,9 +7,8 @@ import java.util.List;
 
 import exception.general.ArgumentNullException;
 import exception.general.InvalidArgumentException;
-import game.behaviour.abstracts.Consumable;
 import game.behaviour.abstracts.Equipment;
-import game.behaviour.abstracts.Item;
+import game.enums.ItemType;
 import game.enums.ModifierType;
 import game.logic.event.Event;
 import game.logic.event.EventArgument;
@@ -22,32 +21,35 @@ public class Inventory implements IEventListener{
 
     private HashMap<String, Equipment> equipments;
     private HashMap<String, InventoryMarker<Consumable>> consumables;
+    private HashMap<String, Item> simpleItems;
 
     public Inventory(boolean removeWhenRanOut){
         this.removeOnRanOut = removeWhenRanOut;
         equipments = new HashMap<String, Equipment>();
         consumables = new HashMap<String, InventoryMarker<Consumable>>();
+        simpleItems = new HashMap<String, Item>();
+    }
+
+    public int size(){
+        return equipments.size() + consumables.size() + simpleItems.size();
     }
 
     public void setRemoveOnRanOut(boolean remove){
         removeOnRanOut = remove;
     }
 
-    public void add(Equipment equipment) throws ArgumentNullException{
-        if(equipment == null)
+    public void add(Item item) throws ArgumentNullException{
+        if(item == null)
             throw new ArgumentNullException();
-        
-        equipments.put(equipment.getID(), equipment);
-    }
 
-    public void add(Consumable consumable) throws ArgumentNullException{
-        if(consumable == null)
-            throw new ArgumentNullException();
-        
-        try{
-            //Won't happen, as consumable is always an accepted type
-            consumables.put(consumable.getID(), new InventoryMarker<Consumable>(consumable));
-        }catch(InvalidArgumentException e){}
+        if(item.itemType == ItemType.EQUIPMENT)
+            equipments.put(item.getID(), (Equipment)item);
+        else if(item.itemType == ItemType.CONSUMABLE){
+            try{ consumables.put(item.getID(), new InventoryMarker<Consumable>((Consumable)item)); }
+            catch(InvalidArgumentException e){}
+        }
+        else if(item.itemType == ItemType.SIMPLE)
+            simpleItems.put(item.getID(), item);
     }
 
     public Item remove(String id) throws ArgumentNullException{
@@ -104,6 +106,28 @@ public class Inventory implements IEventListener{
         for(var equipment : equipments.entrySet())
             result.add(equipment.getValue());
 
+        return Collections.unmodifiableList(result);
+    }
+
+    public List<Item> getSimpleItems(){
+        var result = new ArrayList<Item>();
+
+        for(var item : simpleItems.entrySet())
+            result.add(item.getValue());
+        
+        return Collections.unmodifiableList(result);
+    }
+
+    public List<Item> getAllItems(){
+        var result = new ArrayList<Item>();
+
+         for(var consumable : consumables.entrySet())
+            result.add(consumable.getValue().getItem());
+        for(var equipment : equipments.entrySet())
+            result.add(equipment.getValue());
+        for(var item : simpleItems.entrySet())
+            result.add(item.getValue());
+        
         return Collections.unmodifiableList(result);
     }
 

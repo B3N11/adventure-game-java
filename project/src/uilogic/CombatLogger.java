@@ -32,4 +32,13 @@ public class CombatLogger {
             throw new ArgumentNullException();
         frame.addToCombatLog(message);
     }
+
+    public void addMapDescription(String mapName, String description) throws ArgumentNullException{
+        if(mapName == null || description == null)
+            throw new ArgumentNullException();
+
+        String result = "## " + mapName + " ##\n" + description + "\n";
+        frame.clearCombatLog();
+        frame.addToCombatLog(result);
+    }
 }

@@ -25,6 +25,8 @@ public class DiceRoller {
         return diceRoller;
     }
 
+    public int getDefault() { return defaultDice.getSideCount(); }
+
     public void setDelegate(GenericDelegate delegate) throws ArgumentNullException{
         if(delegate == null)
             throw new ArgumentNullException();
