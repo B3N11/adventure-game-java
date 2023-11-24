@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import javax.swing.JOptionPane;
@@ -32,6 +33,7 @@ import game.global.storage.ActiveEnemyStorage;
 import game.global.storage.EnemyTypeStorage;
 import game.global.storage.IconDataStorage;
 import game.global.storage.ItemStorage;
+import game.global.storage.MapStorage;
 import game.global.storage.ModifiedEnemyStorage;
 import game.logic.event.Event;
 import game.logic.event.EventArgument;
@@ -76,8 +78,21 @@ public class FileHandler {
         if(!itemFolderFilePath.exists() || !enemyTypeFolderFilePath.exists() || !mapLayoutFolderFilePath.exists() || !imageAssetFolderFilePath.exists())
             throw new FileNotFoundException();
 
+        loadMaps();
         loadPlayerProgressSave(new File(folderPath, config.defaultPlayerSaveFile).getAbsolutePath());
         UIHandler.getInstance().showMessage("Config successfully loaded!", JOptionPane.INFORMATION_MESSAGE);
+    }
+
+    public void loadMaps(){
+        for(var file : mapLayoutFolderFilePath.listFiles()){
+            if(file.isDirectory())
+                continue;
+            
+            try{
+                var map = (MapLayoutData)fileIOUtil.readObjectFromFile(file.getAbsolutePath());
+                MapStorage.getInstance().add(map.getName(), map.getID());   //Switched key-value pairs, we need to find ID based on name
+            }catch(Exception e){}
+        }
     }
 
     public void loadPlayerProgressSave(String filePath) throws Exception{

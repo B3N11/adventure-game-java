@@ -25,6 +25,7 @@ public class UtilityButtonPanel extends JPanel{
     private void initButtons(ActionListener listener){
         var travelButton = new JButton("Travel");
         travelButton.addActionListener(listener);
+        travelButton.setActionCommand("UTILITY_TRAVEL");
 
         var equipmentButton = new JButton("Equipment");
         equipmentButton.addActionListener(listener);

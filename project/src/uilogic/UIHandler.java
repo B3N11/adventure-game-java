@@ -11,7 +11,6 @@ import exception.general.ArgumentNullException;
 import exception.general.ConfigNotLoadedException;
 import exception.ui.UIHandlerAlreadyStartedException;
 import game.global.GameHandler;
-import ui.elements.CharacterFrame;
 import ui.elements.PlayFrame;
 import ui.elements.PlayerDeathFrame;
 
@@ -28,6 +27,7 @@ public class UIHandler {
     private InteractButtonHandler interactButtonHandler;
     private PlayerDeathFrameHandler playerDeathFrameHandler;
     private CharacterFrameHandler characterFrameHandler;
+    private TravelFrameHandler travelHandler;
 
     private PlayFrame playFrame;
 
@@ -64,6 +64,7 @@ public class UIHandler {
         interactButtonHandler = new InteractButtonHandler();
         playerDeathFrameHandler = new PlayerDeathFrameHandler();
         characterFrameHandler = new CharacterFrameHandler();
+        travelHandler = new TravelFrameHandler();
         playFieldHandler = new PlayFieldHandler(null);
     }
 
@@ -123,5 +124,9 @@ public class UIHandler {
         catch(ConfigNotLoadedException e){
             showMessage("Please load a game configuration file first!", JOptionPane.ERROR_MESSAGE);
         }
+    }
+
+    public void displayTravelFrame(){
+        travelHandler.start();
     }
 }

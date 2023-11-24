@@ -1,5 +1,6 @@
 package game.global.storage;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Set;
 import java.util.Map.Entry;
@@ -48,5 +49,23 @@ public class Storage<T> {
 
     public Set<Entry<String, T>> entrySet(){
         return storage.entrySet();
+    }
+
+    public ArrayList<T> getAllItems(){
+        var result = new ArrayList<T>();
+
+        for(var entry : storage.entrySet())
+            result.add(entry.getValue());
+
+        return result;
+    }
+
+    public ArrayList<String> getAllKeys(){
+        var result = new ArrayList<String>();
+
+        for(var entry : storage.entrySet())
+            result.add(entry.getKey());
+
+        return result;
     }
 }
