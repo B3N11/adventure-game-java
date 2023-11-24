@@ -33,7 +33,7 @@ public class DataCreator {
         var enemyMapData = new EnemyMapData("shotgun-thug", "shotgun-thug-I-001").setPosition(new GridPosition(1, 2));
         var enemyMapData1 = new EnemyMapData("shotgun-thug", "shotgun-thug-I-002").setPosition(new GridPosition(4, 1));
         var itemMapData = new ItemMapData();
-        itemMapData.itemID = "autopistol-001";
+        itemMapData.itemID = "message-001";
         itemMapData.position = new GridPosition(2,3);
         defaultMap.addEnemy(enemyMapData);
         defaultMap.addEnemy(enemyMapData1);
@@ -127,7 +127,6 @@ public class DataCreator {
         playerSave.inventory.add(fastBoots.getID());
         playerSave.inventory.add(shotgun.getID());
         playerSave.inventory.add(autoPistol.getID());
-        playerSave.inventory.add(randomMessage.getID());
         playerSave.currentIconFile = "characters/5.png";
         playerSave.playerPosition = defaultMap.getPlayerPosition();
         playerSave.modifiable = false;
