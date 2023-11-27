@@ -25,8 +25,7 @@ import main.uilogic.GridPosition;
 public class DataCreator {
 
     private static FileIOUtil fileIO;
-    //public static String datafolder = "G:\\uni\\sub\\3\\prog\\hf\\adventure-game-java\\project\\resources\\gamedata\\";
-    public static String datafolder = "G:\\uni\\sub\\3\\prog\\hf\\adventure-game-java\\project\\resources\\gamedata";
+    public static String datafolder = "{yourFolderPath}\\gamedata";
 
     /*
      * This method creates the test data for the game.
@@ -96,7 +95,7 @@ public class DataCreator {
         enemyEntity.equip(kevlar);
         enemyEntity.equip(shotgun);
 
-        var enemyEntity2 = (EnemyEntity)new EnemyEntity(20, 5, 1).setRewardXP(20).setName("Market Thug");
+        var enemyEntity2 = (EnemyEntity)new EnemyEntity(20, 5, 1).setRewardXP(1000).setName("Market Thug");
         enemyEntity2.equip(fastBoots);
         enemyEntity2.equip(autoPistol);
 

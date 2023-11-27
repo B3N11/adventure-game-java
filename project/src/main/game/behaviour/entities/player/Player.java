@@ -125,7 +125,7 @@ public class Player extends Identity implements IInteractiveEntity {
 
     private void levelUp(int leftoverXP){
         levelUp();
-        xp = leftoverXP;
+        addXP(leftoverXP);
     }
 
     /**
