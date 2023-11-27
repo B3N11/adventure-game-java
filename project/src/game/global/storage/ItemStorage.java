@@ -1,6 +1,6 @@
 package game.global.storage;
 
-import game.behaviour.Item;
+import game.behaviour.entities.items.Item;
 
 public class ItemStorage extends Storage<Item>{
     private static ItemStorage instance;

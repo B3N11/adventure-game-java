@@ -3,8 +3,8 @@ package game.behaviour.entities.enemy.controller;
 import exception.entity.NoWeaponEquippedException;
 import exception.general.ArgumentNullException;
 import game.behaviour.abstracts.EnemyBehaviourController;
+import game.behaviour.entities.IInteractiveEntity;
 import game.behaviour.entities.enemy.EnemyEntity;
-import game.behaviour.interfaces.IInteractiveEntity;
 import game.enums.EnemyBehaviourControllerType;
 
 /**

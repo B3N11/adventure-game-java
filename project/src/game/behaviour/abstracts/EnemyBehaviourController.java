@@ -1,9 +1,9 @@
 package game.behaviour.abstracts;
 
 import exception.general.ArgumentNullException;
+import game.behaviour.entities.IInteractiveEntity;
 import game.behaviour.entities.enemy.EnemyEntity;
 import game.behaviour.entities.enemy.controller.BerserkerEnemyController;
-import game.behaviour.interfaces.IInteractiveEntity;
 import game.enums.EnemyBehaviourControllerType;
 import game.logic.event.Event;
 import game.logic.event.EventArgument;

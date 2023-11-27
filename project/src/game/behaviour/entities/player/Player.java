@@ -4,16 +4,16 @@ import exception.entity.ItemNotInInventoryException;
 import exception.entity.NoWeaponEquippedException;
 import exception.general.ArgumentNullException;
 import exception.general.InvalidArgumentException;
-import game.behaviour.Armor;
-import game.behaviour.Item;
 import game.behaviour.abstracts.Weapon;
-import game.behaviour.interfaces.IInteractiveEntity;
+import game.behaviour.entities.IInteractiveEntity;
+import game.behaviour.entities.items.Item;
+import game.behaviour.entities.items.equipment.Armor;
 import game.enums.EntityCondition;
 import game.enums.ModifierType;
 import game.logic.event.Event;
 import game.logic.event.EventArgument;
 import game.logic.event.IEventListener;
-import game.utility.general.Identity;
+import game.utility.Identity;
 
 /**
  * This class represents a Player in the game.

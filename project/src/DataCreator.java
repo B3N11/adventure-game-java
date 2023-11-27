@@ -6,18 +6,18 @@ import file.elements.EnemyTypeSave;
 import file.elements.GameConfigSave;
 import file.elements.ItemMapData;
 import file.elements.ItemSave;
+import file.elements.MapLayoutData;
 import file.elements.PlayerProgressSave;
-import game.behaviour.Armor;
-import game.behaviour.Consumable;
-import game.behaviour.Item;
 import game.behaviour.entities.enemy.EnemyEntity;
+import game.behaviour.entities.items.Consumable;
+import game.behaviour.entities.items.Item;
+import game.behaviour.entities.items.equipment.Armor;
+import game.behaviour.entities.items.equipment.weapons.AutoPistol;
+import game.behaviour.entities.items.equipment.weapons.Shotgun;
 import game.behaviour.entities.player.Player;
 import game.behaviour.entities.player.PlayerEntity;
-import game.behaviour.weapons.AutoPistol;
-import game.behaviour.weapons.Shotgun;
 import game.enums.EnemyBehaviourControllerType;
 import game.enums.ModifierType;
-import game.utility.dataclass.MapLayoutData;
 import ui.data.GridPosition;
 
 public class DataCreator {

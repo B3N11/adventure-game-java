@@ -4,7 +4,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import exception.general.ArgumentNullException;
-import game.utility.delegates.GenericDelegate;
+import game.utility.GenericDelegate;
 import ui.elements.GridButton;
 
 public class GridButtonHandler implements ActionListener {

@@ -8,7 +8,7 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.ScrollPaneConstants;
 
-import game.utility.dataclass.MapLayoutData;
+import file.elements.MapLayoutData;
 import ui.data.GridDimension;
 import ui.data.GridPosition;
 

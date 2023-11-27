@@ -12,7 +12,7 @@ import exception.general.ElementNotFoundException;
 import exception.general.InvalidArgumentException;
 import exception.ui.ComponentAlreadyAtPositionException;
 import exception.ui.PlayfieldNotEmptyException;
-import game.utility.dataclass.MapLayoutData;
+import file.elements.MapLayoutData;
 import uilogic.GridEntityComponentHandler;
 import ui.data.GridDimension;
 import ui.data.GridPosition;

@@ -9,6 +9,7 @@ import exception.general.ArgumentNullException;
 import exception.general.ElementNotFoundException;
 import exception.general.InvalidArgumentException;
 import exception.ui.ComponentAlreadyAtPositionException;
+import file.elements.MapLayoutData;
 import file.handlers.FileHandler;
 import game.behaviour.entities.enemy.Enemy;
 import game.behaviour.entities.enemy.EnemyEntity;
@@ -16,8 +17,7 @@ import game.behaviour.entities.player.Player;
 import game.global.storage.ActiveEnemyStorage;
 import game.global.storage.ModifiedEnemyStorage;
 import game.logic.GameActionController;
-import game.utility.dataclass.MapLayoutData;
-import game.utility.dataclass.ModifiedEnemyData;
+import game.utility.ModifiedEnemyData;
 import uilogic.FileChooserType;
 import uilogic.UIHandler;
 

@@ -2,7 +2,7 @@ package game.behaviour.entities.enemy;
 
 import exception.general.ArgumentNullException;
 import game.behaviour.abstracts.EnemyBehaviourController;
-import game.utility.general.Identity;
+import game.utility.Identity;
 
 /**
  * This class represents an EnemyType in the game.

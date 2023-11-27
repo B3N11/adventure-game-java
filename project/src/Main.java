@@ -1,6 +1,6 @@
 import game.global.GameHandler;
-import game.utility.delegates.GenericDelegate;
-import game.utility.dice.DiceRoller;
+import game.utility.DiceRoller;
+import game.utility.GenericDelegate;
 import uilogic.UIHandler;
 
 public class Main {

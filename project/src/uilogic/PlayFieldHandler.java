@@ -2,8 +2,8 @@ package uilogic;
 
 import exception.general.ArgumentNullException;
 import exception.general.ElementNotFoundException;
+import file.elements.MapLayoutData;
 import game.global.GameHandler;
-import game.utility.dataclass.MapLayoutData;
 import ui.data.GridPosition;
 import ui.elements.InteractiveGridPanel;
 

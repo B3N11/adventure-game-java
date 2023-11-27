@@ -5,7 +5,7 @@ import java.io.Serializable;
 import exception.entity.NoWeaponEquippedException;
 import exception.general.ArgumentNullException;
 import exception.general.InvalidArgumentException;
-import game.behaviour.Armor;
+import game.behaviour.entities.items.equipment.Armor;
 import game.enums.EntityType;
 
 /**

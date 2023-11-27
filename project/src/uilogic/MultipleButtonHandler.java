@@ -4,7 +4,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.HashMap;
 
-import game.utility.delegates.GenericDelegate;
+import game.utility.GenericDelegate;
 
 public abstract class MultipleButtonHandler implements ActionListener{
     

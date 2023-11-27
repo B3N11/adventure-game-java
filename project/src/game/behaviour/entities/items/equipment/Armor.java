@@ -1,4 +1,4 @@
-package game.behaviour;
+package game.behaviour.entities.items.equipment;
 
 import game.behaviour.abstracts.Equipment;
 import game.enums.EquipmentType;

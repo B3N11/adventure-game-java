@@ -4,7 +4,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 
 import game.behaviour.entities.player.Player;
-import game.utility.dataclass.ModifiedEnemyData;
+import game.utility.ModifiedEnemyData;
 import ui.data.GridPosition;
 
 public class PlayerProgressSave implements Serializable{

@@ -6,7 +6,7 @@ import exception.general.ArgumentNullException;
 import exception.general.ElementNotFoundException;
 import exception.general.InvalidArgumentException;
 import exception.ui.ComponentAlreadyAtPositionException;
-import game.utility.delegates.GenericDelegate;
+import game.utility.GenericDelegate;
 import ui.data.GridPosition;
 import ui.elements.GridEntityComponent;
 import ui.elements.InteractiveGridPanel;

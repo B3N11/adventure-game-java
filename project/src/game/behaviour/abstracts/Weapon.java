@@ -6,7 +6,7 @@ import exception.general.ArgumentNullException;
 import exception.general.InvalidArgumentException;
 import game.enums.EquipmentType;
 import game.enums.WeaponType;
-import game.utility.dice.DiceRoller;
+import game.utility.DiceRoller;
 
 /**
  * This abstract class represents a Weapon in the game.

@@ -1,6 +1,6 @@
 package game.behaviour.abstracts;
 
-import game.behaviour.Item;
+import game.behaviour.entities.items.Item;
 import game.enums.EquipmentType;
 import game.enums.ItemType;
 

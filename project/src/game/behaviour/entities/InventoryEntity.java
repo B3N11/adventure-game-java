@@ -3,8 +3,8 @@ package game.behaviour.entities;
 import exception.general.ArgumentNullException;
 import exception.general.InvalidArgumentException;
 import game.behaviour.Inventory;
-import game.behaviour.Item;
 import game.behaviour.abstracts.Entity;
+import game.behaviour.entities.items.Item;
 
 /**
  * This class represents an InventoryEntity in the game.

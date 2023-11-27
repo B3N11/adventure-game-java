@@ -2,7 +2,7 @@ package file.elements;
 
 import java.io.Serializable;
 
-import game.behaviour.Item;
+import game.behaviour.entities.items.Item;
 
 /**
  * This class represents the saved data of an item.

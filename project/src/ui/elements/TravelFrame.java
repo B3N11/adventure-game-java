@@ -8,7 +8,7 @@ import javax.swing.JComboBox;
 import javax.swing.JFrame;
 
 import exception.general.ArgumentNullException;
-import game.utility.delegates.GenericDelegate;
+import game.utility.GenericDelegate;
 
 public class TravelFrame extends JFrame{
 

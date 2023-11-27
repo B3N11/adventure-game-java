@@ -8,13 +8,26 @@ import java.util.List;
 import exception.general.ArgumentNullException;
 import exception.general.InvalidArgumentException;
 import game.behaviour.abstracts.Equipment;
+import game.behaviour.entities.items.Consumable;
+import game.behaviour.entities.items.Item;
 import game.enums.ItemType;
 import game.enums.ModifierType;
 import game.logic.event.Event;
 import game.logic.event.EventArgument;
 import game.logic.event.IEventListener;
-import game.utility.general.InventoryMarker;
 
+/**
+ * This class represents an Inventory in the game.
+ * It implements the IEventListener interface.
+ * 
+ * The class contains the following fields:
+ * - removeOnRanOut: A flag indicating whether to remove an item when it runs out.
+ * - equipments: A collection of equipment items.
+ * - consumables: A collection of consumable items.
+ * - simpleItems: A collection of simple items.
+ * 
+ * The class provides a constructor that initializes these fields and a method to get the size of the inventory.
+ */
 public class Inventory implements IEventListener{
     
     private boolean removeOnRanOut;
@@ -23,6 +36,11 @@ public class Inventory implements IEventListener{
     private HashMap<String, InventoryMarker<Consumable>> consumables;
     private HashMap<String, Item> simpleItems;
 
+    /**
+     * Constructor for the Inventory class.
+     * Initializes the removeOnRanOut flag and the collections of items.
+     * @param removeWhenRanOut The value to set the removeOnRanOut flag to.
+     */
     public Inventory(boolean removeWhenRanOut){
         this.removeOnRanOut = removeWhenRanOut;
         equipments = new HashMap<String, Equipment>();
@@ -30,6 +48,10 @@ public class Inventory implements IEventListener{
         simpleItems = new HashMap<String, Item>();
     }
 
+    /**
+     * Gets the size of the inventory.
+     * @return The size of the inventory. Size is the sum of the number of equipments, consumables, and simple items.
+     */
     public int size(){
         return equipments.size() + consumables.size() + simpleItems.size();
     }
@@ -38,39 +60,68 @@ public class Inventory implements IEventListener{
         removeOnRanOut = remove;
     }
 
+    /**
+     * Adds an item to the inventory.
+     * @param item The item to add.
+     * @throws InvalidArgumentException if the item is null.
+     */
     public void add(Item item) throws ArgumentNullException{
         if(item == null)
             throw new ArgumentNullException();
 
-        if(item.itemType == ItemType.EQUIPMENT)
+        if(item.getItemType() == ItemType.EQUIPMENT)
             equipments.put(item.getID(), (Equipment)item);
-        else if(item.itemType == ItemType.CONSUMABLE){
+        else if(item.getItemType() == ItemType.CONSUMABLE){
             try{ consumables.put(item.getID(), new InventoryMarker<Consumable>((Consumable)item)); }
             catch(InvalidArgumentException e){}
         }
-        else if(item.itemType == ItemType.SIMPLE)
+        else if(item.getItemType() == ItemType.SIMPLE)
             simpleItems.put(item.getID(), item);
     }
 
+    /**
+     * Removes an item from the inventory.
+     * @param item The item to remove.
+     * @throws InvalidArgumentException if the item is null.
+     */
     public Item remove(String id) throws ArgumentNullException{
         if(id == null)
             throw new ArgumentNullException();
 
-        var resultConsumable = consumables.remove(id);
-        if(resultConsumable != null)
-            return resultConsumable.getItem();
-        
-        var resultEquipment = equipments.remove(id);
-        return resultEquipment;
+        if(consumables.containsKey(id)){
+            var resultConsumable = consumables.remove(id);
+            if(resultConsumable != null)
+                return resultConsumable.getItem();
+        }
+        else if(equipments.containsKey(id)){
+            return equipments.remove(id);
+        }
+        else if(simpleItems.containsKey(id)){
+            return simpleItems.remove(id);
+        }
+
+        return null;
     }
 
+    /**
+     * Checks if the inventory contains a specific item.
+     * @param item The item to check for.
+     * @return True if the inventory contains the item, false otherwise.
+     * @throws InvalidArgumentException if the item is null.
+     */
     public boolean contains(String id) throws ArgumentNullException{
         if(id == null)
             throw new ArgumentNullException();
 
-        return equipments.containsKey(id) || consumables.containsKey(id);
+        return equipments.containsKey(id) || consumables.containsKey(id) || simpleItems.containsKey(id);
     }
 
+    /**
+     * Calculates the modifiers of the inventory.
+     * @param bearerLevel The level of the bearer of the inventory.
+     * @return The modifiers of the inventory.
+     * @throws Exception if an error occurs during the calculation.
+     */
     public double calculateModifiers(ModifierType type) throws Exception{
         double result = 0;
 
@@ -118,6 +169,10 @@ public class Inventory implements IEventListener{
         return Collections.unmodifiableList(result);
     }
 
+    /**
+     * Gets all items in the inventory.
+     * @return A list of all items in the inventory.
+     */
     public List<Item> getAllItems(){
         var result = new ArrayList<Item>();
 
@@ -131,6 +186,12 @@ public class Inventory implements IEventListener{
         return Collections.unmodifiableList(result);
     }
 
+    /**
+     * Runs an event when a consumable is out of charge.It removes the consumable from the inventory if the removeOnRanOut flag is set.
+     * @param object The argument for the event.
+     * @param triggeredEvent The event to run.
+     * @throws Exception if an error occurs during the event.
+     */
     @Override
     public void run(EventArgument object, Event triggeredEvent) throws Exception{
         if(!(object.getArgument() instanceof Consumable))

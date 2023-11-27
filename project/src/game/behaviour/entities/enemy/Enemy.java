@@ -3,9 +3,9 @@ package game.behaviour.entities.enemy;
 import exception.general.ArgumentNullException;
 import exception.general.InvalidArgumentException;
 import game.behaviour.abstracts.Entity;
-import game.behaviour.interfaces.IInteractiveEntity;
+import game.behaviour.entities.IInteractiveEntity;
 import game.enums.EntityCondition;
-import game.utility.general.Identifiable;
+import game.utility.Identifiable;
 
 /**
  * This class represents an Enemy in the game. This is an instance of an enemy type.

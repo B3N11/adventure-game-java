@@ -1,4 +1,4 @@
-package game.utility.general;
+package game.utility;
 
 import java.io.Serializable;
 

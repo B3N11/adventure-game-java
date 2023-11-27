@@ -3,7 +3,7 @@ package uilogic;
 import file.handlers.FileHandler;
 import game.global.GameHandler;
 import game.global.storage.MapStorage;
-import game.utility.delegates.GenericDelegate;
+import game.utility.GenericDelegate;
 import ui.elements.TravelFrame;
 
 public class TravelFrameHandler {

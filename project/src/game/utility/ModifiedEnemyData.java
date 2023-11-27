@@ -1,8 +1,7 @@
-package game.utility.dataclass;
+package game.utility;
 
 import exception.general.ArgumentNullException;
 import exception.general.InvalidArgumentException;
-import game.utility.general.Identifiable;
 import ui.data.GridPosition;
 
 public class ModifiedEnemyData extends Identifiable{

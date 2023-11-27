@@ -1,7 +1,7 @@
 package file.elements;
 
 import exception.general.ArgumentNullException;
-import game.utility.general.Identifiable;
+import game.utility.Identifiable;
 
 /**
  * This class represents the icon data of a game element.

@@ -13,7 +13,7 @@ import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 
 import exception.general.ArgumentNullException;
-import game.utility.dataclass.MapLayoutData;
+import file.elements.MapLayoutData;
 import uilogic.GridButtonHandler;
 
 public class PlayFrame extends JFrame{
