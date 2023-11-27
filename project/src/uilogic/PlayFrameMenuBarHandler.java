@@ -4,6 +4,7 @@ import javax.swing.JOptionPane;
 
 import exception.save.CurrentSaveUnmodifiableException;
 import game.global.GameHandler;
+import game.global.UIHandler;
 import game.utility.GenericDelegate;
 
 public class PlayFrameMenuBarHandler extends MultipleButtonHandler{

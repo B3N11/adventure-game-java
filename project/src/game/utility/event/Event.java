@@ -1,4 +1,4 @@
-package game.logic.event;
+package game.utility.event;
 
 import java.util.ArrayList;
 

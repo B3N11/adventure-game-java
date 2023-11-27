@@ -1,5 +1,6 @@
 package uilogic;
 
+import game.global.UIHandler;
 import game.utility.GenericDelegate;
 
 public class UtilityButtonHandler extends MultipleButtonHandler{

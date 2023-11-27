@@ -1,6 +1,7 @@
 package uilogic;
 
 import game.global.GameHandler;
+import game.global.UIHandler;
 import game.utility.GenericDelegate;
 
 public class PlayerDeathFrameHandler extends MultipleButtonHandler{

@@ -1,8 +1,9 @@
-package game.utility;
+package game.utility.dice;
 
 import exception.dice.DefaultDiceNotSetException;
 import exception.dice.InvalidDiceSideCountException;
 import exception.general.ArgumentNullException;
+import game.utility.GenericDelegate;
 
 //Singleton class used for storing and rolling dices
 public class DiceRoller {

@@ -1,6 +1,6 @@
 package uilogic;
 
-import file.handlers.FileHandler;
+import game.global.FileHandler;
 import game.global.GameHandler;
 import game.global.storage.MapStorage;
 import game.utility.GenericDelegate;

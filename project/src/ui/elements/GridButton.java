@@ -9,7 +9,7 @@ import javax.swing.JButton;
 import exception.general.ArgumentNullException;
 import exception.general.InvalidArgumentException;
 import ui.data.GridPosition;
-import ui.interfaces.IGridPositionable;
+import uilogic.IGridPositionable;
 
 public class GridButton extends JButton implements IGridPositionable{
     

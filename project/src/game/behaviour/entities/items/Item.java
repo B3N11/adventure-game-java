@@ -1,8 +1,8 @@
 package game.behaviour.entities.items;
 
 import game.enums.ItemType;
+import game.utility.IDisplayable;
 import game.utility.Identity;
-import ui.interfaces.IDisplayable;
 
 /**
  * This class represents an Item in the game.

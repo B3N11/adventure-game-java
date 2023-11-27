@@ -11,7 +11,7 @@ import javax.swing.BorderFactory;
 import javax.swing.JPanel;
 
 import exception.general.ArgumentNullException;
-import ui.interfaces.IDisplayable;
+import game.utility.IDisplayable;
 
 public class EquipmentItemPanel extends JPanel{
 

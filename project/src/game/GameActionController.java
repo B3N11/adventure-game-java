@@ -1,4 +1,4 @@
-package game.logic;
+package game;
 
 import javax.swing.JOptionPane;
 
@@ -8,9 +8,9 @@ import exception.general.InvalidArgumentException;
 import game.behaviour.entities.enemy.Enemy;
 import game.behaviour.entities.items.Item;
 import game.global.GameHandler;
+import game.global.UIHandler;
 import game.global.storage.ActiveEnemyStorage;
 import game.global.storage.ItemStorage;
-import uilogic.UIHandler;
 
 public class GameActionController {
 

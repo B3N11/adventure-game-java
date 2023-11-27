@@ -1,4 +1,4 @@
-package ui.interfaces;
+package game.utility;
 
 public interface IDisplayable {   
     public String getName();

@@ -1,4 +1,4 @@
-package file.handlers;
+package game.global;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -29,18 +29,16 @@ import game.behaviour.entities.items.Consumable;
 import game.behaviour.entities.items.Item;
 import game.behaviour.entities.items.equipment.Armor;
 import game.enums.ItemType;
-import game.global.GameHandler;
 import game.global.storage.ActiveEnemyStorage;
 import game.global.storage.EnemyTypeStorage;
 import game.global.storage.IconDataStorage;
 import game.global.storage.ItemStorage;
 import game.global.storage.MapStorage;
 import game.global.storage.ModifiedEnemyStorage;
-import game.logic.event.Event;
-import game.logic.event.EventArgument;
-import game.logic.event.IEventListener;
 import game.utility.ModifiedEnemyData;
-import uilogic.UIHandler;
+import game.utility.event.Event;
+import game.utility.event.EventArgument;
+import game.utility.event.IEventListener;
 
 public class FileHandler {
 

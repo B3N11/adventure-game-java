@@ -1,7 +1,6 @@
 package game.global;
 
 import java.io.FileNotFoundException;
-import java.util.HashMap;
 
 import javax.swing.JOptionPane;
 
@@ -10,17 +9,29 @@ import exception.general.ElementNotFoundException;
 import exception.general.InvalidArgumentException;
 import exception.ui.ComponentAlreadyAtPositionException;
 import file.elements.MapLayoutData;
-import file.handlers.FileHandler;
+import game.GameActionController;
 import game.behaviour.entities.enemy.Enemy;
 import game.behaviour.entities.enemy.EnemyEntity;
 import game.behaviour.entities.player.Player;
 import game.global.storage.ActiveEnemyStorage;
 import game.global.storage.ModifiedEnemyStorage;
-import game.logic.GameActionController;
 import game.utility.ModifiedEnemyData;
 import uilogic.FileChooserType;
-import uilogic.UIHandler;
 
+/**
+ * This class represents a GameHandler in the game. It is responsible for handling the main game logic.
+ * It is a singleton class that handles the game actions and saving.
+ * 
+ * The class contains the following fields:
+ * - instance: The singleton instance of the GameHandler class.
+ * - actionController: The GameActionController that handles the game actions.
+ * - saveHandler: The SaveHandler that handles the game saving.
+ * - player: The Player of the game.
+ * - gameTitle: The title of the game.
+ * - gameCreator: The creator of the game.
+ * 
+ * The class provides a private constructor and a method to get the singleton instance.
+ */
 public class GameHandler {
     
     private static GameHandler instance;
@@ -28,10 +39,6 @@ public class GameHandler {
     private GameActionController actionController;
     private SaveHandler saveHandler;
     private Player player;
-
-    //Game Config
-    private String gameTitle;
-    private String gameCreator;
 
     private GameHandler(){
         saveHandler = new SaveHandler();
@@ -56,10 +63,18 @@ public class GameHandler {
         actionController.resetPlayerAttacksLeft();
     }
 
+    /**
+     * Starts the game. Must be called first. When program starts.
+     * Initializes the game and displays the main menu.
+     */
     public void start() throws Exception{
         UIHandler.getInstance().start();
     }
 
+    /**
+     * Sets the current map layout.
+     * @param layout The layout to set.
+     */
     public void setCurrentMapLayout(MapLayoutData data) throws Exception{
         if(data == null)
             throw new ArgumentNullException();
@@ -68,6 +83,11 @@ public class GameHandler {
         UIHandler.getInstance().getCombatLogger().addMapDescription(data.getName(), data.getDescription());
     }
     
+    /**
+     * Handles what happens to the chosen file based on the given type.
+     * Loads the game from the chosen file.
+     * @param file The chosen file.
+     */
     public void handleChosenFile(String filePath, FileChooserType type) throws ArgumentNullException, FileNotFoundException{
         if(filePath == null)
             throw new ArgumentNullException();
@@ -94,6 +114,11 @@ public class GameHandler {
         UIHandler.getInstance().togglePlayerControlls(true);
     }
 
+    /**
+     * Handles the death of an enemy. Removes the enemy from the active enemies and updates the UI.
+     * Removes the enemy from the active enemies and updates the UI.
+     * @param enemy The enemy that died.
+     */
     public void handleEnemyDeath(Enemy enemy) throws ArgumentNullException, ElementNotFoundException, InvalidArgumentException, ComponentAlreadyAtPositionException{
         try{ ActiveEnemyStorage.getInstance().remove(enemy.getInstanceID()); }
         catch(ArgumentNullException e){}
@@ -111,6 +136,12 @@ public class GameHandler {
         player.addXP(rewardXP);
     }
 
+    /**
+     * Modifies an enemy. Saves the enemy's data and position in the ModifiedEnemyStorage.
+     * Updates the enemy's data and position.
+     * @param enemy The enemy to modify.
+     * @param enemyPosition The new position of the enemy.
+     */
     public void modifyEnemy(Enemy enemy, boolean dead) throws ArgumentNullException{
         if(enemy == null)
             throw new ArgumentNullException();
@@ -131,15 +162,29 @@ public class GameHandler {
         }catch(Exception e){}
     }
 
+    /**
+     * Handles the death of the player. Disables the player controls and displays the player death screen.
+     * Disables the player controls and displays the player death screen.
+     */
     public void handlePlayerDeath(){
         UIHandler.getInstance().togglePlayerControlls(false);
         UIHandler.getInstance().displayPlayerDeath();
     }
 
+    /**
+     * Handles the level up of the player. Displays a message indicating the player has leveled up.
+     * Displays a message indicating the player has leveled up.
+     */
     public void handlePlayerLevelUp(){
         UIHandler.getInstance().showMessage("YOU LEVELED UP!\nYour new level: " + GameHandler.getInstance().getPlayer().getEntity().getLevel(), JOptionPane.INFORMATION_MESSAGE);
     }
 
+    /**
+     * Quits the game. Prompts the player for confirmation before quitting.
+     * If instant is true, it quits the game immediately.
+     * Otherwise, it asks the player for confirmation before quitting.
+     * @param instant Whether to quit the game immediately.
+     */
     public void quitGame(boolean instant){
         if(instant)
             System.exit(0);
@@ -150,6 +195,12 @@ public class GameHandler {
             System.exit(0);
     }
 
+    /**
+     * Checks the player's condition for action. And wheter the player is prevented from executing an action.
+     * If the player is dead, it logs a message and returns true.
+     * Otherwise, it returns false.
+     * @return Whether the player is dead.
+     */
     public boolean checkPlayerConditionForAction(){
         if(!player.isDead())
             return false;

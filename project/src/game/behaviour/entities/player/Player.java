@@ -10,10 +10,10 @@ import game.behaviour.entities.items.Item;
 import game.behaviour.entities.items.equipment.Armor;
 import game.enums.EntityCondition;
 import game.enums.ModifierType;
-import game.logic.event.Event;
-import game.logic.event.EventArgument;
-import game.logic.event.IEventListener;
 import game.utility.Identity;
+import game.utility.event.Event;
+import game.utility.event.EventArgument;
+import game.utility.event.IEventListener;
 
 /**
  * This class represents a Player in the game.

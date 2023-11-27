@@ -12,9 +12,9 @@ import game.behaviour.entities.items.Consumable;
 import game.behaviour.entities.items.Item;
 import game.enums.ItemType;
 import game.enums.ModifierType;
-import game.logic.event.Event;
-import game.logic.event.EventArgument;
-import game.logic.event.IEventListener;
+import game.utility.event.Event;
+import game.utility.event.EventArgument;
+import game.utility.event.IEventListener;
 
 /**
  * This class represents an Inventory in the game.

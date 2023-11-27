@@ -5,9 +5,9 @@ import game.behaviour.entities.IInteractiveEntity;
 import game.behaviour.entities.enemy.EnemyEntity;
 import game.behaviour.entities.enemy.controller.BerserkerEnemyController;
 import game.enums.EnemyBehaviourControllerType;
-import game.logic.event.Event;
-import game.logic.event.EventArgument;
-import game.logic.event.IEventListener;
+import game.utility.event.Event;
+import game.utility.event.EventArgument;
+import game.utility.event.IEventListener;
 
 /**
  * This abstract class represents an EnemyBehaviourController in the game.
