@@ -1,14 +1,16 @@
 import game.global.DiceRoller;
 import game.global.GameHandler;
-import game.global.UIHandler;
-import game.utility.GenericDelegate;
 
 public class Main {
+
+    private static boolean run = true;
 
     public static void main(String[] args) throws Exception{
         DiceRoller.getInstance().setDefault(20);
         
-        GameHandler.getInstance().start();
-        //DataCreator.createTestData();
+        if(run)
+            GameHandler.getInstance().start();
+        else
+            DataCreator.createTestData();
     }
 }

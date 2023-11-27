@@ -7,12 +7,19 @@ import game.global.GameHandler;
 import game.global.UIHandler;
 import game.utility.GenericDelegate;
 
+/**
+ * This class handles the actions of the menu bar in the play frame.
+ * It extends the MultipleButtonHandler class and overrides the initActions method to initialize the actions of the menu bar.
+ * 
+ * The class contains the following methods:
+ * - initActions: Initializes the actions of the menu bar.
+ */
 public class PlayFrameMenuBarHandler extends MultipleButtonHandler{
-
-    public PlayFrameMenuBarHandler(){
-        initActions();
-    }
-
+    /**
+     * Initializes the actions of the menu bar.
+     * The actions include quick saving the game, creating a new save game, loading a config file, and loading a game.
+     * Each action is associated with a key in the actions HashMap of the MultipleButtonHandler class.
+     */
     @Override
     protected final void initActions(){
         var saveHandler = GameHandler.getInstance().getSaveHandler();
