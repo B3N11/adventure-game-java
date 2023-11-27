@@ -6,25 +6,29 @@ import file.elements.EnemyTypeSave;
 import file.elements.GameConfigSave;
 import file.elements.ItemMapData;
 import file.elements.ItemSave;
+import file.elements.MapLayoutData;
 import file.elements.PlayerProgressSave;
-import game.behaviour.Consumable;
-import game.behaviour.Item;
-import game.behaviour.abstracts.Armor;
-import game.behaviour.entities.Player;
-import game.behaviour.entities.PlayerEntity;
 import game.behaviour.entities.enemy.EnemyEntity;
-import game.behaviour.weapons.AutoPistol;
-import game.behaviour.weapons.Shotgun;
+import game.behaviour.entities.items.Item;
+import game.behaviour.entities.items.equipment.Armor;
+import game.behaviour.entities.items.equipment.weapons.AutoPistol;
+import game.behaviour.entities.items.equipment.weapons.Shotgun;
+import game.behaviour.entities.player.Player;
+import game.behaviour.entities.player.PlayerEntity;
 import game.enums.EnemyBehaviourControllerType;
-import game.enums.ModifierType;
-import game.utility.dataclass.MapLayoutData;
-import ui.data.GridPosition;
+import uilogic.GridPosition;
 
+/*
+ * This class is used to create the test data for the game.
+ */
 public class DataCreator {
 
     private static FileIOUtil fileIO;
     public static String datafolder = "G:\\uni\\sub\\3\\prog\\hf\\adventure-game-java\\project\\resources\\gamedata\\";
 
+    /*
+     * This method creates the test data for the game.
+     */
     public static void createTestData() throws Exception{
         fileIO = new FileIOUtil();
 

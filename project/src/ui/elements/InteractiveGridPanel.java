@@ -12,12 +12,24 @@ import exception.general.ElementNotFoundException;
 import exception.general.InvalidArgumentException;
 import exception.ui.ComponentAlreadyAtPositionException;
 import exception.ui.PlayfieldNotEmptyException;
-import game.utility.dataclass.MapLayoutData;
+import file.elements.MapLayoutData;
 import uilogic.GridEntityComponentHandler;
+import uilogic.GridPosition;
 import ui.data.GridDimension;
-import ui.data.GridPosition;
 
-//Manages UI related to the area where the game is displayed
+/**
+ * This class represents an interactive grid panel in the game. It has 3 layers: background, entity, and button. Background is the lowest layer displaying the background, entity is the middle layer displaying entities, and button is the top layer with GridButtons.
+ * It extends the JPanel class and is used to display the game area.
+ * 
+ * The class contains the following fields:
+ * - layeredPane: The inner layout of the interactive grid panel.
+ * - background: The background of the interactive grid panel.
+ * - entityPanel: The entity panel of the interactive grid panel.
+ * - buttonPanel: The button panel of the interactive grid panel.
+ * - entityHandler: The entity handler of the interactive grid panel.
+ * - preferredSize: The preferred size of the interactive grid panel.
+ * - componentSize: The component size of the interactive grid panel.
+ */
 public class InteractiveGridPanel extends JPanel{
     
     //Inner layout
@@ -34,6 +46,13 @@ public class InteractiveGridPanel extends JPanel{
     private GridDimension preferredSize;
     private GridDimension componentSize;
 
+    /**
+     * Constructor for the InteractiveGridPanel class.
+     * Initializes the interactive grid panel with the specified width and height.
+     * @param width The width of the interactive grid panel.
+     * @param height The height of the interactive grid panel.
+     * @throws Exception if the initialization of the interactive grid panel throws an Exception.
+     */
     public InteractiveGridPanel(int width, int height) throws Exception {
         initInteractiveGrid(width, height);
     }
@@ -41,7 +60,13 @@ public class InteractiveGridPanel extends JPanel{
     public GridDimension getPreferredSize(){ return preferredSize; }
     public GridDimension getComponentSize(){ return componentSize; }
 
-    //#region INITIALIZE
+    /**
+     * Initializes the interactive grid panel.
+     * Sets the panel, calculates the component size based on the default map layout, initializes the background, entity panel, and button panel, sets the layers, and initializes the entity handler.
+     * @param width The width of the interactive grid panel.
+     * @param height The height of the interactive grid panel.
+     * @throws Exception if the initialization of the interactive grid panel throws an Exception.
+     */
     private void initInteractiveGrid(int width, int height) throws Exception{        
         //Set panel
         initPanel(width, height);
@@ -61,6 +86,12 @@ public class InteractiveGridPanel extends JPanel{
         entityHandler = new GridEntityComponentHandler();
     }
 
+    /**
+     * Initializes the panel of the interactive grid panel.
+     * Creates a new layered pane, sets its preferred size, sets the preferred size and bounds of the panel, and adds the layered pane to the panel.
+     * @param width The width of the panel.
+     * @param height The height of the panel.
+     */
     private void initPanel(int width, int height){
         preferredSize = new GridDimension(width, height);
 
@@ -73,6 +104,14 @@ public class InteractiveGridPanel extends JPanel{
         add(layeredPane);
     }
 
+    /**
+     * Initializes the background of the interactive grid panel.
+     * If the file is not defined, it creates an empty background; otherwise, it sets the image of the background.
+     * @param width The width of the background.
+     * @param height The height of the background.
+     * @param file The file path of the background image.
+     * @throws Exception if the initialization of the background throws an Exception.
+     */
     private void initBackground(int width, int height, String file) throws Exception{
 
         //If file is not defined, we create an empty background
@@ -82,6 +121,13 @@ public class InteractiveGridPanel extends JPanel{
             background = new ImageComponent(width, height, file);
     }
 
+    /**
+     * Initializes the entity panel of the interactive grid panel.
+     * Sets the preferred size and bounds of the entity panel, and initializes the entity handler.
+     * @param width The width of the entity panel.
+     * @param height The height of the entity panel.
+     * @throws Exception if the initialization of the entity panel throws an Exception.
+     */
     private void initEntityPanel(int width, int height) throws Exception{
         entityPanel = new GridPanel(preferredSize.getHorizontal(), preferredSize.getVertical(), width, height);
 
@@ -93,6 +139,14 @@ public class InteractiveGridPanel extends JPanel{
         }
     }
 
+    /**
+     * Initializes the button panel of the interactive grid panel.
+     * Sets the preferred size and bounds of the button panel, and initializes the buttons.
+     * @param width The width of the button panel.
+     * @param height The height of the button panel.
+     * @param handler The action listener of the buttons.
+     * @throws Exception if the initialization of the button panel throws an Exception.
+     */
     private void initButtonPanel(int width, int height, ActionListener handler) throws Exception{
         buttonPanel = new GridPanel(preferredSize.getHorizontal(), preferredSize.getVertical(), width, height);
         var color = new Color(255, 0, 0, 50);
@@ -105,6 +159,10 @@ public class InteractiveGridPanel extends JPanel{
         }
     }
 
+    /**
+     * Sets the layers of the interactive grid panel.
+     * Removes all components from the layered pane, and adds the background, entity panel, and button panel to it.
+     */
     private void setLayers(){
         layeredPane.removeAll();
 
@@ -113,6 +171,12 @@ public class InteractiveGridPanel extends JPanel{
         layeredPane.add(buttonPanel.getJPanel(), Integer.valueOf(2));
     }
 
+    /**
+     * Calculates the component size based on the preferred size and the specified x and y.
+     * @param x The horizontal component count.
+     * @param y The vertical component count.
+     * @return The calculated component size.
+     */
     private GridDimension calculateAutoComponentSize(int x, int y){        
         int xComponentSize = preferredSize.getHorizontal() / x;
         int yComponentSize = preferredSize.getVertical() / y;
@@ -120,13 +184,26 @@ public class InteractiveGridPanel extends JPanel{
         return new GridDimension(xComponentSize, yComponentSize);
     }
 
+    /**
+     * Sets the component size of the interactive grid panel.
+     * @param size The new component size.
+     * @throws ArgumentNullException if the size is null.
+     */
     private void setComponentSize(GridDimension size) throws ArgumentNullException{
         if(size == null)
             throw new ArgumentNullException();
         componentSize = size;
     }
-    //#endregion
-
+    
+    /**
+     * Sets the map layout of the interactive grid panel with auto component size.
+     * If the entity handler is not empty and force is false, it throws a PlayfieldNotEmptyException; otherwise, it calculates the component size and calls the overloaded setMapLayout method.
+     * @param data The new map layout data.
+     * @param buttonHandler The new button handler.
+     * @param force A boolean that determines whether to force the setting of the map layout.
+     * @return The interactive grid panel itself, for chaining.
+     * @throws Exception if the setting of the map layout throws an Exception.
+     */
     public InteractiveGridPanel setMapLayout(MapLayoutData data, ActionListener buttonHandler, boolean force) throws Exception{
         if(data == null || buttonHandler == null)
             throw new ArgumentNullException();
@@ -139,6 +216,16 @@ public class InteractiveGridPanel extends JPanel{
         return setMapLayout(data, buttonHandler, force, size);
     }
 
+    /**
+     * Sets the map layout of the interactive grid panel.
+     * If the entity handler is not empty and force is false, it throws a PlayfieldNotEmptyException; otherwise, it sets the component size, clears the entity handler, and initializes the entity panel and button panel.
+     * @param data The new map layout data.
+     * @param buttonHandler The new button handler.
+     * @param force A boolean that determines whether to force the setting of the map layout.
+     * @param componentSize The new component size.
+     * @return The interactive grid panel itself, for chaining.
+     * @throws Exception if the setting of the map layout throws an Exception.
+     */
     public InteractiveGridPanel setMapLayout(MapLayoutData data, ActionListener buttonHandler, boolean force, GridDimension componentSize) throws Exception{
         if(data == null || buttonHandler == null)
             throw new ArgumentNullException();
@@ -158,6 +245,12 @@ public class InteractiveGridPanel extends JPanel{
         return this;
     }
 
+    /**
+     * Adds an entity to the interactive grid panel.
+     * @param entity The entity to add.
+     * @throws ArgumentNullException if the entity is null.
+     * @throws ComponentAlreadyAtPositionException if there is already a component at the position of the entity.
+     */
     public GridEntityComponent addEntity(GridEntityComponent entity) throws ArgumentNullException, InvalidArgumentException, ComponentAlreadyAtPositionException{
         if(entity == null)
             throw new ArgumentNullException();
@@ -168,10 +261,26 @@ public class InteractiveGridPanel extends JPanel{
         return entityHandler.add(entity);
     }
 
+    /**
+     * Gets an entity from the interactive grid panel by its ID.
+     * @param id The ID of the entity.
+     * @return The entity with the specified ID.
+     * @throws ArgumentNullException if the ID is null.
+     * @throws ElementNotFoundException if there is no entity with the specified ID.
+     */
     public GridEntityComponent getEntity(String id) throws ArgumentNullException, ElementNotFoundException{
         return entityHandler.getByID(id);
     }
 
+    /**
+     * Removes an entity from the interactive grid panel.
+     * @param id The ID of the entity to remove.
+     * @param removeFromList A boolean that determines whether to remove the entity from the entity handler.
+     * @return The removed entity.
+     * @throws ArgumentNullException if the entity is null.
+     * @throws ElementNotFoundException if there is no entity with the specified ID.
+     * @throws InvalidArgumentException if the entity is invalid.
+     */
     public GridEntityComponent removeEntity(String id, boolean removeFromList) throws ArgumentNullException, ElementNotFoundException, InvalidArgumentException{
         if(id == null)
             throw new ArgumentNullException();
@@ -181,6 +290,12 @@ public class InteractiveGridPanel extends JPanel{
         return removeEntity(entity, removeFromList);
     }
 
+    /**
+     * Removes an entity from the interactive grid panel.
+     * @param entity The entity to remove.
+     * @param removeFromList A boolean that determines whether to remove the entity from the entity handler.
+     * @throws ArgumentNullException if the entity is null.
+     */
     public GridEntityComponent removeEntity(GridEntityComponent entity, boolean removeFromList) throws ArgumentNullException, ElementNotFoundException, InvalidArgumentException{
         if(entity == null)
             throw new ArgumentNullException();
@@ -196,6 +311,16 @@ public class InteractiveGridPanel extends JPanel{
         return entity;
     }
 
+    /**
+     * Replaces an entity in the interactive grid panel with a new position.
+     * @param id The ID of the entity to replace.
+     * @param newPosition The new position of the entity.
+     * @return The replaced entity.
+     * @throws ArgumentNullException if the ID or the new position is null.
+     * @throws ElementNotFoundException if there is no entity with the specified ID.
+     * @throws InvalidArgumentException if the new position is invalid.
+     * @throws ComponentAlreadyAtPositionException if there is already a component at the new position.
+     */
     public GridEntityComponent replaceEntity(String id, GridPosition newPosition) throws ArgumentNullException, ElementNotFoundException, InvalidArgumentException, ComponentAlreadyAtPositionException{
         if(id == null || newPosition == null)
             throw new ArgumentNullException();
@@ -204,6 +329,16 @@ public class InteractiveGridPanel extends JPanel{
         return replaceEntity(entity, newPosition);
     }
 
+    /**
+     * Replaces an entity in the interactive grid panel with a new position.
+     * @param entity The entity to replace.
+     * @param newPosition The new position of the entity.
+     * @return The replaced entity.
+     * @throws ArgumentNullException if the entity or the new position is null.
+     * @throws ElementNotFoundException if there is no entity with the specified ID.
+     * @throws InvalidArgumentException if the new position is invalid.
+     * @throws ComponentAlreadyAtPositionException if there is already a component at the new position.
+     */
     public GridEntityComponent replaceEntity(GridEntityComponent entity, GridPosition newPosition) throws ArgumentNullException, ElementNotFoundException, InvalidArgumentException, ComponentAlreadyAtPositionException{
         if(entity == null || newPosition == null)
             throw new ArgumentNullException();
@@ -215,6 +350,13 @@ public class InteractiveGridPanel extends JPanel{
         return entity;
     }
 
+    /**
+     * Gets the ID of an entity from the interactive grid panel by its position.
+     * @param position The position of the entity.
+     * @return The ID of the entity at the specified position.
+     * @throws ArgumentNullException if the position is null.
+     * @throws ElementNotFoundException if there is no entity at the specified position.
+     */
     public String getEntityByPosition(GridPosition position) throws ArgumentNullException, ElementNotFoundException{
         if(position == null)
             throw new ArgumentNullException();

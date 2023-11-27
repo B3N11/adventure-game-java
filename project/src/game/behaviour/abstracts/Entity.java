@@ -2,12 +2,27 @@ package game.behaviour.abstracts;
 
 import java.io.Serializable;
 
-import exception.entity.ItemNotInInventoryException;
 import exception.entity.NoWeaponEquippedException;
 import exception.general.ArgumentNullException;
 import exception.general.InvalidArgumentException;
+import game.behaviour.entities.items.equipment.Armor;
 import game.enums.EntityType;
 
+/**
+ * This abstract class represents an Entity in the game.
+ * It includes properties such as name, entityType, health, movement, level, armor, and weapon.
+ * 
+ * The class contains the following fields:
+ * - name: The name of the entity.
+ * - entityType: The type of the entity.
+ * - health: The health of the entity.
+ * - movement: The movement speed of the entity.
+ * - level: The level of the entity.
+ * - armor: The armor the entity is wearing.
+ * - weapon: The weapon the entity is wielding.
+ * 
+ * The class provides getter methods for these fields and a setter for the name.
+ */
 public abstract class Entity implements Serializable{
         
     protected String name;
@@ -16,10 +31,10 @@ public abstract class Entity implements Serializable{
     protected double movement;    
     protected int level;
 
-    transient protected Armor armor;
-    transient protected Weapon weapon;
+    protected transient Armor armor;
+    protected transient Weapon weapon;
 
-    public Entity(int health, int movement, int level) throws InvalidArgumentException, ArgumentNullException{
+    protected Entity(int health, int movement, int level) throws InvalidArgumentException, ArgumentNullException{
         setHealth(health);
         setMovement(movement);
         setLevel(level);
@@ -63,30 +78,57 @@ public abstract class Entity implements Serializable{
         return this;
     }
     
+    /**
+     * Gets the movement speed of the entity.
+     * @return The movement speed of the entity. Applies armor bonus if armor is equipped.
+     */
     public double getMovement() {
         double result = armor == null ? movement : movement + armor.getMovementBonus();
         return result;
     }
 
-    public int getArmorClass() throws Exception{
+    /**
+     * Calculates and returns the armor class of the entity.
+     * If the entity has no armor equipped, it returns the sum of the entity's level and 5.
+     * If the entity has armor equipped, it returns the sum of the armor's armor class and the entity's level.
+     * @return The armor class of the entity.
+     */
+    public int getArmorClass(){
         int result = armor == null ? (level + 5) : armor.getArmorClass() + level;
         return result;
     }
-
-    public void equip(Weapon weapon) throws ItemNotInInventoryException, ArgumentNullException{
+    
+    /**
+     * Equips the entity with a weapon.
+     * @param weapon The weapon to equip.
+     * @throws ArgumentNullException if the weapon is null.
+     */
+    public void equip(Weapon weapon) throws ArgumentNullException{
         if(weapon == null)
             throw new ArgumentNullException();
         
         this.weapon = weapon;
     }
 
-    public void equip(Armor armor) throws ItemNotInInventoryException, ArgumentNullException{
+    /**
+     * Equips the entity with armor.
+     * @param armor The armor to equip.
+     * @throws ArgumentNullException if the armor is null.
+     */
+    public void equip(Armor armor) throws ArgumentNullException{
         if(armor == null)
             throw new ArgumentNullException();
         
         this.armor = armor;
     }
 
+    /**
+     * Performs an attack roll with the equipped weapon against a target's armor class.
+     * @param targetAC The armor class of the target.
+     * @param distance The distance to the target.
+     * @return true if the attack hits, false otherwise.
+     * @throws Exception if the entity has no weapon equipped.
+     */
     public boolean attack(int targetAC, double distance) throws Exception{
         if(weapon == null)
             throw new NoWeaponEquippedException();
@@ -94,6 +136,12 @@ public abstract class Entity implements Serializable{
         return weapon.attack(targetAC, distance);
     }
 
+    /**
+     * Calculates the damage dealt by the entity's weapon.
+     * @param distance The distance to the target.
+     * @return The calculated damage.
+     * @throws Exception if the entity has no weapon equipped.
+     */
     public int damage(double distance) throws Exception{
         if(weapon == null)
             throw new NoWeaponEquippedException();

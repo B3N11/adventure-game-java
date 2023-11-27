@@ -3,9 +3,9 @@ package file.elements;
 import java.io.Serializable;
 import java.util.ArrayList;
 
-import game.behaviour.entities.Player;
-import game.utility.dataclass.ModifiedEnemyData;
-import ui.data.GridPosition;
+import game.behaviour.entities.player.Player;
+import game.utility.ModifiedEnemyData;
+import uilogic.GridPosition;
 
 public class PlayerProgressSave implements Serializable{
 

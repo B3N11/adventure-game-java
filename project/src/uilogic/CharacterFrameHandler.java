@@ -5,26 +5,38 @@ import java.awt.event.ActionListener;
 
 import exception.general.ArgumentNullException;
 import exception.general.ConfigNotLoadedException;
-import game.behaviour.Item;
-import game.behaviour.abstracts.Armor;
 import game.behaviour.abstracts.Equipment;
 import game.behaviour.abstracts.Weapon;
+import game.behaviour.entities.items.Item;
+import game.behaviour.entities.items.equipment.Armor;
 import game.enums.EquipmentType;
 import game.enums.ItemType;
 import game.global.GameHandler;
 import game.global.storage.IconDataStorage;
 import game.global.storage.ItemStorage;
-import game.utility.delegates.GenericDelegate;
-import ui.data.GridPosition;
+import game.utility.GenericDelegate;
 import ui.elements.CharacterFrame;
 import ui.elements.GridEntityComponent;
 
+/**
+ * This class handles the character frame in the UI.
+ * It contains a CharacterFrame, a GridButtonHandler for handling grid button actions, and an Item for the selected item.
+ * 
+ * The class contains the following fields:
+ * - frame: The CharacterFrame that this class handles.
+ * - gridButtonHandler: The GridButtonHandler for handling grid button actions.
+ * - item: The Item for the selected item.
+ */
 public class CharacterFrameHandler {
     
     private CharacterFrame frame;
     private GridButtonHandler gridButtonHandler;
     private Item item;
 
+    /**
+     * Constructor for the CharacterFrameHandler class.
+     * Initializes the GridButtonHandler with a GenericDelegate that runs the selectItem method when a grid button is clicked.
+     */
     public CharacterFrameHandler(){
         try{
             gridButtonHandler = new GridButtonHandler(new GenericDelegate() {
@@ -33,14 +45,28 @@ public class CharacterFrameHandler {
         }catch(ArgumentNullException e){}
     }
 
+    /**
+     * Gets the GridButtonHandler.
+     * @return The GridButtonHandler.
+     */
     public GridButtonHandler getGridButtonHandler() { return gridButtonHandler; }
 
+    /**
+     * Sets the CharacterFrame.
+     * @param frame The CharacterFrame to set.
+     * @throws ArgumentNullException if the frame is null.
+     */
     public void setCharacterFrame(CharacterFrame frame) throws ArgumentNullException{
         if(frame == null)
             throw new ArgumentNullException();
         this.frame = frame;
     }
 
+    /**
+     * Selects an item.
+     * Sets the selected item to the item associated with the clicked grid button, and shows the selected item in the item panel.
+     * @param o The object associated with the clicked grid button.
+     */
     public void selectItem(Object o){
         var tilePosition = (GridPosition)o;
         
@@ -58,6 +84,10 @@ public class CharacterFrameHandler {
         catch(Exception e){}
     }
 
+    /**
+     * Equips an item.
+     * If the selected item is not null and is an equipment, equips the selected item to the player, and shows the equipped item in the equipment panel.
+     */
     public void equipItem(){
         if(item.getItemType() == ItemType.CONSUMABLE)
             return;
@@ -77,6 +107,12 @@ public class CharacterFrameHandler {
         showEquippedItem(newEquipment.getEquipmentType());
     }
 
+    
+    /**
+     * Starts the character frame handler.
+     * Gets the player, checks if the player is null, gets the inventory count, initializes the character frame with the inventory count and the grid button handler, fills the inventory, sets the equipment panel, sets the item display panel, and sets the visibility of the character frame to true.
+     * @throws ConfigNotLoadedException if the player is null.
+     */
     public void start() throws ConfigNotLoadedException{
         var player = GameHandler.getInstance().getPlayer();
 
@@ -95,6 +131,10 @@ public class CharacterFrameHandler {
         frame.setVisible(true);
     }
 
+    /**
+     * Fills the inventory.
+     * Gets the grid of the inventory panel, the inventory of the player, all items in the inventory, and the column count of the inventory panel, and adds the items to the grid.
+     */
     private void fillInventory(){
         var grid = frame.getInventoryPanel().getGrid();
         var inventory = GameHandler.getInstance().getPlayer().getEntity().getInventory();
@@ -121,6 +161,10 @@ public class CharacterFrameHandler {
         }catch(Exception e){}
     }
 
+    /**
+     * Sets the equipment panel.
+     * Gets the player, the player's armor and weapon, the icon paths of the armor and weapon, and sets up the top panel and the bottom panel of the equipment panel with the armor and weapon, their icon paths, and the player's level.
+     */
     private void setEquipmentPanel(){
         var player = GameHandler.getInstance().getPlayer().getEntity();
         var armor = player.getArmor();
@@ -135,6 +179,10 @@ public class CharacterFrameHandler {
         }catch(Exception e){}
     }
 
+    /**
+     * Sets the item display panel.
+     * Gets the player, the first item in the player's inventory, the icon path of the item, and sets up the item panel with the item, its icon path, the player's level, and an action listener for equipping the item, and refreshes the frame.
+     */
     private void setItemDisplayPanel(){
         var player = GameHandler.getInstance().getPlayer().getEntity();
         var item = player.getInventory().getEquipments().getFirst();
@@ -149,6 +197,11 @@ public class CharacterFrameHandler {
         catch(Exception e){}
     }
 
+    /**
+     * Shows an equipped item in the equipment panel.
+     * Sets up the content of the top panel or the bottom panel of the equipment panel with the item, its icon path, and the player's level, depending on the equipment type of the item.
+     * @param type The equipment type of the item.
+     */
     private void showEquippedItem(EquipmentType type){
         try{
             var iconPath = IconDataStorage.getInstance().get(item.getID());
