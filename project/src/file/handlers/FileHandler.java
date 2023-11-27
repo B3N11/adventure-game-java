@@ -57,12 +57,23 @@ public class FileHandler {
         fileIOUtil = new FileIOUtil();
     }
 
+    /**
+     * Singleton pattern method to get the instance of FileHandler.
+     * If the instance is null, a new instance is created.
+     * @return the instance of FileHandler.
+     */
     public static FileHandler getInstance() {
         if(instance == null)
             instance = new FileHandler();
         return instance;
     }
 
+    /**
+     * Loads the configuration file from the given file path.
+     * It also loads the maps and player progress save.
+     * @param filePath The path of the configuration file.
+     * @throws Exception if the filePath is null or if the file does not exist.
+     */
     public void loadConfigFile(String filePath) throws Exception{
         if(filePath == null)
             throw new ArgumentNullException();
@@ -83,7 +94,12 @@ public class FileHandler {
         UIHandler.getInstance().showMessage("Config successfully loaded!", JOptionPane.INFORMATION_MESSAGE);
     }
 
-    public void loadMaps(){
+    /**
+     * Loads the maps from the map layout folder.
+     * If the file is a directory, it is skipped.
+     * If an exception occurs while reading the file, it is ignored.
+     */
+    private void loadMaps(){
         for(var file : mapLayoutFolderFilePath.listFiles()){
             if(file.isDirectory())
                 continue;
@@ -95,6 +111,11 @@ public class FileHandler {
         }
     }
 
+    /**
+     * Loads the player progress save from the given file path.
+     * @param filePath The path of the player progress save file.
+     * @throws Exception if an error occurs while loading the player progress save.
+     */
     public void loadPlayerProgressSave(String filePath) throws Exception{
         if(filePath == null)
             throw new ArgumentNullException();
@@ -144,6 +165,11 @@ public class FileHandler {
         GameHandler.getInstance().getSaveHandler().setModifiable(playerProgress.modifiable);
     }
 
+    /**
+     * Loads the modified enemies from the given data and adds them to the ModifiedEnemyStorage.
+     * @param data The list of modified enemy data.
+     * @throws ArgumentNullException if the data is null.
+     */
     private void loadModifiedEnemies(List<ModifiedEnemyData> data) throws ArgumentNullException{
         if(data == null)
             throw new ArgumentNullException();
@@ -154,6 +180,16 @@ public class FileHandler {
         }
     }
 
+    /**
+     * Loads the current map from the given id and player inventory.
+     * Modifies the file path to full path.
+     * Clears the ActiveEnemyStorage.
+     * Sets the current map layout in the GameHandler.
+     * Loads the enemies on the map.
+     * @param id The id of the map.
+     * @param playerInventory The player's inventory.
+     * @throws Exception if an error occurs while loading the map.
+     */
     public void loadCurrentMap(String id, List<Item> playerInventory) throws Exception{
         String fileName = id + ".txt";
         var mapData = (MapLayoutData)fileIOUtil.readObjectFromFile(new File(mapLayoutFolderFilePath, fileName));
@@ -204,7 +240,19 @@ public class FileHandler {
         UIHandler.getInstance().getPlayFieldHandler().placeEntity(GameHandler.getInstance().getPlayer().getInstanceID(), mapData.getPlayerPosition(), playerIconPath);
     }
 
-    private EnemyType loadEnemyType(String id) throws ArgumentNullException, FileNotFoundException, ClassNotFoundException, IOException, ItemNotInInventoryException, ElementAlreadyInCollectionException{
+        /**
+     * Loads the enemy from the given id.
+     * If the enemy is already loaded, it returns the existing enemy.
+     * Otherwise, it loads the enemy from the save file.
+     * It also loads the enemy's icon data and adds it to the IconDataStorage.
+     * Adds the enemy to the EnemyTypeStorage.
+     * @param id The id of the enemy.
+     * @return The loaded enemy.
+     * @throws ArgumentNullException if the id is null.
+     * @throws ClassNotFoundException if the class of a serialized object cannot be found.
+     * @throws IOException if an I/O error occurs.
+     */
+    private EnemyType loadEnemyType(String id) throws ArgumentNullException, ClassNotFoundException, IOException, ItemNotInInventoryException{
         if(id == null)
             throw new ArgumentNullException();
 
@@ -255,7 +303,18 @@ public class FileHandler {
         return result;
     }
 
-    private Item loadItem(String id) throws ArgumentNullException, FileNotFoundException, ClassNotFoundException, IOException, ElementAlreadyInCollectionException{
+     /**
+     * Loads the item from the given id.
+     * If the item is already loaded, it returns the existing item.
+     * Otherwise, it loads the item from the save file.
+     * It also loads the item's icon data and adds it to the IconDataStorage.
+     * @param id The id of the item.
+     * @return The loaded item.
+     * @throws ArgumentNullException if the id is null.
+     * @throws ClassNotFoundException if the class of a serialized object cannot be found.
+     * @throws IOException if an I/O error occurs.
+     */
+    private Item loadItem(String id) throws ArgumentNullException, ClassNotFoundException, IOException{
         if(id == null)
             throw new ArgumentNullException();
         
@@ -276,6 +335,12 @@ public class FileHandler {
         return result;
     }
 
+    /**
+     * Saves the current game progress to the given file path.
+     * It saves the current map, player progress, and modified enemies.
+     * @param filePath The path where the progress will be saved.
+     * @throws ArgumentNullException if the filePath is null.
+     */
     public void saveProgress(String filePath, boolean appendFileExtension) throws ArgumentNullException{
         if(filePath == null)
             throw new ArgumentNullException();
