@@ -12,14 +12,30 @@ import game.global.UIHandler;
 import game.global.storage.ActiveEnemyStorage;
 import game.global.storage.ItemStorage;
 
+/**
+ * This class controls the actions in the game.
+ * It contains methods to reset the player's attacks left, run the enemy turns, and handle the player's pick up action.
+ * 
+ * The class contains the following fields:
+ * - playerAttacksLeft: The number of attacks left for the player.
+ */
 public class GameActionController {
 
-    int playerAttacksLeft;
+    private int playerAttacksLeft;
 
+    /**
+     * Resets the number of attacks left for the player.
+     * The number of attacks left is set to the number of attacks in a round of the player's weapon.
+     */
     public void resetPlayerAttacksLeft(){
         playerAttacksLeft = GameHandler.getInstance().getPlayer().getEntity().getWeapon().getAttacksInRound();
     }
 
+    /**
+     * Runs the turns for all the active enemies in ActiveEnemyStorage.
+     * For each enemy, if the player is not dead, the enemy's controller runs the enemy's turn.
+     * After all the enemy turns, the player controls are toggled on.
+     */
     public void runEnemyTurns(){  
         var entrySet = ActiveEnemyStorage.getInstance().entrySet();
         for(var enemy : entrySet){
@@ -37,6 +53,10 @@ public class GameActionController {
         UIHandler.getInstance().togglePlayerControlls(true);
     }
 
+    /**
+     * Handles the player's action of picking up an item.
+     * If the player is in a condition that allows the action, the action is performed.
+     */
     public void playerPickUpAction(){
         if(GameHandler.getInstance().checkPlayerConditionForAction())
             return;
@@ -72,6 +92,10 @@ public class GameActionController {
         catch(ArgumentNullException e){ /* Wont happen */}
     }
 
+    /**
+     * Handles the player's action of moving.
+     * If the player is in a condition that allows movement, the player is moved to the selected tile.
+     */
     public void playerMoveAction(){
         if(GameHandler.getInstance().checkPlayerConditionForAction())
             return;
@@ -116,6 +140,12 @@ public class GameActionController {
         catch(Exception e){}
     }
 
+    /**
+     * Handles the player's action of attacking an enemy.
+     * If the player is in a condition that allows attacking and the selected tile contains an enemy, the player attacks the enemy.
+     * If the enemy dies from the attack, the enemy death is handled.
+     * If the enemy does not die, the enemy data is modified.
+     */
     public void playerAttackAction(){
         if(GameHandler.getInstance().checkPlayerConditionForAction())
             return;
@@ -205,6 +235,10 @@ public class GameActionController {
         }
     }
 
+    /**
+     * Handles the player's action of ending their turn.
+     * If the player is in a condition that allows ending their turn, the player's attacks left and movement are reset, the player controls are toggled off, and the enemy turns are run.
+     */
     public void playerEndTurnAction(){
         if(GameHandler.getInstance().checkPlayerConditionForAction())
             return;
