@@ -1,7 +1,6 @@
 package uilogic;
 
 import exception.general.ArgumentNullException;
-import ui.data.GridPosition;
 
 public interface IGridPositionable {
     public GridPosition getGridPosition();

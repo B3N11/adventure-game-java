@@ -4,7 +4,6 @@ import java.util.HashMap;
 
 import exception.general.ArgumentNullException;
 import exception.general.ElementNotFoundException;
-import ui.data.GridPosition;
 import ui.elements.GridEntityComponent;
 
 public class GridEntityComponentHandler {

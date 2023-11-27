@@ -119,7 +119,7 @@ public class GameHandler {
      * Removes the enemy from the active enemies and updates the UI.
      * @param enemy The enemy that died.
      */
-    public void handleEnemyDeath(Enemy enemy) throws ArgumentNullException, ElementNotFoundException, InvalidArgumentException, ComponentAlreadyAtPositionException{
+    public void handleEnemyDeath(Enemy enemy) throws ArgumentNullException, ElementNotFoundException, InvalidArgumentException{
         try{ ActiveEnemyStorage.getInstance().remove(enemy.getInstanceID()); }
         catch(ArgumentNullException e){}
 
@@ -133,6 +133,9 @@ public class GameHandler {
 
         //Add XP for player
         int rewardXP = ((EnemyEntity)enemy.getEntity()).getRewardXP();
+        message = player.getName() + " gained " + rewardXP + " XP.\nPlayer XP: " + (player.getXP() + rewardXP) + "/" + player.getRequiredXP();
+        UIHandler.getInstance().getCombatLogger().addEntityLog(player.getName(), message);
+        
         player.addXP(rewardXP);
     }
 

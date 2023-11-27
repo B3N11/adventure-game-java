@@ -15,7 +15,6 @@ import game.global.GameHandler;
 import game.global.storage.IconDataStorage;
 import game.global.storage.ItemStorage;
 import game.utility.GenericDelegate;
-import ui.data.GridPosition;
 import ui.elements.CharacterFrame;
 import ui.elements.GridEntityComponent;
 

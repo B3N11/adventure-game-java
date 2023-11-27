@@ -215,10 +215,6 @@ public class GameActionController {
         int damage = 0;
         try{ damage = player.damage(distance); }
         catch(Exception e){ UIHandler.getInstance().showMessage(e.getMessage(), JOptionPane.ERROR_MESSAGE); }
-        message += damage;
-
-        try{ UIHandler.getInstance().getCombatLogger().addEntityLog(player.getName(), message);}
-        catch(ArgumentNullException e){}
 
         //Take damage anc check if enemy died
         boolean enemyDied = false;
@@ -233,6 +229,10 @@ public class GameActionController {
             try{ GameHandler.getInstance().modifyEnemy(enemy, false); }
             catch(Exception e){}
         }
+
+        message += damage + "\nEnemy health: " + enemy.getCurrentHealth() + "/" + enemy.getEntity().getHealth();
+        try{ UIHandler.getInstance().getCombatLogger().addEntityLog(player.getName(), message);}
+        catch(ArgumentNullException e){}
     }
 
     /**

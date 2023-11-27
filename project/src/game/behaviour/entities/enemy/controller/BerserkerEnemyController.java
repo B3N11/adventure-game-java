@@ -53,7 +53,7 @@ public class BerserkerEnemyController extends EnemyBehaviourController {
             int damage = enemyEntity.damage(distance);
             target.takeDamage(damage);
 
-            damageNumber += damage;
+            damageNumber += damage + ":" + target.getCurrentHealth() + "/" + target.getEntity().getHealth();
             damageEvent.getArgument().setArgument(damageNumber);
             damageEvent.triggerEvent();
         }

@@ -287,8 +287,8 @@ public class FileHandler {
         }, new IEventListener() {
             public void run(EventArgument argument, Event trigger){
                 String[] arg = argument.getArgument().toString().split(":");
-                String message = "Damaged the target: " + arg[1];
-                try{ UIHandler.getInstance().getCombatLogger().addEntityLog(arg[0], message);; }
+                String message = "Damaged the target: " + arg[1] + "\nTarget current health: " + arg[2];
+                try{ UIHandler.getInstance().getCombatLogger().addEntityLog(arg[0], message); }
                 catch(ArgumentNullException e){}
             }
         });

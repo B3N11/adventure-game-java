@@ -1,4 +1,4 @@
-package ui.data;
+package uilogic;
 
 import java.awt.GridBagConstraints;
 import java.io.Serializable;

@@ -6,12 +6,28 @@ import java.awt.event.ActionListener;
 
 import exception.general.ArgumentNullException;
 
+/**
+ * This class represents a character frame in the game. It displays the character's equipment and inventory.
+ * It extends the JFrame class and contains an equipment panel, an inventory panel, and an equipment item panel.
+ * 
+ * The class contains the following fields:
+ * - equipmentPanel: The equipment panel of the character.
+ * - inventoryPanel: The inventory panel of the character.
+ * - itemPanel: The equipment item panel of the character.
+ */
 public class CharacterFrame extends JFrame{
 
     private EquipmentPanel equipmentPanel;
     private InventoryPanel inventoryPanel;
     private EquipmentItemPanel itemPanel;
     
+    /**
+     * Constructor for the CharacterFrame class.
+     * Initializes the frame with the specified inventory count and button handler.
+     * @param inventoryCount The count of the inventory.
+     * @param buttonHandler The handler of the button.
+     * @throws ArgumentNullException if the button handler is null.
+     */
     public CharacterFrame(int inventoryCount, ActionListener buttonHandler) throws ArgumentNullException{
         if(buttonHandler == null)
             throw new ArgumentNullException();
@@ -21,6 +37,10 @@ public class CharacterFrame extends JFrame{
         pack();
     }
 
+    /**
+     * Initializes the frame.
+     * Sets the title, resizability, layout, and default close operation of the frame.
+     */
     private void initFrame(){
         setTitle("Character");
         setResizable(false);
@@ -28,6 +48,12 @@ public class CharacterFrame extends JFrame{
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
     }
 
+    /**
+     * Sets up the content of the frame.
+     * Initializes and adds the equipment panel and inventory panel with the specified inventory count and button handler.
+     * @param inventoryCount The count of the inventory.
+     * @param buttonHandler The handler of the button.
+     */
     private void setUpContent(int inventoryCount, ActionListener buttonHandler){
         try{
             equipmentPanel = new EquipmentPanel("Armor", "Weapon");

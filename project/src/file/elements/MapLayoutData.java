@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 import exception.general.ArgumentNullException;
 import game.utility.Identity;
-import ui.data.GridPosition;
+import uilogic.GridPosition;
 
 /**
  * This class represents the layout data for a map in the game.

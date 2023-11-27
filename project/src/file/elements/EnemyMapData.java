@@ -3,7 +3,7 @@ package file.elements;
 import java.io.Serializable;
 
 import exception.general.ArgumentNullException;
-import ui.data.GridPosition;
+import uilogic.GridPosition;
 
 /**
  * This class represents the data of an enemy on the map.

@@ -2,7 +2,7 @@ package file.elements;
 
 import java.io.Serializable;
 
-import ui.data.GridPosition;
+import uilogic.GridPosition;
 
 /**
  * This class represents the data of an item on the map.

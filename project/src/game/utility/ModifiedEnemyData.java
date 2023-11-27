@@ -2,7 +2,7 @@ package game.utility;
 
 import exception.general.ArgumentNullException;
 import exception.general.InvalidArgumentException;
-import ui.data.GridPosition;
+import uilogic.GridPosition;
 
 /**
  * This class represents the modified data of an enemy in the game. Used to store and save the modified enemies.

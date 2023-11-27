@@ -4,7 +4,6 @@ import exception.general.ArgumentNullException;
 import exception.general.ElementNotFoundException;
 import file.elements.MapLayoutData;
 import game.global.GameHandler;
-import ui.data.GridPosition;
 import ui.elements.InteractiveGridPanel;
 
 public class PlayFieldHandler extends InteractiveGridHandler{

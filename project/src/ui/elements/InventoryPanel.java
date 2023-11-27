@@ -10,8 +10,21 @@ import javax.swing.ScrollPaneConstants;
 
 import file.elements.MapLayoutData;
 import ui.data.GridDimension;
-import ui.data.GridPosition;
+import uilogic.GridPosition;
 
+/**
+ * This class represents an inventory panel in the game. It uses the InteractiveGridPanel class to display the inventory.
+ * It extends the JPanel class and is used to display the inventory area.
+ * 
+ * The class contains the following fields:
+ * - COMPONENT_WIDTH: The width of each component in the inventory panel.
+ * - COMPONENT_HEIGHT: The height of each component in the inventory panel.
+ * - PANEL_WIDTH: The width of the inventory panel.
+ * - PANEL_HEIGHT: The height of the inventory panel.
+ * - rowCount: The number of rows in the inventory panel.
+ * - columnCount: The number of columns in the inventory panel.
+ * - grid: The interactive grid panel of the inventory panel.
+ */
 public class InventoryPanel extends JPanel{
 
     public static int COMPONENT_WIDTH = 48;
@@ -24,11 +37,27 @@ public class InventoryPanel extends JPanel{
 
     private InteractiveGridPanel grid;
     
+    /**
+     * Constructor for the InventoryPanel class.
+     * Initializes the inventory panel with the specified number of rows and columns and the specified button handler.
+     * @param rows The number of rows in the inventory panel.
+     * @param columns The number of columns in the inventory panel.
+     * @param buttonHandler The button handler of the inventory panel.
+     * @throws Exception if the initialization of the inventory panel throws an Exception.
+     */
     public InventoryPanel(int rows, int columns, ActionListener buttonHandler) throws Exception{
         setBorder(BorderFactory.createTitledBorder("Inventory"));
         setUpContent(rows, columns, buttonHandler);
     }
 
+    /**
+     * Sets up the content of the inventory panel.
+     * Initializes the interactive grid panel with the specified number of rows and columns and the specified button handler, sets the preferred size and scroll bar policies of the scroll pane, and adds the scroll pane to the inventory panel.
+     * @param rows The number of rows in the inventory panel.
+     * @param columns The number of columns in the inventory panel.
+     * @param buttonHandler The button handler of the inventory panel.
+     * @throws Exception if the setting up of the content throws an Exception.
+     */
     private void setUpContent(int rows, int columns, ActionListener buttonHandler) throws Exception{
         //SETUP: data columns fixed, rows depend on inventory size. playfield size horizontally: data.columns * griddimension, vertically: data.rows * griddimension
         int horizontalSize = columns * COMPONENT_WIDTH;

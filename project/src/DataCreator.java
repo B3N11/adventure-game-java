@@ -18,7 +18,7 @@ import game.behaviour.entities.player.Player;
 import game.behaviour.entities.player.PlayerEntity;
 import game.enums.EnemyBehaviourControllerType;
 import game.enums.ModifierType;
-import ui.data.GridPosition;
+import uilogic.GridPosition;
 
 public class DataCreator {
 

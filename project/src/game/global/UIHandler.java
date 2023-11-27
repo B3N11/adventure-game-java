@@ -80,7 +80,7 @@ public class UIHandler {
             throw new UIHandlerAlreadyStartedException();
 
         createPlayFrame();
-        playFrame.displayFrame();
+        playFrame.setVisible(true);
         logger = new CombatLogger(playFrame);
         started = true;
     }

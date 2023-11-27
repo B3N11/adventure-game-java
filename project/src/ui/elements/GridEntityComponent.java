@@ -3,14 +3,31 @@ package ui.elements;
 import java.io.IOException;
 
 import exception.general.ArgumentNullException;
-import ui.data.GridPosition;
+import uilogic.GridPosition;
 import uilogic.IGridPositionable;
 
+/**
+ * This class represents a grid entity component in the game. It is used to display and store the position of an entity on the grid.
+ * It extends the ImageComponent class and implements the IGridPositionable interface.
+ * 
+ * The class contains the following fields:
+ * - id: The id of the grid entity component.
+ * - gridPosition: The grid position of the grid entity component.
+ */
 public class GridEntityComponent extends ImageComponent implements IGridPositionable{
 
     private String id;
     private GridPosition gridPosition;
 
+    /**
+     * Constructor for the GridEntityComponent class.
+     * Initializes the grid entity component with the specified id, width, height, and grid position.
+     * @param id The id of the grid entity component.
+     * @param width The width of the grid entity component.
+     * @param height The height of the grid entity component.
+     * @param position The grid position of the grid entity component.
+     * @throws ArgumentNullException if the id or grid position is null.
+     */
     public GridEntityComponent(String id, int width, int height, GridPosition position) throws ArgumentNullException{
         super(width, height);
 
@@ -21,6 +38,10 @@ public class GridEntityComponent extends ImageComponent implements IGridPosition
         this.id = id;
     }
 
+    /**
+     * Gets the id of the grid entity component.
+     * @return The id of the grid entity component.
+     */
     public String getID(){ return id; }  
 
     @Override

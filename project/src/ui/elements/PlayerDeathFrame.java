@@ -11,8 +11,24 @@ import javax.swing.JPanel;
 
 import exception.general.ArgumentNullException;
 
-public class PlayerDeathFrame extends JFrame implements ActionListener{
+/**
+ * This class represents a frame that is displayed when the player dies. It allows the player to load a save or quit the game.
+ * It extends the JFrame class.
+ * 
+ * The class contains the following methods:
+ * - PlayerDeathFrame: The constructor of the class.
+ * - initFrame: Initializes the frame.
+ * - setupPanel: Sets up the panel in the frame.
+ */
+public class PlayerDeathFrame extends JFrame{
     
+    /**
+     * Constructor for the PlayerDeathFrame class.
+     * Initializes the frame with the specified relative location and action listener.
+     * @param relativeLocation The component in relation to which the frame's location is determined.
+     * @param listener The action listener of the frame.
+     * @throws ArgumentNullException if the listener is null.
+     */
     public PlayerDeathFrame(Component relativeLocation, ActionListener listener) throws ArgumentNullException{
         if(listener == null)
             throw new ArgumentNullException();
@@ -23,6 +39,11 @@ public class PlayerDeathFrame extends JFrame implements ActionListener{
         pack();
     }
 
+    /**
+     * Initializes the frame.
+     * Sets the title, location, always-on-top status, auto-request-focus status, and resizable status of the frame.
+     * @param relativeLocation The component in relation to which the frame's location is determined.
+     */
     private void initFrame(Component relativeLocation){
         setTitle("Player Died");
         setLocationRelativeTo(relativeLocation);
@@ -31,6 +52,12 @@ public class PlayerDeathFrame extends JFrame implements ActionListener{
         setResizable(false);
     }
 
+    /**
+     * Sets up the panel in the frame.
+     * Initializes the panel with a grid layout, sets its components, and adds it to the frame.
+     * @param listener The action listener of the panel.
+     * @throws ArgumentNullException if the listener is null.
+     */
     private void setupPanel(ActionListener listener) throws ArgumentNullException{
         var panel = new JPanel(new GridLayout(3, 1));
 
@@ -39,7 +66,11 @@ public class PlayerDeathFrame extends JFrame implements ActionListener{
 
         var loadSaveButton = new CustomButton(300, 100, "Load Save");
         loadSaveButton.addActionListener(listener);
-        loadSaveButton.addActionListener(this);
+        loadSaveButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                dispose();
+            }
+        });
         loadSaveButton.setActionCommand("LOAD_SAVE");
         panel.add(loadSaveButton);
 
@@ -49,10 +80,5 @@ public class PlayerDeathFrame extends JFrame implements ActionListener{
         panel.add(quitGameButton);
 
         add(panel);
-    }
-
-    @Override
-    public void actionPerformed(ActionEvent event){
-        dispose();
     }
 }

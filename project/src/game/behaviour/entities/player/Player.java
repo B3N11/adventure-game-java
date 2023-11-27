@@ -58,6 +58,8 @@ public class Player extends Identity implements IInteractiveEntity{
             throw new ArgumentNullException();
         
         setID(id);
+        try{ setRequiredXP(40); }
+        catch(InvalidArgumentException e){ /* Wont happen */ }
         this.entity = entity;
     }
 
@@ -135,7 +137,7 @@ public class Player extends Identity implements IInteractiveEntity{
         catch(Exception e){}
 
         try{
-            setRequiredXP(entity.getLevel() * 150);
+            setRequiredXP(requiredXP * 2);
             entity.setHealth((int)(entity.getHealth() * 1.75));
         }
         catch(InvalidArgumentException e) {/* Wont happen */}
