@@ -77,7 +77,7 @@ public class Enemy extends Identifiable implements IInteractiveEntity {
             return false;
 
         currentMovement -= distance;
-        currentMovement = Double.parseDouble(String.format("%.2f", currentMovement));
+        //currentMovement = Double.parseDouble(String.format("%.2f", currentMovement));
         return true;
     }
 

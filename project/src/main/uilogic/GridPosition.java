@@ -104,7 +104,7 @@ public class GridPosition implements Serializable{
         double sum = Math.pow(xDistance, 2) + Math.pow(yDistance, 2);
         double result = Math.sqrt(sum);        
 
-        result = Double.parseDouble(String.format("%.2f", result));
+        //result = Double.parseDouble(String.format("%.2f", result));
 
         return result;
     }

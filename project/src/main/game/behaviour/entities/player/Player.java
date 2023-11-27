@@ -220,7 +220,7 @@ public class Player extends Identity implements IInteractiveEntity {
             return false;
 
         currentMovement -= distance;
-        currentMovement = Double.parseDouble(String.format("%.2f", currentMovement));
+        //currentMovement = Double.parseDouble(String.format("%.2f", currentMovement));
         return true;
     }
 
