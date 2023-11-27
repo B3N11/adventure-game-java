@@ -9,5 +9,9 @@ public class UtilityButtonHandler extends MultipleButtonHandler{
         actions.put("UTILITY_EQUIPMENT", new GenericDelegate() {
             public void run(Object o) { UIHandler.getInstance().displayCharacterFrame(); }           
         });
+
+        actions.put("UTILITY_TRAVEL", new GenericDelegate() {
+            public void run(Object o) { UIHandler.getInstance().displayTravelFrame(); }
+        });
     }  
 }

@@ -172,7 +172,7 @@ public class InteractiveGridPanel extends JPanel{
         return entityHandler.getByID(id);
     }
 
-    public GridEntityComponent removeEntity(String id, boolean removeFromList) throws ArgumentNullException, ElementNotFoundException, InvalidArgumentException, ComponentAlreadyAtPositionException{
+    public GridEntityComponent removeEntity(String id, boolean removeFromList) throws ArgumentNullException, ElementNotFoundException, InvalidArgumentException{
         if(id == null)
             throw new ArgumentNullException();
 
@@ -181,7 +181,7 @@ public class InteractiveGridPanel extends JPanel{
         return removeEntity(entity, removeFromList);
     }
 
-    public GridEntityComponent removeEntity(GridEntityComponent entity, boolean removeFromList) throws ArgumentNullException, ElementNotFoundException, InvalidArgumentException, ComponentAlreadyAtPositionException{
+    public GridEntityComponent removeEntity(GridEntityComponent entity, boolean removeFromList) throws ArgumentNullException, ElementNotFoundException, InvalidArgumentException{
         if(entity == null)
             throw new ArgumentNullException();
 
@@ -190,7 +190,8 @@ public class InteractiveGridPanel extends JPanel{
             entityHandler.remove(entity);
 
         var newComponent = new DummyComponent(componentSize.getHorizontal(), componentSize.getVertical(), entity.getGridPosition());
-        entityPanel.add(newComponent, entity.getGridPosition(), true, false);
+        try{ entityPanel.add(newComponent, entity.getGridPosition(), true, false); }
+        catch(ComponentAlreadyAtPositionException e){}
 
         return entity;
     }

@@ -18,5 +18,9 @@ public class InteractButtonHandler extends MultipleButtonHandler{
         actions.put("INTERACT_ATTACK", new GenericDelegate() {
             public void run(Object o) { GameHandler.getInstance().getActionController().playerAttackAction(); }           
         });
+
+        actions.put("INTERACT_PICKUP", new GenericDelegate() {
+            public void run(Object o) { GameHandler.getInstance().getActionController().playerPickUpAction(); }
+        });
     }   
 }

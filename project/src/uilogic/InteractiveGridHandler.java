@@ -51,7 +51,7 @@ public class InteractiveGridHandler {
         panel.addEntity(component);
     }
 
-    public void removeEntity(String id) throws ArgumentNullException, ElementNotFoundException, InvalidArgumentException, ComponentAlreadyAtPositionException{
+    public void removeEntity(String id) throws ArgumentNullException, ElementNotFoundException, InvalidArgumentException{
         if(id == null)
             throw new ArgumentNullException();
         

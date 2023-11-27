@@ -5,9 +5,11 @@ import javax.swing.JOptionPane;
 import exception.general.ArgumentNullException;
 import exception.general.ElementNotFoundException;
 import exception.general.InvalidArgumentException;
+import game.behaviour.Item;
 import game.behaviour.entities.enemy.Enemy;
 import game.global.GameHandler;
 import game.global.storage.ActiveEnemyStorage;
+import game.global.storage.ItemStorage;
 import uilogic.UIHandler;
 
 public class GameActionController {
@@ -35,6 +37,41 @@ public class GameActionController {
         UIHandler.getInstance().togglePlayerControlls(true);
     }
 
+    public void playerPickUpAction(){
+        if(GameHandler.getInstance().checkPlayerConditionForAction())
+            return;
+
+        var player = GameHandler.getInstance().getPlayer();
+        var selectedTile = UIHandler.getInstance().getPlayFieldHandler().getSelectedTile();
+
+        if(selectedTile == null)
+            return;
+
+        try{ 
+            String entityID = UIHandler.getInstance().getPlayFieldHandler().getEntityIDByPosition(selectedTile);
+            double distance = UIHandler.getInstance().getPlayFieldHandler().getSelectedTileDistance();
+
+            if(!ItemStorage.getInstance().contains(entityID)){
+                try{ UIHandler.getInstance().getCombatLogger().addSystemLog("FAIL! Selected entity is not an item!"); }
+                catch(ArgumentNullException e){}
+                return;
+            }
+
+            if(distance > 1){
+                try{ UIHandler.getInstance().getCombatLogger().addSystemLog("FAIL! Selected tile is too far! You need to be on an adjacent tile."); }
+                catch(ArgumentNullException e){}
+                return;
+            }
+
+            Item item = ItemStorage.getInstance().get(entityID);
+            player.getEntity().getInventory().add(item);
+            try{ UIHandler.getInstance().getPlayFieldHandler().removeEntity(entityID); }
+            catch(InvalidArgumentException e){ /* Wont happen */}
+        }
+        catch(ElementNotFoundException e){ return; }
+        catch(ArgumentNullException e){ /* Wont happen */}
+    }
+
     public void playerMoveAction(){
         if(GameHandler.getInstance().checkPlayerConditionForAction())
             return;
@@ -46,7 +83,7 @@ public class GameActionController {
             return;
 
         try{
-            UIHandler.getInstance().getCombatLogger().addEntityLog(player.getName(), "Attempted to move...");
+            //UIHandler.getInstance().getCombatLogger().addEntityLog(player.getName(), "Attempted to move...");
             
             UIHandler.getInstance().getPlayFieldHandler().getEntityIDByPosition(selectedTile);
 
@@ -100,8 +137,8 @@ public class GameActionController {
         catch(ElementNotFoundException e){ return; }
         catch(ArgumentNullException e){ /*Wont happen*/ }
 
-        try{ UIHandler.getInstance().getCombatLogger().addEntityLog(player.getName(), "Attempted to attack..."); }
-        catch(ArgumentNullException e){ /*Wont happen*/ }
+        /* try{ UIHandler.getInstance().getCombatLogger().addEntityLog(player.getName(), "Attempted to attack..."); }
+        catch(ArgumentNullException e){ /*Wont happen } */
 
         double distance = UIHandler.getInstance().getPlayFieldHandler().getSelectedTileDistance();
         var weapon = player.getEntity().getWeapon();

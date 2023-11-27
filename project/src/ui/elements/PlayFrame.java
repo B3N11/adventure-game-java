@@ -21,6 +21,8 @@ public class PlayFrame extends JFrame{
     private JPanel panel;
     private InteractiveGridPanel playfieldPanel;
     private ScrollableTextPanel combatLogPanel;
+    private InteractButtonPanel interactButtonPanel;
+    private UtilityButtonPanel utilityButtonPanel;
 
     //Sizes
     public static int PLAYFIELD_WIDTH = 1200;
@@ -98,7 +100,7 @@ public class PlayFrame extends JFrame{
         gbc.gridx = 0;
         gbc.gridy = 0;
         gbc.gridheight = 2;
-        var utilityButtonPanel = new UtilityButtonPanel(UTILITYPANEL_WIDTH, UTILITYPANEL_HEIGHT, utilityButtonListener);
+        utilityButtonPanel = new UtilityButtonPanel(UTILITYPANEL_WIDTH, UTILITYPANEL_HEIGHT, utilityButtonListener);
         addToPanel(utilityButtonPanel, gbc);
         
         gbc.gridx = 1;
@@ -110,8 +112,8 @@ public class PlayFrame extends JFrame{
         gbc.gridx = 1;
         gbc.gridy = 1;
         gbc.gridheight = 1;
-        var panel3 = new InteractButtonPanel(INTERACTPANEL_WIDTH, INTERACTPANEL_HEIGHT, interactButtonListener);
-        addToPanel(panel3, gbc);
+        interactButtonPanel= new InteractButtonPanel(INTERACTPANEL_WIDTH, INTERACTPANEL_HEIGHT, interactButtonListener);
+        addToPanel(interactButtonPanel, gbc);
 
         gbc.gridx = 2;
         gbc.gridy = 0;
@@ -146,5 +148,11 @@ public class PlayFrame extends JFrame{
 
     public void clearCombatLog(){
         combatLogPanel.clearText();
+    }
+
+    public void togglePlayerControlls(boolean enabled){
+        utilityButtonPanel.toggleButtons(enabled);
+        interactButtonPanel.toggleButtons(enabled);
+        refresh();
     }
 }

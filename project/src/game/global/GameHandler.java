@@ -32,12 +32,10 @@ public class GameHandler {
     //Game Config
     private String gameTitle;
     private String gameCreator;
-    private HashMap<String, String> maps;   //TODO: read all maps <ID, NAME>
 
     private GameHandler(){
         saveHandler = new SaveHandler();
         actionController = new GameActionController();
-        maps = new HashMap<String, String>();
     }
 
     public static GameHandler getInstance(){
@@ -69,7 +67,7 @@ public class GameHandler {
         UIHandler.getInstance().getPlayFieldHandler().setCurrentMapLayout(data);
         UIHandler.getInstance().getCombatLogger().addMapDescription(data.getName(), data.getDescription());
     }
-
+    
     public void handleChosenFile(String filePath, FileChooserType type) throws ArgumentNullException, FileNotFoundException{
         if(filePath == null)
             throw new ArgumentNullException();
@@ -150,7 +148,6 @@ public class GameHandler {
 
         if(result == JOptionPane.YES_OPTION)
             System.exit(0);
-        return;
     }
 
     public boolean checkPlayerConditionForAction(){
