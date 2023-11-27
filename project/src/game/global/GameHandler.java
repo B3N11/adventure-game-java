@@ -67,7 +67,7 @@ public class GameHandler {
         UIHandler.getInstance().getPlayFieldHandler().setCurrentMapLayout(data);
         UIHandler.getInstance().getCombatLogger().addMapDescription(data.getName(), data.getDescription());
     }
-
+    
     public void handleChosenFile(String filePath, FileChooserType type) throws ArgumentNullException, FileNotFoundException{
         if(filePath == null)
             throw new ArgumentNullException();
@@ -148,7 +148,6 @@ public class GameHandler {
 
         if(result == JOptionPane.YES_OPTION)
             System.exit(0);
-        return;
     }
 
     public boolean checkPlayerConditionForAction(){

@@ -102,7 +102,7 @@ public class UIHandler {
     }
 
     public void togglePlayerControlls(boolean on){
-        //Turn on or off the player controlls while enemies are doing their turns
+        playFrame.togglePlayerControlls(on);
     }
 
     public void displayDiceRollResult(Integer roll){
