@@ -8,6 +8,21 @@ import game.enums.EquipmentType;
 import game.enums.WeaponType;
 import game.utility.dice.DiceRoller;
 
+/**
+ * This abstract class represents a Weapon in the game.
+ * It extends the Equipment class and includes additional properties such as attack modifier, damage dice, dice count, damage modifier, range, weapon type, and attacks in round.
+ * 
+ * The class contains the following fields:
+ * - attackModifier: The bonus value that is added to the default attack roll.
+ * - damageDice: Represents the sideCount of the damage dice it rolls with.
+ * - diceCount: The number of dice that is rolled for damage.
+ * - damageModifier: The bonus value that is added to the rolled damage.
+ * - range: The maximum distance the weapon can deal damage in.
+ * - weaponType: The type of the weapon, used for type casting.
+ * - attacksInRound: The number of attacks in a round.
+ * 
+ * The class provides getter and setter methods for these fields.
+ */
 public abstract class Weapon extends Equipment{
     
     protected int attackModifier;              //The bonus value that is added to the default attack roll
@@ -113,12 +128,23 @@ public abstract class Weapon extends Equipment{
         return result;
     }
 
-    //Checks if the weapon can attack to that distance
+    /**
+     * Checks if the weapon can attack to the specified distance.
+     * @param distance The distance to check.
+     * @return true if the weapon can attack to the distance, false otherwise.
+     */
     public boolean checkRange(double distance){
         return range >= distance;
     }
 
-    //Does an attack roll with default dice and returns its value with attackModifier added to it
+    /**
+     * Performs an attack roll with default dice and checks if it succeeds against the target's armor class.
+     * Also checks if the target is within the weapon's range.
+     * @param targetAC The armor class of the target.
+     * @param distance The distance to the target.
+     * @return true if the attack hits and the target is within range, false otherwise.
+     * @throws DefaultDiceNotSetException if the default dice is not set.
+     */
     public boolean attack(int targetAC, double distance) throws DefaultDiceNotSetException{
         var roller = DiceRoller.getInstance();
 
@@ -128,6 +154,13 @@ public abstract class Weapon extends Equipment{
         return inRange && hit;
     }
 
+    /**
+     * Calculates the damage dealt by the weapon.
+     * Rolls the weapon's damage dice and adds the damage modifier.
+     * @param distance The distance to the target.
+     * @return The calculated damage.
+     * @throws InvalidDiceSideCountException if the side count of the damage dice is invalid.
+     */
     public int damage(double distance) throws InvalidDiceSideCountException{
         var roller = DiceRoller.getInstance();
         

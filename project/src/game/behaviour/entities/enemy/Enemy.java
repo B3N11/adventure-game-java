@@ -7,6 +7,18 @@ import game.behaviour.interfaces.IInteractiveEntity;
 import game.enums.EntityCondition;
 import game.utility.general.Identifiable;
 
+/**
+ * This class represents an Enemy in the game. This is an instance of an enemy type.
+ * It extends the Identifiable class and implements the IInteractiveEntity interface.
+ * 
+ * The class contains the following fields:
+ * - enemyType: The type of the enemy.
+ * - currentHealth: The current health of the enemy.
+ * - condition: The condition of the enemy.
+ * - currentMovement: The current movement speed of the enemy.
+ * 
+ * The class provides a constructor that initializes these fields and methods to get the enemy type, current health, current movement, instance ID, and asset ID.
+ */
 public class Enemy extends Identifiable implements IInteractiveEntity{
     
     private EnemyType enemyType;
@@ -15,6 +27,13 @@ public class Enemy extends Identifiable implements IInteractiveEntity{
     private EntityCondition condition;
     private double currentMovement;
 
+    /**
+     * Constructor for the Enemy class.
+     * Initializes the id, enemyType, and condition of the enemy.
+     * @param id The id of the enemy.
+     * @param enemyType The type of the enemy.
+     * @throws ArgumentNullException if the enemyType is null.
+     */
     public Enemy(String id, EnemyType enemyType) throws ArgumentNullException{
         if(enemyType == null)
             throw new ArgumentNullException();

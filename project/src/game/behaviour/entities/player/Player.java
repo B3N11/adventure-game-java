@@ -1,4 +1,4 @@
-package game.behaviour.entities;
+package game.behaviour.entities.player;
 
 import exception.entity.ItemNotInInventoryException;
 import exception.entity.NoWeaponEquippedException;
@@ -15,6 +15,22 @@ import game.logic.event.EventArgument;
 import game.logic.event.IEventListener;
 import game.utility.general.Identity;
 
+/**
+ * This class represents a Player in the game.
+ * It extends the Identity class and implements the IInteractiveEntity interface.
+ * 
+ * The class contains the following fields:
+ * - entity: The player entity.
+ * - xp: The experience points of the player.
+ * - requiredXP: The experience points required for the player to level up.
+ * - currentHealth: The current health of the player.
+ * - condition: The condition of the player.
+ * - currentMovement: The current movement speed of the player.
+ * - onPlayerDied: Event that is triggered when the player dies.
+ * - onPlayerLeveledUp: Event that is triggered when the player levels up.
+ * 
+ * The class provides a constructor that initializes the id and entity of the player.
+ */
 public class Player extends Identity implements IInteractiveEntity{
     
     private PlayerEntity entity;
@@ -30,6 +46,13 @@ public class Player extends Identity implements IInteractiveEntity{
     transient private Event onPlayerDied;
     transient private Event onPlayerLeveledUp;
 
+    /**
+     * Constructor for the Player class.
+     * Initializes the id and entity of the player.
+     * @param id The id of the player.
+     * @param entity The player entity.
+     * @throws ArgumentNullException if the id or entity is null.
+     */
     public Player(String id, PlayerEntity entity) throws ArgumentNullException{
         if(id == null || entity == null)
             throw new ArgumentNullException();
@@ -43,6 +66,13 @@ public class Player extends Identity implements IInteractiveEntity{
     public int getCurrentHealth() { return currentHealth; }
     public double getCurrentMovement() { return currentMovement; }
 
+    /**
+     * Constructor for the Player class.
+     * Initializes the id and entity of the player.
+     * @param id The id of the player.
+     * @param entity The player entity.
+     * @throws ArgumentNullException if the id or entity is null.
+     */
     public void addEventListeners(IEventListener playerDied, IEventListener playerLeveledUp) throws ArgumentNullException{
         if(playerDied == null || playerLeveledUp == null)
             throw new ArgumentNullException();
@@ -75,6 +105,11 @@ public class Player extends Identity implements IInteractiveEntity{
         requiredXP = amount;
     }
 
+    /**
+     * Adds experience points to the player. If the player has enough experience points to level up, it levels up the player.
+     * @param xp The experience points to add.
+     * @throws InvalidArgumentException if the xp is less than 0.
+     */
     public int addXP(int newXP){
         int leftoverXP = newXP - (requiredXP - xp);
 
@@ -91,6 +126,10 @@ public class Player extends Identity implements IInteractiveEntity{
         xp = leftoverXP;
     }
 
+    /**
+     * Levels up the player.
+     * @throws Exception if an error occurs during leveling up.
+     */
     public void levelUp(){
         try{ entity.setLevel(entity.getLevel() + 1); }
         catch(Exception e){}
@@ -105,12 +144,24 @@ public class Player extends Identity implements IInteractiveEntity{
         catch(Exception e){}
     }
 
+    /**
+     * Adds an item to the player's inventory.
+     * @param item The item to add.
+     * @throws ArgumentNullException if the item is null.
+     */
     public void addToInventory(Item item) throws ArgumentNullException{
         if(entity.getInventory() == null)
             entity.createInventory(false);
         entity.getInventory().add(item);
     }
 
+    /**
+     * Makes the player attack a target. If the player has no weapon equipped, it throws a NoWeaponEquippedException. Calculates the final target armor class by subtracting the player's attack modifier from the target's armor class.
+     * @param targetAC The armor class of the target.
+     * @param distance The distance to the target.
+     * @return True if the attack is successful, false otherwise.
+     * @throws Exception if an error occurs during the attack.
+     */
     public boolean attack(int targetAC, double distance) throws Exception{
         if(entity.getWeapon() == null)
             throw new NoWeaponEquippedException();
@@ -119,17 +170,27 @@ public class Player extends Identity implements IInteractiveEntity{
         return entity.attack(finalTargetAC, distance);
     }
 
+    /**
+     * Calculates the damage the player deals to a target. Adds the player's damage modifier to the damage dealt.
+     * @param distance The distance to the target.
+     * @return The damage dealt to the target.
+     * @throws Exception if an error occurs during the damage calculation.
+     */
     public int damage(double distance) throws Exception{
         if(entity.getWeapon() == null)
             throw new NoWeaponEquippedException();
 
         return entity.damage(distance) + (int)entity.getInventory().calculateModifiers(ModifierType.DAMAGE);
     }
-
+    
+    /**
+     * Calculates the armor class of the player. 
+     * The armor class is calculated by adding the player's base armor class and any armor class modifiers from the player's inventory.
+     * @return The armor class of the player.
+     * @throws Exception if an error occurs during the calculation.
+     */
     public int getArmorClass() throws Exception{
-        int result = entity.getArmor() == null ? (entity.getLevel() + 5) : entity.getArmor().getArmorClass() + entity.getLevel();
-        result += (int)entity.getInventory().calculateModifiers(ModifierType.ARMOR_CLASS);
-        return result;
+        return entity.getArmorClass() + (int)entity.getInventory().calculateModifiers(ModifierType.ARMOR_CLASS);
     }
 
     public void equip(Weapon weapon) throws ItemNotInInventoryException, ArgumentNullException{
