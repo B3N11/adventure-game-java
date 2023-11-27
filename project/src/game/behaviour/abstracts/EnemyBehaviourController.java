@@ -3,7 +3,6 @@ package game.behaviour.abstracts;
 import exception.general.ArgumentNullException;
 import game.behaviour.entities.enemy.EnemyEntity;
 import game.behaviour.entities.enemy.controller.BerserkerEnemyController;
-import game.behaviour.entities.enemy.controller.RangerEnemyController;
 import game.behaviour.interfaces.IInteractiveEntity;
 import game.enums.EnemyBehaviourControllerType;
 import game.logic.event.Event;
@@ -39,9 +38,6 @@ public abstract class EnemyBehaviourController {
 
     public static EnemyBehaviourController getTypeInstance(EnemyBehaviourControllerType type, EnemyEntity entity) throws ArgumentNullException{
         switch (type) {
-            case RANGER:
-                return new RangerEnemyController(entity);
-        
             default:
                 return new BerserkerEnemyController(entity);
         }

@@ -137,9 +137,6 @@ public class GameActionController {
         catch(ElementNotFoundException e){ return; }
         catch(ArgumentNullException e){ /*Wont happen*/ }
 
-        /* try{ UIHandler.getInstance().getCombatLogger().addEntityLog(player.getName(), "Attempted to attack..."); }
-        catch(ArgumentNullException e){ /*Wont happen } */
-
         double distance = UIHandler.getInstance().getPlayFieldHandler().getSelectedTileDistance();
         var weapon = player.getEntity().getWeapon();
 
@@ -151,8 +148,13 @@ public class GameActionController {
         }
 
         Enemy enemy = null;
-        try{ enemy = ActiveEnemyStorage.getInstance().get(enemyID); }
+        try{
+            enemy = ActiveEnemyStorage.getInstance().get(enemyID);
+            if(enemy == null)
+                throw new ElementNotFoundException();
+        }
         catch(ArgumentNullException e){ /*Wont happen*/ }
+        catch(ElementNotFoundException e){ return; }
 
         //Roll attack dice
         boolean successfullAttack = false;

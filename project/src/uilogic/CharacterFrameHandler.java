@@ -5,8 +5,8 @@ import java.awt.event.ActionListener;
 
 import exception.general.ArgumentNullException;
 import exception.general.ConfigNotLoadedException;
+import game.behaviour.Armor;
 import game.behaviour.Item;
-import game.behaviour.abstracts.Armor;
 import game.behaviour.abstracts.Equipment;
 import game.behaviour.abstracts.Weapon;
 import game.enums.EquipmentType;

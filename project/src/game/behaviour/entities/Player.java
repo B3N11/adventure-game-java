@@ -4,8 +4,8 @@ import exception.entity.ItemNotInInventoryException;
 import exception.entity.NoWeaponEquippedException;
 import exception.general.ArgumentNullException;
 import exception.general.InvalidArgumentException;
+import game.behaviour.Armor;
 import game.behaviour.Item;
-import game.behaviour.abstracts.Armor;
 import game.behaviour.abstracts.Weapon;
 import game.behaviour.interfaces.IInteractiveEntity;
 import game.enums.EntityCondition;
@@ -136,23 +136,14 @@ public class Player extends Identity implements IInteractiveEntity{
         if(!entity.getInventory().contains(weapon.getID()))
             throw new ItemNotInInventoryException();
 
-        //Unequip current
-        if(entity.getWeapon() != null)
-            entity.getWeapon().equip(false);
-
         entity.equip(weapon);
-        entity.getWeapon().equip(true);
     }
 
     public void equip(Armor armor) throws ItemNotInInventoryException, ArgumentNullException{
         if(!entity.getInventory().contains(armor.getID()))
             throw new ItemNotInInventoryException();
-        
-        if(entity.getArmor() != null)
-            entity.getArmor().equip(false);
 
         entity.equip(armor);
-        entity.getArmor().equip(true);
     }
 
     @Override

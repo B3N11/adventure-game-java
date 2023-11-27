@@ -6,6 +6,7 @@ import exception.entity.ItemNotInInventoryException;
 import exception.entity.NoWeaponEquippedException;
 import exception.general.ArgumentNullException;
 import exception.general.InvalidArgumentException;
+import game.behaviour.Armor;
 import game.enums.EntityType;
 
 public abstract class Entity implements Serializable{
